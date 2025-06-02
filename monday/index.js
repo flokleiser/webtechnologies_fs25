@@ -1,10 +1,22 @@
-let testElement = document.getElementById('test-element');
+let testElement = document.getElementById('testElement')
+let otherTestElement = document.getElementById('otherTestElement')
 
-if (!testElement) {
-    console.log('no testelement')
-}
+let clicked = false
+
 
 testElement.addEventListener('click', function() { 
-    testElement.style.backgroundColor = 'blue';
-    console.log('test')
+    clicked = !clicked;
+    if (clicked) {
+        testElement.style.borderRadius= '25%'
+        console.log('hovered');
+    }
+    else {
+        testElement.style.borderRadius= '0%'
+    }
+},);
+
+
+otherTestElement.addEventListener('hover', function() { 
+    testElement.style.backgroundColor= 'red';
+    console.log('hovered');
 },);
