@@ -1,0 +1,10 @@
+/* this is applying to _all_ h2 elements */
+h2 {
+    color:gray;
+}
+
+/* this is applying to elements with the id "test" */
+#test {
+    color: black;
+    font-size: 20px;
+}
