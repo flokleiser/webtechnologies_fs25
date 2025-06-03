@@ -18,6 +18,7 @@
   --width-large: 1300px;
 }
 
+
 html {
   font-size: 100%;
   scroll-behavior: smooth;
@@ -32,7 +33,11 @@ html {
 
 element.style {
     position:absolute;
-    width:50%;
+    width:25%;
+}
+
+canvas {
+    max-width: 100%;
 }
 
 

@@ -2,15 +2,24 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 0.1, 1000 );
+// const camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 0.1, 1000 );
 // const camera = new THREE.OrthographicCamera()
+
+const aspect = window.innerWidth / window.innerHeight;
+const d = 2.5;
+const camera = new THREE.OrthographicCamera( - d * aspect, d * aspect, d, - d, 1, 1000 );
+
+camera.position.set( 20, 10, 20 );
+camera.rotation.order = 'YXZ';
+camera.rotation.y = - Math.PI / 4;
+camera.rotation.x = Math.atan( - 1 / Math.sqrt( 2 ) );
 
 scene.background = new THREE.Color( 0xffffff);
 scene.position.set(0, 0, 0);
 
 const renderer = new THREE.WebGLRenderer();
-// renderer.setSize( window.innerWidth/1.25, window.innerHeight/1.25 );
-renderer.setSize( window.innerWidth/1.25, window.innerHeight/1.25 );
+// renderer.setSize( window.innerWidth, window.innerHeight);
+renderer.setSize(window.innerWidth, window.innerHeight, true);
 renderer.setAnimationLoop( animate );
 document.body.appendChild( renderer.domElement);
 
@@ -27,7 +36,6 @@ camera.position.z = 5;
 controls.update();
 
 function animate() {
-	// cube.rotation.x += 0.01;
 	cube.rotation.y += 0.01;
     controls.update();
 
