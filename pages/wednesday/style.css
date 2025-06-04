@@ -37,6 +37,15 @@ body {
     gap:15px;
 }
 
+.button {
+    background: none;
+    border: none;
+    color: #000000;
+    opacity:0.3;
+}
+.button:hover {
+    opacity:1;
+}
 
 .navbar-item {
     background-color: #96A5B2;

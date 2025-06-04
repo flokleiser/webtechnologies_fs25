@@ -94,11 +94,11 @@ a {
 
 
 .container {
-    max-width: var(--width-medium);
+    /* max-width: var(--width-medium); */
     min-width: var(--width-medium);
     margin: 0 auto;
     padding: 2rem 2rem;
-    display: flex;
+    display: flex;    
 }
 
 h1::selection,
