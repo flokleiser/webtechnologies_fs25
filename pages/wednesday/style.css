@@ -1,0 +1,138 @@
+body {
+    margin:15px;
+}
+
+.navbar {
+    background-color: #C2CCD6;
+    border-radius: 10px;;
+    height:75px;
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    padding:15px;
+
+}
+
+.navbar-right,
+.navbar-left {
+    display: flex;
+    width:auto;
+    height:90%;
+    gap:15px;
+}
+
+
+.navbar-item {
+    background-color: #96A5B2;
+    border-radius: 10px;
+}
+
+.content {
+    background-color: #C2CCD6;
+    border-radius: 10px;
+    padding:35px;
+    margin-top:15px;
+    margin-bottom:15px;
+    display:flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    height: 35vh;
+}
+
+.content-right,
+.content-left {
+
+    display: flex; 
+    flex-direction: column; 
+    justify-content: space-between; 
+    height: 100%;
+}
+
+.card {
+   background-color: #96A5B2;
+    border-radius: 10px;
+    height:20vh;
+    width:20vw;
+    /* width:100px; */
+}
+
+.card-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    /* height: 100%; */
+    height:fill;
+    margin-top:15px;
+    margin-bottom:15px;
+}
+
+
+.content-div1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: start;
+}
+
+.content-item1 {
+    background-color: #96A5B2;
+    border-radius: 10px;
+    height:5vh;
+}
+
+.content-item2 {
+    background-color: #96A5B2;
+    border-radius: 10px;
+    height:2vh;
+    margin-bottom:15px;
+}
+
+.footer {
+    background-color: #C2CCD6;
+    position:fixed;
+    bottom:15px;
+    left:15px;
+    right:15px;
+    padding-top:10px;
+    border-radius: 10px;
+    height:150px;
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.footer-right, 
+.footer-left {
+    display: flex;
+    width:auto;
+    height:90%;
+    gap:15px;
+    padding: 0 15px;
+}
+
+.footer-div1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: start;
+}
+
+
+.footer-item1 {
+    background-color: #96A5B2;
+    border-radius: 10px;
+    height:80px;
+}
+.footer-item2 {
+    background-color: #96A5B2;
+    border-radius: 10px;
+    height:30px;
+    margin-bottom:15px;
+    
+}
+.footer-item3 {
+    background-color: #96A5B2;
+    border-radius: 10px;
+    height:60px;
+    margin-bottom:10px;
+}
