@@ -40,6 +40,18 @@ canvas {
     max-width: 100%;
 }
 
+.threejscanvas {
+    position:absolute;
+    width: 75vw;
+    height: 75vh;
+    left: 50%;
+    top: 0%;
+    /* transform: translate(-50%, -50%) */
+    transform: translateX(-50%);
+    z-index: -1;
+
+}
+
 
 ul {
   list-style: none;

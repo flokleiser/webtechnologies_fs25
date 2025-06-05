@@ -2,6 +2,14 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 
+// import { Line2 } from 'three/examples/jsm/lines/Line2.js';
+import { Line2 } from 'three/examples/jsm/lines/webgpu/Line2.js';
+import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry.js';
+import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial.js';
+
+
+
+
 const scene = new THREE.Scene();
 
 const aspect = window.innerWidth / window.innerHeight;
@@ -17,26 +25,39 @@ scene.background = new THREE.Color( 0xffffff);
 scene.position.set(0, 0, 0);
 
 const renderer = new THREE.WebGLRenderer();
-renderer.setSize(window.innerWidth, window.innerHeight, true);
+renderer.setSize(window.innerWidth/1.5, window.innerHeight/1.5, false);
 renderer.setAnimationLoop( animate );
-document.body.appendChild( renderer.domElement);
+
+renderer.domElement.classList.add('threejscanvas');
+document.body.appendChild( renderer.domElement)
 
 const controls = new OrbitControls( camera, renderer.domElement);
 controls.maxAzimuthAngle = Math.PI / 2; 
 controls.enableZoom= false;
 
-const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-const material = new THREE.MeshBasicMaterial( { color: 0x000000} );
-const cube = new THREE.Mesh( geometry, material );
-scene.add( cube );
+const geometry = new THREE.BoxGeometry(1, 1, 1);
+const material = new THREE.MeshBasicMaterial({ color: 0x000000 });
+const cube = new THREE.Mesh(geometry, material);
+
+const edges = new THREE.EdgesGeometry(geometry);
+const edgeMaterial = new THREE.LineBasicMaterial({ color: 0xffffff, linewidth: 2 });
+const edgeLines = new THREE.LineSegments(edges, edgeMaterial);
+
+const cubeWithEdges = new THREE.Group();
+cubeWithEdges.add(cube);
+cubeWithEdges.add(edgeLines);
+
+scene.add(cubeWithEdges);
 
 camera.position.z = 5;
 controls.update();
 
 function animate() {
-	cube.rotation.y += 0.01;
+	// cube.rotation.y += 0.01;
+    cubeWithEdges.rotation.y += 0.01;
     controls.update();
 
 	renderer.render( scene, camera );
 
 }
+
