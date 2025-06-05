@@ -1,9 +1,9 @@
 {
     "compilerOptions": {
-        "target": "es6",
-        "module": "commonjs",
-        // "outDir": "./",
-        // "rootDir": "./pages",
+        "target": "esnext",
+        "module": "esnext",
+        // "lib": ["dom","es2017"],
+        "moduleResolution": "node",
         "allowJs": true,
         "checkJs": false,
         "esModuleInterop": true,

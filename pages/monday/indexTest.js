@@ -10,7 +10,7 @@ function rotateToMouse(e) {
         x: leftX - test_bounds.width / 2,
         y: topY - test_bounds.height / 2,
     };
-    const distance = Math.sqrt(Math.pow(center.x, 2) + Math.pow(center.y, 2));
+    const distance = Math.sqrt(center.x ** 2 + center.y ** 2);
     if (!test_card) {
         console.error("Card element not found");
         throw new Error("Card element not found");
