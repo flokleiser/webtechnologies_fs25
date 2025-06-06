@@ -6,4 +6,3 @@ if (!h1element) {
 
 
 console.log('hello world')
-
