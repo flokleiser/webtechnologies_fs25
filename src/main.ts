@@ -7,17 +7,16 @@ const answerContainer = document.querySelector("[data-js='answer']");
 const easyButton = document.querySelector("#easy") as HTMLButtonElement;
 const mediumButton = document.querySelector("#medium") as HTMLButtonElement;
 const hardButton = document.querySelector("#hard") as HTMLButtonElement;
+const flipButton = document.querySelector("#flip") as HTMLButtonElement;
 
 const card = document.querySelector(".card") as HTMLElement;
 let cardBounds = card.getBoundingClientRect() as DOMRect;
 
 let difficulty = "hard"; 
 
-// if (!titleContainer || !imgContainer || !questionContainer || !card || !bigTitleContainer) {
-//     throw new Error("Required DOM elements not found");
-// }
+let isFlipped = false;
 
-if (!easyButton || !mediumButton || !hardButton) {
+if (!easyButton || !mediumButton || !hardButton || !flipButton) {
     throw new Error("Required button elements not found");
 }
 
@@ -33,7 +32,6 @@ function loadAPI() {
         throw new Error("Required DOM elements not found");
     }
 
-    // fetch("https://opentdb.com/api.php?amount=1&difficulty=hard&multiple")
     fetch("https://opentdb.com/api.php?amount=1&difficulty="+difficulty+"&multiple")
         .then((response) => response.json())
         .then((data) => {
@@ -90,27 +88,68 @@ function rotateCard(e:MouseEvent) {
     };
     const distance = Math.sqrt(center.x ** 2 + center.y ** 2);
 
-    card.style.transform = `
-        scale3d(1.02, 1.02, 1.02)
-        rotate3d(
-          ${center.y / 100},
-          ${-center.x / 100},
-          0,
-          ${Math.log(distance) * 1.5}deg
-        )
-      `;
+        card.style.transform = `
+            scale3d(1.02, 1.02, 1.02)
+            rotate3d(
+            ${center.y / 100},
+            ${-center.x / 100},
+            0,
+            ${Math.log(distance) * 1.5}deg
+            )
+        `;
 }
+
+function rotateCardFlipped(e:MouseEvent) {
+    const mouseX = e.clientX;
+    const mouseY = e.clientY;
+    const leftX = mouseX - cardBounds.x;
+    const topY = mouseY - cardBounds.y;
+    const center = {
+        x: leftX - cardBounds.width / 2,
+        y: topY - cardBounds.height / 2,
+    };
+    const distance = Math.sqrt(center.x ** 2 + center.y ** 2);
+
+        // card.style.transform = `
+        //     scale3d(1.02, 1.02, 1.02)
+        //     rotate3d(
+        //     ${center.y / 100},
+        //     ${-center.x / 100},
+        //     0,
+        //     ${Math.log(distance) * 1.5}deg
+        //     )
+        // `;
+        card.style.transform = `
+            scale3d(1.02, 1.02, 1.02)
+            rotateY(180deg)
+        `;
+}
+
+
+flipButton.addEventListener("click", () => {
+    isFlipped = !isFlipped;
+    console.log("Flipped: " + isFlipped);
+    card.style.transform = isFlipped ? "rotateY(180deg)": "rotateY(0deg)";
+});
 
 card.addEventListener("mouseenter", () => {
     cardBounds = card.getBoundingClientRect();
-    document.addEventListener("mousemove", rotateCard);
+    if (!isFlipped) {
+        document.addEventListener("mousemove", rotateCard);
+    } else {
+        document.addEventListener("mousemove", rotateCardFlipped);
+    } 
 });
 
 card.addEventListener("mouseleave", () => {
-    document.removeEventListener("mousemove", rotateCard);
-    card.style.transform = "";
-    card.style.background = "";
+    if (!isFlipped) {
+        document.removeEventListener("mousemove", rotateCard);
+    }
+    else {
+        document.removeEventListener("mousemove", rotateCardFlipped);
+    }
 });
+
 
 document.addEventListener("DOMContentLoaded", () => {
     loadAPI();

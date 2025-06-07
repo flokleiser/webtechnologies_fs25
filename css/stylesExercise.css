@@ -5,12 +5,19 @@
 
 :root {
     --primary-color: #000000;
-    --bg-primary: #ffffff;
+    /* --bg-primary: #ffffff; */
+    --bg-primary:#1f1f1f;
     --text-color: #222222;
     --text-color-two: #ffffff;
-    --bg-secondary: #000000;
+    --bg-secondary: #ffffff;
+    /* --bg-secondary:#1f1f1f; */
     --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     --shadow-hover: 0 10px 30px rgba(0, 0, 0, 0.3);
+    /* --card-text: #ffffff; */
+    --card-text: #000000;
+
+    /* --shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
+    --shadow-hover: 0 10px 30px rgba(255, 255, 255, 0.2); */
 
     --weight-small: 400;
     --weight-semibold: 600;
@@ -25,8 +32,12 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    /* font-family: sans-serif; */
     font-family: system-ui, sans-serif;
+    /* background-color: var(--bg-primary); */
+}
+
+body {
+    background-color: var(--bg-primary);
 }
 
 h1,
@@ -50,16 +61,14 @@ a {
     background-color: var(--card-background);
 }
 
+
 .card {
     width: 390px;
     height: 700px;
     margin: 40px auto 0 auto;
-}
-
-.card {
     scale:1;
-    background-color: #d9e5a9;
-    color: black;
+    background-color: var(--bg-secondary);
+    color: var(--card-text);
     border-radius: 5px;
     padding: 15px;
     box-shadow: var(--shadow);
@@ -69,6 +78,23 @@ a {
     transition-property: transform, box-shadow, scale;
     transition-timing-function: ease-out;
     transform: rotate3d(0);
+}
+
+.card-front,
+.card-back {
+  backface-visibility: hidden;
+}
+
+.card-front {
+  background: #fff;
+  color: #000;
+  z-index: 2;
+}
+
+.card-back {
+  background: linear-gradient(to right, #ff7e5f, #feb47b);
+  color: white;
+  transform: rotateY(180deg);
 }
 
 .card:hover {
@@ -83,12 +109,16 @@ a {
     transition-timing-function: ease-in-out;
 }
 
+
 .button {
     padding: 10px 20px;
     border-radius: 5px;
     margin: 10px;
     min-width:100px;
-    border: 1px solid var(--primary-color);
+    background-color: var(--bg-secondary);
+    color: var(--card-text);
+    /* border: 1px solid var(--primary-color); */
+    border:none;
     box-shadow: var(--shadow);
     font-weight: var(--weight-semibold);
 

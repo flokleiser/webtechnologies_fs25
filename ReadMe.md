@@ -1,7 +1,9 @@
 # ZHdK Interaction Design FS25
 ___
 
-### Module: Webtechnologies | Student: Florian Kleiser
+## Module: Webtechnologies | Student: Florian Kleiser
+
+___
 
 ### Ideas for API:
 - IMDB: https://imdbapi.dev/ 
@@ -11,3 +13,8 @@ ___
 - Cards: https://deckofcardsapi.com/
 - MeteoSchweiz: https://opendatadocs.meteoswiss.ch/
 - Cocktail: https://www.thecocktaildb.com/api.php
+
+___
+
+### Some to-dos
+- [ ] Make card flippable when clicked
