@@ -1,4 +1,5 @@
 body {
+    font-family: system-ui, sans-serif;
     margin:15px;
 }
 
@@ -7,13 +8,21 @@ body {
 
 
 .compare-image {
-    opacity:0;
-    scale:0;
+    display:none;
 }
 
 .compare-image.active {
-    opacity:1;
+    display:block
+}
+
+#html {
+    /* display:flex; 
+    flex-direction: column; */
     scale:1;
+    opacity:1;
+}
+#html.active {
+    display:none;
 }
 
 .navbar {
@@ -50,6 +59,43 @@ body {
 .navbar-item {
     background-color: #96A5B2;
     border-radius: 10px;
+    /* display:flex; */
+}
+
+.swap-button {
+    background-color: #96A5B2;
+    border-radius: 10px;
+    width: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    scale:1;
+}
+.swap-button.active {
+    position:absolute;
+    font-size: 0.7rem;
+    top:30px;
+    left:22px;
+    width:3vw;
+    height:auto;
+}
+
+.current-display {
+    background-color: #96A5B2;
+    border-radius: 10px;
+    width: 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.current-display.active {
+    position:absolute;
+    font-size: 0.7rem;
+    top:30px;
+    left:92px;
+    width:8vw;
+    height:auto;
 }
 
 .content {

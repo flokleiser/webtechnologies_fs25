@@ -11,7 +11,7 @@
 				"imports": {
                     "three": "https://unpkg.com/three/build/three.module.js",
                     "three/examples/jsm/controls/OrbitControls.js": "https://unpkg.com/three/examples/jsm/controls/OrbitControls.js",
-                    "three/examples/jsm/lines/Line2.js": "https://unpkg.com/three/examples/jsm/lines/webgpu/Line2.js",
+                    "three/examples/jsm/lines/Line2.js": "https://unpkg.com/three/examples/jsm/lines/Line2.js",
                     "three/examples/jsm/lines/LineGeometry.js": "https://unpkg.com/three/examples/jsm/lines/LineGeometry.js",
                     "three/examples/jsm/lines/LineMaterial.js": "https://unpkg.com/three/examples/jsm/lines/LineMaterial.js"
 
@@ -19,11 +19,20 @@
 			}
 		</script>
 
-                    <!-- "three/examples/jsm/lines/Line2.js": "https://unpkg.com/three/examples/jsm/lines/Line2.js", -->
+        <!-- <script type="importmap">
+            {
+                "imports": {
+                    "three": "https://unpkg.com/three/build/three.module.js",
+                    "three/addons/": "https://unpkg.com/three/examples/jsm/"
+                }
+            }
+        </script> -->
+
     </head>
     <body>
         <h1>Tuesday Test</h1>
-        <script type="module" src="./index.js"></script>
+        <script type="module" src="index.js"></script>
+        <!-- <script type="module" src="compare.js"></script> -->
 
     </body>
 </html>
