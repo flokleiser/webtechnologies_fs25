@@ -52,7 +52,7 @@ async function loadAPI() {
         cardHeader.style.backgroundColor = color3;
         const rgbColor3 = hexToRgb(color3);
         const luminance = rgbToLuminance(rgbColor3);
-        if (luminance < 0.2) {
+        if (luminance < 0.5) {
             bigTitleContainer.style.color = "#FFFFFF";
             button1.style.color = "#FFFFFF";
             button2.style.color = "#FFFFFF";
@@ -70,6 +70,36 @@ async function loadAPI() {
         console.error("Error:", error);
     }
 }
+//todo: openai api for a cool gradient name(?)
+// async function generateGradientName(testColor: string): Promise<string> {
+//     const prompt = `Generate a fitting and creative name for a gradient based on the color ${testColor}.`;
+//     try {
+//         const response = await fetch("https://api.openai.com/v1/completions", {
+//             method: "POST",
+//             headers: {
+//                 "Content-Type": "application/json",
+//                 Authorization: `Bearer your_openai_api_key`, 
+//             },
+//             body: JSON.stringify({
+//                 model: "text-davinci-003",
+//                 prompt: prompt,
+//                 max_tokens: 50,
+//                 temperature: 0.7,
+//             }),
+//         });
+//         if (!response.ok) {
+//             throw new Error(`HTTP error! status: ${response.status}`);
+//         }
+//         const data = await response.json();
+//         const gradientName = data.choices[0].text.trim();
+//         console.log("Generated Gradient Name:", gradientName);
+//         return gradientName;
+//     } catch (error) {
+//         console.error("Error generating gradient name:", error);
+//         // return "Unnamed Gradient"; 
+//         return testColor;
+//     }
+// }
 function hexToRgb(hex) {
     const bigint = parseInt(hex.replace("#", ""), 16);
     const r = (bigint >> 16) & 255;
