@@ -10,7 +10,7 @@
     --text-color-two: #ffffff;
     --bg-secondary: #000000;
     --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    --shadow-hover: 0 10px 40px rgba(0, 0, 0, 0.2);
+    --shadow-hover: 0 10px 30px rgba(0, 0, 0, 0.3);
 
     --weight-small: 400;
     --weight-semibold: 600;
@@ -25,7 +25,8 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: sans-serif;
+    /* font-family: sans-serif; */
+    font-family: system-ui, sans-serif;
 }
 
 h1,
@@ -56,6 +57,7 @@ a {
 }
 
 .card {
+    scale:1;
     background-color: #d9e5a9;
     color: black;
     border-radius: 5px;
@@ -64,7 +66,7 @@ a {
     border-radius: 10px;
 
     transition-duration: 300ms;
-    transition-property: transform, box-shadow;
+    transition-property: transform, box-shadow, scale;
     transition-timing-function: ease-out;
     transform: rotate3d(0);
 }
@@ -74,12 +76,21 @@ a {
     transition-duration: 150ms;
 }
 
+.card:active {
+    scale:0.99;
+    transition-duration: 200ms;
+    transition-property: scale;
+    transition-timing-function: ease-in-out;
+}
+
 .button {
     padding: 10px 20px;
     border-radius: 5px;
     margin: 10px;
+    min-width:100px;
     border: 1px solid var(--primary-color);
     box-shadow: var(--shadow);
+    font-weight: var(--weight-semibold);
 
     transition-duration: 300ms;
     transition-property: box-shadow;
@@ -89,6 +100,7 @@ a {
 .button:hover {
     box-shadow: var(--shadow-hover);
     transition-duration: 150ms;
+    cursor:pointer;
 }
 
 .main-image img {
