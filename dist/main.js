@@ -37,12 +37,20 @@ async function loadAPI() {
     try {
         const response = await fetch(`https://www.thecolorapi.com/scheme?hex=${testColor}&count=3`);
         const data = await response.json();
-        console.log(response);
+        // console.log(response)
         const color1 = data.colors[0].hex.value;
         const color2 = data.colors[1].hex.value;
         const color3 = data.colors[2].hex.value;
         titleColor = data.colors[0].name.value;
+        // const gradientName = await generateGradientName(testColor);
+        // bigTitleContainer.innerHTML = gradientName;
         bigTitleContainer.innerHTML = titleColor;
+        cardHeader.addEventListener("mouseover", () => {
+            bigTitleContainer.innerHTML = data.colors[0].hex.value;
+        });
+        cardHeader.addEventListener("mouseout", () => {
+            bigTitleContainer.innerHTML = titleColor;
+        });
         // document.body.style.backgroundColor = color1;
         document.body.style.background = `linear-gradient(1turn,${color1}, ${color2}, ${color3})`;
         button1.style.backgroundColor = color3;
@@ -65,40 +73,34 @@ async function loadAPI() {
         const img = document.createElement("img");
         img.src = data.image.bare;
         imgContainer.appendChild(img);
+        // console.log("testColor", testColor, "gradientName", gradientName);
     }
     catch (error) {
         console.error("Error:", error);
     }
 }
-//todo: openai api for a cool gradient name(?)
-// async function generateGradientName(testColor: string): Promise<string> {
-//     const prompt = `Generate a fitting and creative name for a gradient based on the color ${testColor}.`;
-//     try {
-//         const response = await fetch("https://api.openai.com/v1/completions", {
-//             method: "POST",
-//             headers: {
-//                 "Content-Type": "application/json",
-//                 Authorization: `Bearer your_openai_api_key`, 
-//             },
-//             body: JSON.stringify({
-//                 model: "text-davinci-003",
-//                 prompt: prompt,
-//                 max_tokens: 50,
-//                 temperature: 0.7,
-//             }),
-//         });
-//         if (!response.ok) {
-//             throw new Error(`HTTP error! status: ${response.status}`);
-//         }
-//         const data = await response.json();
-//         const gradientName = data.choices[0].text.trim();
-//         console.log("Generated Gradient Name:", gradientName);
-//         return gradientName;
-//     } catch (error) {
-//         console.error("Error generating gradient name:", error);
-//         // return "Unnamed Gradient"; 
-//         return testColor;
+//chatgpt is being dumb, rate limits
+// async function generateGradientName(colorHex: string): Promise<string> {
+//   const prompt = `Generate a fitting and creative name for a gradient based on the color ${colorHex}.`;
+//   try {
+//     const response = await fetch('https://vercel-openai-api-phi.vercel.app/api/openai', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify({ prompt }),
+//     });
+//     if (!response.ok) {
+//       throw new Error(`OpenAI API error: ${response.status}`);
 //     }
+//     const data = await response.json();
+//     const gradientName = data.choices?.[0]?.message?.content || 'Unnamed Gradient';
+//     console.log("Generated Gradient Name:", gradientName);
+//     return gradientName;
+//   } catch (error) {
+//     console.error("Error generating gradient name:", error);
+//     return "#"+colorHex; // fallback if its all gone to shit
+//   }
 // }
 function hexToRgb(hex) {
     const bigint = parseInt(hex.replace("#", ""), 16);
