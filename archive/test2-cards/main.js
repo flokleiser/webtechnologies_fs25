@@ -11,13 +11,17 @@ function loadAPI() {
     if (!titleContainer || !imgContainer || !questionContainer || !card || !bigTitleContainer || !answerContainer) {
         throw new Error("some dom element is missing");
     }
-    fetch("https://api.nasa.gov/planetary/apod?api_key=INDu8QnTJwDkq6qjx2ZjLqNb0PzXqCCU0HImbh4i")
+    fetch("https://deckofcardsapi.com/api/deck/new/draw/?count=1")
         .then((response) => response.json())
         .then((data) => {
-        const nasa = data[0];
-        bigTitleContainer.innerHTML = data.title;
+        const apiCard = data.cards[0];
+        bigTitleContainer.innerHTML = apiCard.value + " of " + apiCard.suit;
+        // titleContainer.innerHTML = 
+        // questionContainer.innerHTML =
+        // answerContainer.innerHTML 
         const img = document.createElement("img");
-        img.src = data.hdurl;
+        img.src = apiCard.image;
+        // img.alt = drink.strDrink;
         imgContainer.appendChild(img);
     })
         .catch((error) => {

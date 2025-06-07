@@ -5,21 +5,17 @@
 
 :root {
     --primary-color: #000000;
-
     /* --bg-primary: #ffffff; */
-    /* --bg-primary:#1f1f1f; */
-    --bg-primary: #5d3385;
-
-    --bg-secondary: #ffffff;
-    /* --bg-secondary:#1f1f1f; */
-
+    --bg-primary:#1f1f1f;
     --text-color: #222222;
     --text-color-two: #ffffff;
-    --card-text: #000000;
-    /* --card-text: #ffffff; */
-
-    --shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
+    --bg-secondary: #ffffff;
+    /* --bg-secondary:#1f1f1f; */
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     --shadow-hover: 0 10px 30px rgba(0, 0, 0, 0.3);
+    /* --card-text: #ffffff; */
+    --card-text: #000000;
+
     /* --shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
     --shadow-hover: 0 10px 30px rgba(255, 255, 255, 0.2); */
 
@@ -67,7 +63,7 @@ a {
 
 
 .card {
-    width: 450px;
+    width: 390px;
     height: 700px;
     margin: 40px auto 0 auto;
     scale:1;

@@ -4,74 +4,37 @@ const imgContainer = document.querySelector("[data-js='photo']");
 const questionContainer = document.querySelector("[data-js='question']");
 const answerContainer = document.querySelector("[data-js='answer']");
 
-const easyButton = document.querySelector("#easy") as HTMLButtonElement;
-const mediumButton = document.querySelector("#medium") as HTMLButtonElement;
-const hardButton = document.querySelector("#hard") as HTMLButtonElement;
-const flipButton = document.querySelector("#flip") as HTMLButtonElement;
 
 const card = document.querySelector(".card") as HTMLElement;
 let cardBounds = card.getBoundingClientRect() as DOMRect;
 
-let difficulty = "hard"; 
-
-if (!easyButton || !mediumButton || !hardButton || !flipButton) {
-    throw new Error("Required button elements not found");
-}
-
-function setDifficulty(newDifficulty: string) {
-    difficulty = newDifficulty;
-}
 
 //api stuff
 
 function loadAPI() {
 
     if (!titleContainer || !imgContainer || !questionContainer || !card || !bigTitleContainer || !answerContainer) {
-        throw new Error("Required DOM elements not found");
+        throw new Error("some dom element is missing");
     }
 
-    fetch("https://opentdb.com/api.php?amount=1&difficulty="+difficulty+"&multiple")
+    fetch("https://api.nasa.gov/planetary/apod?api_key=INDu8QnTJwDkq6qjx2ZjLqNb0PzXqCCU0HImbh4i")
         .then((response) => response.json())
         .then((data) => {
 
-            bigTitleContainer.innerHTML = "Trivia: " + difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
+            const nasa= data[0];
 
-            const success = data.response_code === 0;
-            if (!success) {
-                titleContainer.innerHTML = "API timed out :("
-            }
+            bigTitleContainer.innerHTML = data.title; 
 
-            const test = data.results[0];
 
-            titleContainer.innerHTML = "Category: " + test.category;
-            questionContainer.innerHTML = test.question;
+            const img = document.createElement("img");
+            img.src = data.hdurl;
+            imgContainer.appendChild(img);
 
-            answerContainer.innerHTML = test.correct_answer + "<br>" + test.incorrect_answers.join("<br>");
-
-            console.log(test.difficulty)
         })
         .catch((error) => {
             console.error("Error:", error);
         });
 }
-
-// button stuff
-
-easyButton.addEventListener("click", () => {
-    setDifficulty("easy");
-    loadAPI();
-});
-
-mediumButton.addEventListener("click", () => {
-    setDifficulty("medium");
-    loadAPI();
-});
-
-hardButton.addEventListener("click", () => {
-    setDifficulty("hard");
-    loadAPI();
-});
-
 
 // card rotation stuff
 
@@ -98,22 +61,14 @@ function rotateCard(e:MouseEvent) {
 }
 
 
-
-flipButton.addEventListener("click", () => {
-    console.log("Flipped:");
-    card.classList.toggle("flipped");
-});
-
 card.addEventListener("mouseenter", () => {
     cardBounds = card.getBoundingClientRect();
     document.addEventListener("mousemove", rotateCard);
-    console.log('hovering')
 });
 
 card.addEventListener("mouseleave", () => {
     document.removeEventListener("mousemove", rotateCard);
     card.style.transform = "scale3d(1, 1, 1) rotate3d(0, 0, 0, 0deg)";
-    console.log('not hovering')
 });
 
 
