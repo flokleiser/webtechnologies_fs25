@@ -13,8 +13,3 @@ ___
 - Cards: https://deckofcardsapi.com/
 - MeteoSchweiz: https://opendatadocs.meteoswiss.ch/
 - Cocktail: https://www.thecocktaildb.com/api.php
-
-___
-
-### Some to-dos
-- [ ] Make card flippable when clicked

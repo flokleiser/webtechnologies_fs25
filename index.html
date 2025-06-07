@@ -17,18 +17,33 @@
             </button>
         </a>
 
-        <div class="card">
-                <div class="card-front">
+        <!-- <div style="display: flex; flex-direction: column; justify-content: center; margin-top: 20px;"> -->
+        <div class="cardContainer">
+            <!-- <div class="content"> -->
+                <div class="cardHeader content">
+                    <!-- <div class="content"> -->
                     <h1 data-js="big-title"></h1>
-                    <h2 data-js="title"></h2>
+                    <!-- </div> -->
+                </div>
+            <!-- </div> -->
+
+            <div class="card">
+                <div class="card-front">
                     <p data-js="question"></p>
                     <div data-js="photo" class="main-image"></div>
 
                     <p data-js="answer"></p>
                 </div>
+            </div>
+
+            <div class="cardFooter contentBottom">
+                <h2 data-js="title"></h2>
+            </div>
+
         </div>
 
 
+        <div style="padding:5rem"></div>
         <a href="index.html" style="display:flex; justify-content: center; margin-top: 20px;">
             <button class="button">
                 New Card
