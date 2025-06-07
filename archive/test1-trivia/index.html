@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Your Card</title>
+        <link rel="stylesheet" href="stylesExercise.css" />
+        <script src="main.js" defer></script>
+    </head>
+
+    <body>
+
+        <a href="pages/index.html">
+            <button class="button">
+                all exercises
+            </button>
+        </a>
+
+        <div class="card">
+                <div class="card-front">
+                    <h1 data-js="big-title">Trivia</h1>
+                    <h2 data-js="title"></h2>
+                    <p data-js="question"></p>
+                    <div data-js="photo" class="main-image"></div>
+
+                    <p data-js="answer"></p>
+                </div>
+
+                <div class="card-back">
+                    <h1 data-js="big-title">Answer</h1>  
+                </div>
+        </div>
+
+
+        <div style="display:flex; justify-content: center; margin-top: 20px;">
+            <button class="button" id="easy">
+                Easy
+            </button>
+            <button class="button" id="medium">
+               Medium 
+            </button>
+            <button class="button" id="hard">
+               Hard 
+            </button>
+            <button class="button" id="flip">
+              Flip Card 
+            </button>
+        </div>
+
+        <a href="index.html" style="display:flex; justify-content: center; margin-top: 20px;">
+            <button class="button">
+                New Card
+            </button>
+        </a>
+
+
+    </body>
+</html>
