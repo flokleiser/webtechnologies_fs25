@@ -2,18 +2,27 @@
 const bigTitleContainer = document.querySelector("[data-js='big-title']");
 const titleContainer = document.querySelector("[data-js='title']");
 const imgContainer = document.querySelector("[data-js='photo']");
+const questionContainer = document.querySelector("[data-js='question']");
+const answerContainer = document.querySelector("[data-js='answer']");
+const THRESHOLD = 5;
 const card = document.querySelector(".card");
 const cardContainer = document.querySelector(".cardContainer");
-const cardHeader = document.querySelector(".cardHeader");
-const cardFooter = document.querySelector(".cardFooter");
-const button1 = document.querySelector(".button1");
-const button2 = document.querySelector(".button2");
 let cardBounds = card.getBoundingClientRect();
 let cardContainerBounds = cardContainer.getBoundingClientRect();
-const threshold = 5;
+const cardHeader = document.querySelector(".cardHeader");
+const cardFooter = document.querySelector(".cardFooter");
 let color;
 let testColor;
-let titleColor;
+// function getRandomColor() {
+//         fetch("https://x-colors.yurace.pro/api/random")
+//         .then(response => response.json())
+//         .then(data => {
+//           testColor = data.hex; 
+//           console.log("Fetched color:", testColor);
+//           loadAPI();
+//         })
+//         .catch(error => console.error("Error fetching color:", error));
+// }
 async function getRandomColor() {
     try {
         const response = await fetch("https://x-colors.yurace.pro/api/random");
@@ -22,16 +31,53 @@ async function getRandomColor() {
         }
         const data = await response.json();
         testColor = data.hex.split("#")[1];
+        console.log("Fetched color:", testColor);
     }
     catch (error) {
         console.error("Error: ", error);
     }
 }
+// function loadAPI() {
+//     if (
+//         !titleContainer ||
+//         !imgContainer ||
+//         !questionContainer ||
+//         !card ||
+//         !bigTitleContainer ||
+//         !answerContainer
+//     ) {
+//         throw new Error("some dom element is missing");
+//     }
+//     fetch(`https://www.thecolorapi.com/scheme?hex=${testColor}&count=3`)
+//     // fetch("https://api.apiverve.com/v1/colorpalette?variation=soft&color=FF5733")
+//         .then((response) => response.json())
+//         .then((data) => {
+//         const testData = data
+//         console.log(testData);
+//         const color1 = testData.colors[0].hex.value;
+//         const color2 = testData.colors[1].hex.value;
+//         const color3 = testData.colors[2].hex.value;
+//         bigTitleContainer.innerHTML = testData.mode
+//         document.body.style.backgroundColor = color1;
+//         card.style.backgroundColor = color2;
+//         cardFooter.style.backgroundColor = color3;
+//         cardHeader.style.backgroundColor = color3;
+//         const img = document.createElement("img");
+//         img.src = testData.image.bare;
+//         imgContainer.appendChild(img);
+//         })
+//         .catch((error) => {
+//             console.error("Error:", error);
+//         });
+// }
+// card rotation stuff
 async function loadAPI() {
     if (!titleContainer ||
         !imgContainer ||
+        !questionContainer ||
         !card ||
-        !bigTitleContainer) {
+        !bigTitleContainer ||
+        !answerContainer) {
         throw new Error("Some DOM element is missing");
     }
     try {
@@ -41,27 +87,11 @@ async function loadAPI() {
         const color1 = data.colors[0].hex.value;
         const color2 = data.colors[1].hex.value;
         const color3 = data.colors[2].hex.value;
-        titleColor = data.colors[0].name.value;
-        bigTitleContainer.innerHTML = titleColor;
-        // document.body.style.backgroundColor = color1;
-        document.body.style.background = `linear-gradient(1turn,${color1}, ${color2}, ${color3})`;
-        button1.style.backgroundColor = color3;
-        button2.style.backgroundColor = color3;
+        bigTitleContainer.innerHTML = data.mode;
+        document.body.style.backgroundColor = color1;
         card.style.backgroundColor = color2;
         cardFooter.style.backgroundColor = color3;
         cardHeader.style.backgroundColor = color3;
-        const rgbColor3 = hexToRgb(color3);
-        const luminance = rgbToLuminance(rgbColor3);
-        if (luminance < 0.2) {
-            bigTitleContainer.style.color = "#FFFFFF";
-            button1.style.color = "#FFFFFF";
-            button2.style.color = "#FFFFFF";
-        }
-        else {
-            bigTitleContainer.style.color = "#000000";
-            button1.style.color = "#000000";
-            button2.style.color = "#000000";
-        }
         const img = document.createElement("img");
         img.src = data.image.bare;
         imgContainer.appendChild(img);
@@ -69,19 +99,6 @@ async function loadAPI() {
     catch (error) {
         console.error("Error:", error);
     }
-}
-function hexToRgb(hex) {
-    const bigint = parseInt(hex.replace("#", ""), 16);
-    const r = (bigint >> 16) & 255;
-    const g = (bigint >> 8) & 255;
-    const b = bigint & 255;
-    return { r, g, b };
-}
-function rgbToLuminance({ r, g, b }) {
-    const normalizedR = r / 255;
-    const normalizedG = g / 255;
-    const normalizedB = b / 255;
-    return 0.2126 * normalizedR + 0.7152 * normalizedG + 0.0722 * normalizedB;
 }
 cardContainer.addEventListener("mouseenter", () => {
     cardBounds = cardContainer.getBoundingClientRect();
@@ -99,13 +116,17 @@ function handleHover(e) {
     const offsetTop = target.getBoundingClientRect().top;
     const horizontal = (clientX - offsetLeft) / clientWidth;
     const vertical = (clientY - offsetTop) / clientHeight;
-    const rotateX = (horizontal * threshold - threshold / 2).toFixed(2);
-    const rotateY = (threshold / 2 - vertical * threshold).toFixed(2);
+    const rotateX = (horizontal * THRESHOLD - THRESHOLD / 2).toFixed(2);
+    const rotateY = (THRESHOLD / 2 - vertical * THRESHOLD).toFixed(2);
     cardContainer.style.transform = `perspective(${clientWidth}px) rotateX(${rotateY}deg) rotateY(${rotateX}deg) scale3d(1, 1, 1)`;
 }
 function resetStyles() {
     cardContainer.style.transform = `perspective(450px) rotateX(0deg) rotateY(0deg)`;
 }
+// document.addEventListener("DOMContentLoaded", () => {
+//     getRandomColor()
+//     loadAPI();
+// });
 document.addEventListener("DOMContentLoaded", async () => {
     await getRandomColor();
     await loadAPI();

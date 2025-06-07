@@ -13,3 +13,9 @@ ___
 - Cards: https://deckofcardsapi.com/
 - MeteoSchweiz: https://opendatadocs.meteoswiss.ch/
 - Cocktail: https://www.thecocktaildb.com/api.php
+
+___
+
+### To-Do/Ideas
+- [ ] buttons on cardfooter to switch from steps to gradient
+- [ ] maybe button to switch from color name to rgb/hex/hsl etc
