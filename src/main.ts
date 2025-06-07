@@ -1,6 +1,18 @@
 const bigTitleContainer = document.querySelector("[data-js='big-title']") as HTMLElement;
-const titleContainer = document.querySelector("[data-js='title']") as HTMLElement;
+const titleContainer1 = document.querySelector("[data-js='colorname1']") as HTMLElement;
+const titleContainer2 = document.querySelector("[data-js='colorname2']") as HTMLElement;
+const titleContainer3 = document.querySelector("[data-js='colorname3']") as HTMLElement;
+
+const title1= document.querySelector("[data-js='title1']") as HTMLElement;
+const title2= document.querySelector("[data-js='title2']") as HTMLElement;
+const title3= document.querySelector("[data-js='title3']") as HTMLElement;
+
 const imgContainer = document.querySelector("[data-js='photo']") as HTMLElement;
+
+const colorSection1= document.querySelector("[data-js='colorname1']") as HTMLElement;
+const colorSection2= document.querySelector("[data-js='colorname2']") as HTMLElement;
+const colorSection3= document.querySelector("[data-js='colorname3']") as HTMLElement;
+
 const card = document.querySelector(".card") as HTMLElement;
 const cardContainer = document.querySelector(".cardContainer") as HTMLElement;
 const cardHeader = document.querySelector(".cardHeader") as HTMLElement;
@@ -26,76 +38,80 @@ async function getRandomColor() {
         }
         const data = await response.json();
         testColor = data.hex.split("#")[1];
+        
+
     } catch (error) {
         console.error("Error: ", error);
     }
 }
 
 async function loadAPI() {
-    if (
-        !titleContainer ||
-        !imgContainer ||
-        !card ||
-        !bigTitleContainer
-    ) {
-        throw new Error("Some DOM element is missing");
-    }
 
     try {
         const response = await fetch(`https://www.thecolorapi.com/scheme?hex=${testColor}&count=3`);
         const data = await response.json();
 
-        // console.log(response)
 
         const color1 = data.colors[0].hex.value;
         const color2 = data.colors[1].hex.value;
         const color3 = data.colors[2].hex.value;
 
-        titleColor = data.colors[0].name.value;
+        titleColor = data.colors[1].name.value;
 
         // const gradientName = await generateGradientName(testColor);
         // bigTitleContainer.innerHTML = gradientName;
 
         bigTitleContainer.innerHTML = titleColor;
 
-        cardHeader.addEventListener("mouseover", () => {
-            bigTitleContainer.innerHTML = data.colors[0].hex.value;
-        });
-
-        cardHeader.addEventListener("mouseout", () => {
-            bigTitleContainer.innerHTML = titleColor;
-        });
-
-        // document.body.style.backgroundColor = color1;
-
         document.body.style.background = `linear-gradient(1turn,${color1}, ${color2}, ${color3})`;
+
+        document.body.classList.remove("hidden");
+
 
         button1.style.backgroundColor = color3;
         button2.style.backgroundColor = color3;
 
-
         card.style.backgroundColor = color2;
+
+        colorSection1.style.backgroundColor = color1;
+        colorSection2.style.backgroundColor= color2;
+        colorSection3.style.backgroundColor= color3;
+
+        titleContainer1.addEventListener("mouseover", () => {
+            title1.innerHTML = color1
+            title1.classList.add("visible");
+        });
+
+        titleContainer1.addEventListener("mouseout", () => {
+            title1.innerHTML = "";
+            title1.classList.remove("visible");
+        });
+
+        titleContainer2.addEventListener("mouseover", () => {
+            title2.innerHTML = color2
+            title2.classList.add("visible");
+        });
+
+        titleContainer2.addEventListener("mouseout", () => {
+            title2.innerHTML = "";
+            title2.classList.remove("visible");
+        });
+
+        titleContainer3.addEventListener("mouseover", () => {
+            title3.innerHTML = color3
+            title3.classList.add("visible");
+        });
+
+        titleContainer3.addEventListener("mouseout", () => {
+            title3.innerHTML = "";
+            title3.classList.remove("visible");
+        });
+
+
         cardFooter.style.backgroundColor = color3;
         cardHeader.style.backgroundColor = color3;
 
-        const rgbColor3 = hexToRgb(color3);
-        const luminance = rgbToLuminance(rgbColor3);
-
-        if (luminance < 0.5) {
-            bigTitleContainer.style.color = "#FFFFFF";
-            button1.style.color = "#FFFFFF";
-            button2.style.color = "#FFFFFF";
-        } else {
-            bigTitleContainer.style.color = "#000000"; 
-            button1.style.color = "#000000";
-            button2.style.color = "#000000";
-        }
-
-        const img = document.createElement("img");
-        img.src = data.image.bare;
-        imgContainer.appendChild(img);
-
-        // console.log("testColor", testColor, "gradientName", gradientName);
+        setTextColor(color3);
 
     } catch (error) {
         console.error("Error:", error);
@@ -132,6 +148,28 @@ async function loadAPI() {
 //   }
 // }
 
+
+function setTextColor(hex: string){
+        const rgbColor3 = hexToRgb(hex);
+        const luminance = rgbToLuminance(rgbColor3);
+
+        if (luminance < 0.5) {
+            bigTitleContainer.style.color = "#FFFFFF";
+            button1.style.color = "#FFFFFF";
+            button2.style.color = "#FFFFFF";
+            titleContainer1.style.color = "#FFFFFF";
+            titleContainer2.style.color = "#FFFFFF";
+            titleContainer3.style.color = "#FFFFFF";
+            
+        } else {
+            bigTitleContainer.style.color = "#000000"; 
+            button1.style.color = "#000000";
+            button2.style.color = "#000000";
+            titleContainer1.style.color = "#000000";
+            titleContainer2.style.color = "#000000";
+            titleContainer3.style.color = "#000000";
+        }
+}
 
 
 
@@ -183,6 +221,16 @@ function resetStyles() {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
+    
+    document.body.classList.add("hidden"); 
+
     await getRandomColor(); 
     await loadAPI(); 
+
+    const loadingScreen = document.getElementById("loading-screen");
+    if (loadingScreen) {
+        loadingScreen.classList.add("fade-out");
+        setTimeout(() => loadingScreen.remove(), 500); // remove from DOM after fade
+    }
+
 });
