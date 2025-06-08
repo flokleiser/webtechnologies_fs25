@@ -78,10 +78,10 @@ body.hidden {
     transition: opacity 300ms ease; 
 }
 
-h1,
+/* h1,
 h2 {
     margin-bottom: 0.4em;
-}
+} */
 
 p {
     margin-bottom: 90px;
@@ -101,6 +101,9 @@ a {
 
 .colorSection {
     height: 140px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .colorSectionName {
@@ -235,7 +238,8 @@ a {
     display: flex;
     position:absolute;
     border-radius: 20px;
-    justify-content: space-around;
+    /* justify-content: space-around; */
+    justify-content: space-between;
     align-items: center;
     background-color: var(--bg-secondary);
     box-shadow: var(--shadow);
@@ -243,6 +247,35 @@ a {
     transition-timing-function: ease; */
 
     transition: box-shadow 250ms ease, transform 250ms ease;
+}
+
+.copyButton1,
+.copyButton2,
+.copyButton3 {
+    padding: 10px 10px;
+    border-radius: 5px;
+    min-width: 100px;;
+    margin: 10px;
+    opacity:0;
+    border:none;
+    border-radius: 15px;
+    box-shadow: none;
+
+    /* transition: box-shadow 300ms ease; */
+    transition: opacity 300ms ease, box-shadow 300ms ease;
+}
+
+.copyButton1:hover,
+.copyButton2:hover,
+.copyButton3:hover {
+    cursor:pointer;
+    box-shadow: var(--shadow);
+    transition: box-shadow 300ms ease;
+}
+
+
+.copyButton-visible {
+    opacity:1;
 }
 
 
@@ -254,7 +287,6 @@ a {
     min-width:150px;
     background-color: var(--bg-secondary);
     color: var(--card-text);
-    /* border: 1px solid var(--primary-color); */
     border:none;
     box-shadow: var(--shadow);
     font-weight: var(--weight-semibold);
@@ -281,7 +313,7 @@ a {
     align-items: center;
     justify-content: center;
 
-    border-radius: 20px;
+    border-radius: 15px;
     box-shadow: none;
     transition: box-shadow 300ms ease;
     overflow: hidden; 
