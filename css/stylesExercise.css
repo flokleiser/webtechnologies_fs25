@@ -260,17 +260,22 @@ a {
     border:none;
     border-radius: 15px;
     box-shadow: none;
+    background-color: transparent;
 
     /* transition: box-shadow 300ms ease; */
-    transition: opacity 300ms ease, box-shadow 300ms ease;
+    /* transition: opacity 300ms ease, box-shadow 300ms ease; */
+    transition: opacity 300ms ease, background-color 300ms ease;
 }
 
 .copyButton1:hover,
 .copyButton2:hover,
 .copyButton3:hover {
     cursor:pointer;
-    box-shadow: var(--shadow);
-    transition: box-shadow 300ms ease;
+    background-color: transparent;
+    transition: opacity 300ms ease, background-color 300ms ease;
+
+    /* box-shadow: var(--shadow);
+    transition: box-shadow 300ms ease; */
 }
 
 
@@ -288,7 +293,7 @@ a {
     background-color: var(--bg-secondary);
     color: var(--card-text);
     border:none;
-    box-shadow: var(--shadow);
+    /* box-shadow: var(--shadow); */
     font-weight: var(--weight-semibold);
 
     transition-duration: 300ms;
@@ -298,7 +303,7 @@ a {
 
 .button1:hover,
 .button2:hover {
-    box-shadow: var(--shadow-hover);
+    box-shadow: var(--shadow);
     transition-duration: 150ms;
     cursor:pointer;
 }
@@ -315,29 +320,34 @@ a {
 
     border-radius: 15px;
     box-shadow: none;
-    transition: box-shadow 300ms ease;
+    /* transition: box-shadow 300ms ease; */
+
+    background-color: transparent;
+
+    transition: background-color 300ms ease, box-shadow 300ms ease;
     overflow: hidden; 
 }
 
 .buttonContainer1:hover,
 .buttonContainer2:hover,
 .buttonContainer3:hover {
-    box-shadow: var(--shadow);
-    transition: box-shadow 300ms ease;
+    /* box-shadow: var(--shadow); */
+    transition: background-color 300ms ease, box-shadow 300ms ease;
+    background-color: transparent;
+
     /* cursor:pointer; */
 }
 
 .buttonReload {
-    /* padding: 10px 10px; */
-    /* border-radius: 5px; */
-    /* margin: 10px; */
-    background-color: var(--bg-secondary);
+    /* background-color: var(--bg-secondary); */
     color: var(--card-text);
     border:none;
     font-weight: var(--weight-semibold);
 
     height:100%;
     width:100%;
+
+    background-color: transparent;
 
     display: flex;
     align-items: center;
@@ -367,7 +377,6 @@ a {
     border:none;
     height:100%;
     width:100%;
-    /* box-shadow: 0 1px 50px rgba(0, 0, 0, 0.2); */
 
     font-weight: var(--weight-semibold);
 
@@ -375,9 +384,13 @@ a {
     align-items: center;
     justify-content: center;
 
-    transition-duration: 300ms;
+    background-color: transparent;
+
+    transition: box-shadow 300ms ease, background-color 300ms ease;
+
+    /* transition-duration: 300ms;
     transition-property: box-shadow;
-    transition-timing-function: ease-out;
+    transition-timing-function: ease-out; */
 }
 
 .buttonToggleMode:hover,
