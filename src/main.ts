@@ -13,7 +13,6 @@ const buttonToggleMode = document.querySelector(".buttonToggleMode") as HTMLElem
 const buttonReload = document.querySelector(".buttonReload") as HTMLElement;
 const buttonToggleScheme = document.querySelector(".buttonToggleScheme") as HTMLElement;
 
-
 let cardBounds = card.getBoundingClientRect() as DOMRect;
 let cardContainerBounds = cardContainer.getBoundingClientRect() as DOMRect;
 
@@ -22,6 +21,8 @@ const threshold = 4;
 const colorModes = ["hex", "rgb", "hsl"];
 let currentModeIndex = 0;
 let currentMode = colorModes[currentModeIndex];
+
+let initHover = false;
 
 const schemeModes = [
     "monochrome",
@@ -41,6 +42,8 @@ let copyColor3 : string;
 let hoverColor : string;
 let normalColor : string;
 
+let currentColors: string[] = [];
+
 async function getRandomColor() {
     try {
         const response = await fetch("https://x-colors.yurace.pro/api/random");
@@ -57,6 +60,7 @@ async function getRandomColor() {
 
 async function loadAPI(testColor: string) {
     try {
+
         const response = await fetch(`https://www.thecolorapi.com/scheme?&mode=${currentSchemeMode}&hex=${testColor}&count=3`);
         const data = await response.json();
 
@@ -81,11 +85,10 @@ async function loadAPI(testColor: string) {
         cardHeader.style.backgroundColor = color3;
 
         setTextColor(data.colors[1].contrast.value)
-        setBackgroundButtons(color3);
-        setHoverEffects(colors);
 
         hoverColor = color2;
         normalColor = color3;
+
 
     } catch (error) {
         console.error("Error:", error);
@@ -108,14 +111,10 @@ function setTextColor(hex: string){
         });
 }
 
-function setBackgroundButtons(backgroundColor: string){
-
-    buttonContainers.forEach((container) => {
-        container.style.backgroundColor = backgroundColor;
-    });
-}
-
 function setColors(color1:string,color2:string,color3:string) {
+
+    currentColors = [color1, color2, color3];
+
     copyColor1 = color1
     copyColor2 = color2
     copyColor3 = color3
@@ -130,7 +129,88 @@ function setColors(color1:string,color2:string,color3:string) {
     copyButtons[1].style.backgroundColor= color2;
     copyButtons[2].style.backgroundColor= color3;
 
+
     button1.style.backgroundColor = color2;
+
+    buttonContainers.forEach((container) => {
+        container.style.backgroundColor = color3;
+    });
+
+    hoverColor = color2;
+    normalColor = color3;
+}
+
+function loadEventListenersOnce() {
+    titleContainers.forEach((container, i) => {
+        container.addEventListener("mouseover", () => {
+            titles[i].innerHTML = currentColors[i];
+            titles[i].classList.add("visible");
+            copyButtons[i].classList.add("copyButton-visible");
+        });
+
+        container.addEventListener("mouseout", () => {
+            titles[i].innerHTML = "";
+            titles[i].classList.remove("visible");
+            copyButtons[i].classList.remove("copyButton-visible");
+        });
+    });
+
+    buttonContainers.forEach((container) => {
+        container.addEventListener("mouseover", () => {
+            container.classList.add(":hover");
+            container.style.backgroundColor = hoverColor;
+        });
+
+        container.addEventListener("mouseout", () => {
+            container.style.backgroundColor = normalColor;
+            container.classList.remove(":hover");
+        });
+
+    });
+
+    copyButtons.forEach((btn, i) => {
+        btn.addEventListener("mouseenter", () => {
+            btn.classList.add(":hover");
+            btn.style.backgroundColor = i === 1 ? currentColors[2] : hoverColor;
+        });
+
+        btn.addEventListener("mouseleave", () => {
+            btn.classList.remove(":hover");
+            btn.style.backgroundColor = currentColors[i];
+        });
+    });
+
+        cardContainer.addEventListener("mouseenter", () => {
+        cardBounds = cardContainer.getBoundingClientRect();
+        cardContainer.addEventListener("mousemove", handleCardHover);
+    });
+
+    cardContainer.addEventListener("mouseleave", () => {
+        cardContainer.removeEventListener("mousemove", handleCardHover);
+        resetCardStyle();
+    });
+
+    buttonReload.addEventListener("click", () => {
+        getRandomColor().then(() => {
+            loadAPI(testColor);
+        })
+    });
+
+    buttonToggleMode.addEventListener("click", () => {
+        currentModeIndex = (currentModeIndex + 1) % colorModes.length;
+        currentMode = colorModes[currentModeIndex];
+       
+        loadAPI(testColor); 
+    });
+
+    buttonToggleScheme.addEventListener("click", () => {
+        currentSchemeIndex = (currentSchemeIndex + 1) % schemeModes.length;
+        currentSchemeMode = schemeModes[currentSchemeIndex];
+
+        console.log(`Scheme mode switched to: ${currentSchemeMode}`);
+        loadAPI(testColor);
+    });
+
 }
 
 function copyToClipboard(color: string) {
@@ -160,105 +240,6 @@ function resetCardStyle() {
     cardContainer.style.transform = `perspective(450px) rotateX(0deg) rotateY(0deg)`;
 }
 
-function setHoverEffects(colors: string[]) {
-    titleContainers.forEach((container, i) => {
-        container.addEventListener("mouseover", () => {
-            titles[i].innerHTML = colors[i];
-            titles[i].classList.add("visible");
-            copyButtons[i].classList.add("copyButton-visible");
-        });
-        container.addEventListener("mouseout", () => {
-            titles[i].innerHTML = "";
-            titles[i].classList.remove("visible");
-            copyButtons[i].classList.remove("copyButton-visible");
-        });
-    });
-
-    buttonContainers.forEach((container, i) => {
-        container.addEventListener("mouseover", () => {
-            container.style.backgroundColor = hoverColor;
-        });
-        container.addEventListener("mouseout", () => {
-            container.style.backgroundColor = normalColor;
-        });
-    });
-
-    copyButtons.forEach((btn, i) => {
-        btn.addEventListener("mouseenter", () => {
-            btn.classList.add(":hover");
-            btn.style.backgroundColor = i === 1 ? colors[2] : hoverColor;
-        });
-        btn.addEventListener("mouseleave", () => {
-            btn.classList.remove(":hover");
-            btn.style.backgroundColor = colors[i];
-        });
-    });
-}
-
-function loadEventListeners() {
-    cardContainer.addEventListener("mouseenter", () => {
-        cardBounds = cardContainer.getBoundingClientRect();
-        cardContainer.addEventListener("mousemove", handleCardHover);
-    });
-
-    cardContainer.addEventListener("mouseleave", () => {
-        cardContainer.removeEventListener("mousemove", handleCardHover);
-        resetCardStyle();
-    });
-
-    buttonReload.addEventListener("click", () => {
-        getRandomColor().then(() => {
-            loadAPI(testColor);
-        })
-    });
-
-    buttonToggleMode.addEventListener("click", () => {
-        currentModeIndex = (currentModeIndex + 1) % colorModes.length;
-        currentMode = colorModes[currentModeIndex];
-        loadAPI(testColor); 
-    });
-
-    buttonToggleScheme.addEventListener("click", () => {
-        currentSchemeIndex = (currentSchemeIndex + 1) % schemeModes.length;
-        currentSchemeMode = schemeModes[currentSchemeIndex];
-
-        console.log(`Scheme mode switched to: ${currentSchemeMode}`);
-        loadAPI(testColor);
-    });
-
-    // copyButton1.addEventListener("mouseenter", () => {
-    //     copyButton1.classList.add(":hover");
-    //     copyButton1.style.backgroundColor = hoverColor;
-    // })
-
-    // copyButton1.addEventListener("mouseleave", () => {
-    //     copyButton1.classList.remove(":hover");
-    //     copyButton1.style.backgroundColor = copyColor1;
-    // })
-
-    // copyButton2.addEventListener("mouseenter", () => {
-    //     copyButton2.classList.add(":hover");
-    //     copyButton2.style.backgroundColor = copyColor3;
-    // })
-
-    // copyButton2.addEventListener("mouseleave", () => {
-    //     copyButton2.classList.remove(":hover");
-    //     copyButton2.style.backgroundColor = copyColor2;
-    // })
-
-    // copyButton3.addEventListener("mouseenter", () => {
-    //     copyButton3.classList.add(":hover");
-    //     copyButton3.style.backgroundColor = hoverColor;
-    // })
-
-    // copyButton3.addEventListener("mouseleave", () => {
-    //     copyButton3.classList.remove(":hover");
-    //     copyButton3.style.backgroundColor = copyColor3;
-    // })
-
-}
-
-
 document.addEventListener("DOMContentLoaded", async () => {
     
     document.body.classList.add("hidden"); 
@@ -272,6 +253,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         setTimeout(() => loadingScreen.remove(), 500);
     }
 
-    loadEventListeners();
+    loadEventListenersOnce()
 
 });

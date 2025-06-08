@@ -284,6 +284,7 @@ a {
 }
 
 
+
 .button1,
 .button2 {
     padding: 10px 10px;
@@ -333,9 +334,22 @@ a {
 .buttonContainer3:hover {
     /* box-shadow: var(--shadow); */
     transition: background-color 300ms ease, box-shadow 300ms ease;
-    background-color: transparent;
+    /* background-color: transparent; */
+    background-color: var(--hover-color),
 
     /* cursor:pointer; */
+}
+
+.buttonContainer1:active,
+.buttonContainer2:active,
+.buttonContainer3:active {
+    /* background-color: transparent; */
+    background-color: var(--hover-color),
+}
+
+.fade-hidden {
+  opacity: 0;
+  transition: opacity 0.2s ease;
 }
 
 .buttonReload {

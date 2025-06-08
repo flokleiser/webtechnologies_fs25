@@ -18,6 +18,7 @@ const threshold = 4;
 const colorModes = ["hex", "rgb", "hsl"];
 let currentModeIndex = 0;
 let currentMode = colorModes[currentModeIndex];
+let initHover = false;
 const schemeModes = [
     "monochrome",
     "complement",
@@ -32,6 +33,7 @@ let copyColor2;
 let copyColor3;
 let hoverColor;
 let normalColor;
+let currentColors = [];
 async function getRandomColor() {
     try {
         const response = await fetch("https://x-colors.yurace.pro/api/random");
@@ -61,8 +63,6 @@ async function loadAPI(testColor) {
         cardFooter.style.backgroundColor = color3;
         cardHeader.style.backgroundColor = color3;
         setTextColor(data.colors[1].contrast.value);
-        setBackgroundButtons(color3);
-        setHoverEffects(colors);
         hoverColor = color2;
         normalColor = color3;
     }
@@ -83,12 +83,8 @@ function setTextColor(hex) {
         button.style.color = hex;
     });
 }
-function setBackgroundButtons(backgroundColor) {
-    buttonContainers.forEach((container) => {
-        container.style.backgroundColor = backgroundColor;
-    });
-}
 function setColors(color1, color2, color3) {
+    currentColors = [color1, color2, color3];
     copyColor1 = color1;
     copyColor2 = color2;
     copyColor3 = color3;
@@ -100,33 +96,16 @@ function setColors(color1, color2, color3) {
     copyButtons[1].style.backgroundColor = color2;
     copyButtons[2].style.backgroundColor = color3;
     button1.style.backgroundColor = color2;
-}
-function copyToClipboard(color) {
-    navigator.clipboard.writeText(color).then(() => {
-        console.log(`Copied ${color} to clipboard`);
-    }).catch(err => {
-        console.error('Failed to copy: ', err);
+    buttonContainers.forEach((container) => {
+        container.style.backgroundColor = color3;
     });
+    hoverColor = color2;
+    normalColor = color3;
 }
-function handleCardHover(e) {
-    const { clientX, clientY, currentTarget } = e;
-    const target = currentTarget;
-    const { clientWidth, clientHeight } = target;
-    const offsetLeft = target.getBoundingClientRect().left;
-    const offsetTop = target.getBoundingClientRect().top;
-    const horizontal = (clientX - offsetLeft) / clientWidth;
-    const vertical = (clientY - offsetTop) / clientHeight;
-    const rotateX = (horizontal * threshold - threshold / 2).toFixed(2);
-    const rotateY = (threshold / 2 - vertical * threshold).toFixed(2);
-    cardContainer.style.transform = `perspective(${clientWidth}px) rotateX(${rotateY}deg) rotateY(${rotateX}deg) scale3d(1.015, 1.015, 1.015)`;
-}
-function resetCardStyle() {
-    cardContainer.style.transform = `perspective(450px) rotateX(0deg) rotateY(0deg)`;
-}
-function setHoverEffects(colors) {
+function loadEventListenersOnce() {
     titleContainers.forEach((container, i) => {
         container.addEventListener("mouseover", () => {
-            titles[i].innerHTML = colors[i];
+            titles[i].innerHTML = currentColors[i];
             titles[i].classList.add("visible");
             copyButtons[i].classList.add("copyButton-visible");
         });
@@ -136,26 +115,26 @@ function setHoverEffects(colors) {
             copyButtons[i].classList.remove("copyButton-visible");
         });
     });
-    buttonContainers.forEach((container, i) => {
+    buttonContainers.forEach((container) => {
         container.addEventListener("mouseover", () => {
+            container.classList.add(":hover");
             container.style.backgroundColor = hoverColor;
         });
         container.addEventListener("mouseout", () => {
             container.style.backgroundColor = normalColor;
+            container.classList.remove(":hover");
         });
     });
     copyButtons.forEach((btn, i) => {
         btn.addEventListener("mouseenter", () => {
             btn.classList.add(":hover");
-            btn.style.backgroundColor = i === 1 ? colors[2] : hoverColor;
+            btn.style.backgroundColor = i === 1 ? currentColors[2] : hoverColor;
         });
         btn.addEventListener("mouseleave", () => {
             btn.classList.remove(":hover");
-            btn.style.backgroundColor = colors[i];
+            btn.style.backgroundColor = currentColors[i];
         });
     });
-}
-function loadEventListeners() {
     cardContainer.addEventListener("mouseenter", () => {
         cardBounds = cardContainer.getBoundingClientRect();
         cardContainer.addEventListener("mousemove", handleCardHover);
@@ -180,30 +159,28 @@ function loadEventListeners() {
         console.log(`Scheme mode switched to: ${currentSchemeMode}`);
         loadAPI(testColor);
     });
-    // copyButton1.addEventListener("mouseenter", () => {
-    //     copyButton1.classList.add(":hover");
-    //     copyButton1.style.backgroundColor = hoverColor;
-    // })
-    // copyButton1.addEventListener("mouseleave", () => {
-    //     copyButton1.classList.remove(":hover");
-    //     copyButton1.style.backgroundColor = copyColor1;
-    // })
-    // copyButton2.addEventListener("mouseenter", () => {
-    //     copyButton2.classList.add(":hover");
-    //     copyButton2.style.backgroundColor = copyColor3;
-    // })
-    // copyButton2.addEventListener("mouseleave", () => {
-    //     copyButton2.classList.remove(":hover");
-    //     copyButton2.style.backgroundColor = copyColor2;
-    // })
-    // copyButton3.addEventListener("mouseenter", () => {
-    //     copyButton3.classList.add(":hover");
-    //     copyButton3.style.backgroundColor = hoverColor;
-    // })
-    // copyButton3.addEventListener("mouseleave", () => {
-    //     copyButton3.classList.remove(":hover");
-    //     copyButton3.style.backgroundColor = copyColor3;
-    // })
+}
+function copyToClipboard(color) {
+    navigator.clipboard.writeText(color).then(() => {
+        console.log(`Copied ${color} to clipboard`);
+    }).catch(err => {
+        console.error('Failed to copy: ', err);
+    });
+}
+function handleCardHover(e) {
+    const { clientX, clientY, currentTarget } = e;
+    const target = currentTarget;
+    const { clientWidth, clientHeight } = target;
+    const offsetLeft = target.getBoundingClientRect().left;
+    const offsetTop = target.getBoundingClientRect().top;
+    const horizontal = (clientX - offsetLeft) / clientWidth;
+    const vertical = (clientY - offsetTop) / clientHeight;
+    const rotateX = (horizontal * threshold - threshold / 2).toFixed(2);
+    const rotateY = (threshold / 2 - vertical * threshold).toFixed(2);
+    cardContainer.style.transform = `perspective(${clientWidth}px) rotateX(${rotateY}deg) rotateY(${rotateX}deg) scale3d(1.015, 1.015, 1.015)`;
+}
+function resetCardStyle() {
+    cardContainer.style.transform = `perspective(450px) rotateX(0deg) rotateY(0deg)`;
 }
 document.addEventListener("DOMContentLoaded", async () => {
     document.body.classList.add("hidden");
@@ -214,5 +191,5 @@ document.addEventListener("DOMContentLoaded", async () => {
         loadingScreen.classList.add("fade-out");
         setTimeout(() => loadingScreen.remove(), 500);
     }
-    loadEventListeners();
+    loadEventListenersOnce();
 });
