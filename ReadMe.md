@@ -12,7 +12,8 @@ ___
 
 ### To-Do/Ideas
 
-- [ ] When opening settings, slide history to the right, etc
+- [x] When opening settings, slide history to the right, etc
+- [ ] Change bg color to indicate settings being open
 
 - [x] Fix dumb buttons flashing colors when reloading
 - [x] Fix hoverstate not being applied when clicking a button

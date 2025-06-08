@@ -51,8 +51,11 @@
 }
 
 body {
+    /* margin:0;
+    padding:0; */
     background-color: var(--bg-primary);
     height:100vh;
+    /* height:100%; */
     transition: opacity 300ms ease;
 
 }
@@ -110,11 +113,16 @@ a {
     background-color: var(--card-background);
 }
 
+h1 {
+    padding-left: 1.5rem;;
+}
 
 .cardContainer{
     /* incase margin top is too small: */
-    margin: 100px auto 0 auto;
+    /* margin: 100px auto 0 auto; */
     /* margin: -30px auto  0 auto; */
+    margin: 0 auto 0 auto;
+
     width: fit-content; 
 
     transform-style: preserve-3d;
@@ -156,7 +164,7 @@ a {
 .card {
     width: 450px;
     height: 700px;
-    margin: 40px auto 0 auto;
+    /* margin: 40px auto 0 auto; */
     padding-top:3%;
     scale:1;
     background-color: var(--bg-secondary);
@@ -284,11 +292,10 @@ a {
     cursor:pointer;
 }
 
+
 .buttonContainer1,
-.buttonContainer2,
-.buttonContainer3,
-.buttonContainer4 {
-    height:120px;
+.buttonContainer2 {
+    height:55px;
     width:120px;
 
     display: flex;
@@ -304,11 +311,28 @@ a {
     overflow: hidden; 
 }
 
+.buttonContainer3,
+.buttonContainer4 {
+    height:120px;
+    width:120px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 15px;
+    box-shadow: none;
+
+    background-color: transparent;
+
+    overflow: hidden; 
+}
+
+
 .buttonContainer1:hover,
 .buttonContainer2:hover,
 .buttonContainer3:hover,
 .buttonContainer4:hover {
-    /* transition: background-color 75ms ease-out, box-shadow 300ms ease; */
     background-color: var(--hover-color),
 }
 
@@ -366,6 +390,7 @@ a {
     justify-content: center;
 
     background-color: transparent;
+    font-size: medium;
 
     transition: box-shadow 300ms ease, background-color 300ms ease;
 }
@@ -388,39 +413,59 @@ a {
     display: flex;
     align-items: center;
     position: relative;
+    z-index: 100;
 }
 
 .settings-section {
     justify-content: flex-end;
 }
 
+/* .settings-section .active {
+    
+} */
+
 .palette-section {
     justify-content: flex-start;
 }
 
-.settings-expanded, .palette-history-expanded {
+.settings-expanded {
     display: flex;
+    flex-direction: column;
     align-items: center;
     gap: 10px;
     max-width: 0;
     overflow: hidden;
     transition: max-width 0.3s ease, padding 0.3s ease;
     white-space: nowrap;
+    flex-shrink:1;
 }
 
 .settings-expanded.expanded {
-    max-width: 280px;
-    padding-right: 10px;
+    max-width: 200px;
+    padding:10px;
+}
+
+.palette-history-expanded {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    max-width: 0;
+    overflow: hidden;
+    transition: max-width 0.3s ease, padding 0.3s ease;
+    white-space: nowrap;
+    flex-shrink:1;
 }
 
 .palette-history-expanded.expanded {
-    max-width: 400px;
+    max-width: 200px;
     padding-left: 10px;
 }
 
-.buttonContainer-palette {
+.buttonContainer-palette,
+.buttonContainer-settings {
     height: 120px;
-    width: 120px;
+    width: 80px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -431,11 +476,13 @@ a {
     transition: background-color 0.3s ease;
 }
 
-.buttonContainer-palette:hover {
+.buttonContainer-palette:hover,
+.buttonContainer-settings:hover {
     background-color: var(--hover-color);
 }
 
-.buttonContainer-palette:active {
+.buttonContainer-palette:active,
+.buttonContainer-settings:active {
     background-color: var(--hover-color);
     scale: 1.05;
     transition: scale 100ms ease;
@@ -466,9 +513,13 @@ a {
     flex: 1;
     border-radius: 4px;
     transition: background-color 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .history-container {
+    /* width:80px; */
+    height:120px;
+
     position: relative;
     display: flex;
     align-items: center;
@@ -479,7 +530,10 @@ a {
 }
 
 .history-bar {
+    width:100%;
+    height:100%;
     display: flex;
+    align-items:center;
     gap: 8px;
     max-width: 320px;
     overflow-x: hidden;
@@ -488,12 +542,11 @@ a {
 .history-item {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 3px;
     min-width: 60px;
-    height: 45px;
+    height:60px;
     padding: 4px;
     border-radius: 8px;
-    background-color: rgba(255, 255, 255, 0.1);
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -511,4 +564,5 @@ a {
     border-radius: 3px;
     min-height: 12px;
     transition: background-color 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }

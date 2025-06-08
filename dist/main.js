@@ -15,9 +15,11 @@ const buttonSettings = document.querySelector(".buttonSettings");
 const historyBar = document.querySelector(".history-bar");
 const buttonPalette = document.querySelector(".buttonPalette");
 const settingsExpanded = document.querySelector(".settings-expanded");
+const settingsSection = document.querySelector(".settings-section");
 const paletteHistoryExpanded = document.querySelector(".palette-history-expanded");
 const paletteSwatches = [...document.querySelectorAll(".palette-swatch")];
 const buttonContainerPalette = document.querySelector(".buttonContainer-palette");
+const buttonContainerSettings = document.querySelector(".buttonContainer-settings");
 let settingsOpen = false;
 let paletteOpen = false;
 let cardBounds = card.getBoundingClientRect();
@@ -39,7 +41,9 @@ let contrastColor;
 let copyColor1;
 let copyColor2;
 let copyColor3;
+let littlePaletteColor1;
 let hoverColor;
+let otherHoverColor;
 let normalColor;
 let currentColors = [];
 let paletteHistory = [];
@@ -65,12 +69,23 @@ async function loadAPI(testColor) {
         const colors = data.colors.map((color) => color[currentMode].value);
         const [color1, color2, color3] = colors;
         contrastColor = data.colors[1].contrast.value;
+        // contrastColor = data.colors[0].hex.value;
         titleColor = data.colors[1].name.value;
+        console.log(data.colors[1].name.value);
+        if (titleColor.length > 13) {
+            if (titleColor.includes(" ")) {
+                titleColor = titleColor.split(" ")[0];
+            }
+            else {
+                titleColor = titleColor.slice(0, 13);
+            }
+        }
+        console.log(titleColor);
         bigTitleContainer.innerHTML = titleColor;
         document.body.classList.remove("hidden");
         buttonToggleMode.innerHTML = `${currentMode.toUpperCase()}`;
-        // buttonToggleScheme.innerHTML = `${currentSchemeMode.toUpperCase()}`;
         buttonToggleScheme.innerHTML = `${currentSchemeMode.toUpperCase().slice(0, 4)}`;
+        // buttonToggleScheme.innerHTML = `${currentSchemeMode.toUpperCase()}`;
         setColors(color1, color2, color3, contrastColor);
         const newPalette = {
             colors: [color1, color2, color3],
@@ -88,6 +103,7 @@ async function loadAPI(testColor) {
 function setColors(color1, color2, color3, contrastColor) {
     currentColors = [color1, color2, color3];
     hoverColor = color2;
+    otherHoverColor = color3;
     normalColor = color3;
     copyColor1 = color1;
     copyColor2 = color2;
@@ -102,7 +118,8 @@ function setColors(color1, color2, color3, contrastColor) {
     buttonContainers[0].style.backgroundColor = color3;
     buttonContainers[1].style.backgroundColor = color3;
     buttonContainers[2].style.backgroundColor = color3;
-    buttonContainers[3].style.backgroundColor = color3;
+    // buttonContainers[3].style.backgroundColor = color1;
+    buttonContainerSettings.style.backgroundColor = color3;
     buttonContainerPalette.style.backgroundColor = color3;
     document.body.style.background = `linear-gradient(1turn,${color1}, ${color2}, ${color3})`;
     cardFooter.style.backgroundColor = color3;
@@ -196,33 +213,48 @@ function loadEventListeners() {
         buttonContainerPalette.style.backgroundColor = normalColor;
         buttonContainerPalette.classList.remove(":hover");
     });
+    buttonContainerSettings.addEventListener("mouseover", () => {
+        buttonContainerSettings.classList.add(":hover");
+        buttonContainerSettings.style.backgroundColor = hoverColor;
+    });
+    buttonContainerSettings.addEventListener("mouseout", () => {
+        buttonContainerSettings.style.backgroundColor = normalColor;
+        buttonContainerSettings.classList.remove(":hover");
+    });
     buttonSettings.addEventListener("click", () => {
         settingsOpen = !settingsOpen;
         if (settingsOpen) {
             settingsExpanded.classList.add("expanded");
+            buttonContainerPalette.classList.add("shrunk");
             if (paletteOpen) {
                 paletteOpen = false;
                 paletteHistoryExpanded.classList.remove("expanded");
+                buttonContainerPalette.classList.add("shrunk");
             }
         }
         else {
             settingsExpanded.classList.remove("expanded");
+            buttonContainerPalette.classList.remove("shrunk");
         }
         console.log(`Settings ${settingsOpen ? "open" : "closed"}`);
     });
     buttonPalette.addEventListener("click", () => {
         paletteOpen = !paletteOpen;
         if (paletteOpen) {
+            updateHistoryBar();
             paletteHistoryExpanded.classList.add("expanded");
+            buttonContainerSettings.classList.add("shrunk");
             if (settingsOpen) {
                 settingsOpen = false;
                 settingsExpanded.classList.remove("expanded");
+                buttonContainerPalette.classList.remove("shrunk");
             }
         }
         else {
             paletteHistoryExpanded.classList.remove("expanded");
+            buttonContainerSettings.classList.remove("shrunk");
         }
-        console.log(`Palette ${paletteOpen ? "open" : "closed"}`);
+        console.log(`Palette ${paletteOpen ? "open" : "closed"}`, 'History length:', paletteHistory.length);
     });
     copyButtons.forEach((btn, i) => {
         btn.addEventListener("click", () => {
@@ -242,8 +274,9 @@ function updateHistoryBar() {
     if (!historyBar)
         return;
     historyBar.innerHTML = '';
-    // Show last 4 palettes (excluding current one if it's the same)
-    const displayPalettes = paletteHistory.slice(-4);
+    // const displayPalettes = paletteHistory.slice(-4);
+    const currentPalette = paletteHistory[paletteHistory.length - 1];
+    const displayPalettes = paletteHistory.filter(palette => palette !== currentPalette).slice(-3);
     displayPalettes.forEach((palette, index) => {
         const actualIndex = paletteHistory.indexOf(palette);
         const historyItem = document.createElement('div');

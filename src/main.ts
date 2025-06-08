@@ -14,12 +14,13 @@ const buttonToggleScheme = document.querySelector(".buttonToggleScheme") as HTML
 const buttonSettings = document.querySelector(".buttonSettings") as HTMLElement;
 
 const historyBar = document.querySelector(".history-bar") as HTMLElement;
-
 const buttonPalette = document.querySelector(".buttonPalette") as HTMLElement;
 const settingsExpanded = document.querySelector(".settings-expanded") as HTMLElement;
+const settingsSection = document.querySelector(".settings-section") as HTMLElement;
 const paletteHistoryExpanded = document.querySelector(".palette-history-expanded") as HTMLElement;
 const paletteSwatches = [...document.querySelectorAll<HTMLElement>(".palette-swatch")];
 const buttonContainerPalette = document.querySelector(".buttonContainer-palette") as HTMLElement;
+const buttonContainerSettings= document.querySelector(".buttonContainer-settings") as HTMLElement;
 
 let settingsOpen = false;
 let paletteOpen = false;
@@ -49,7 +50,9 @@ let copyColor1 : string;
 let copyColor2 : string;
 let copyColor3 : string;
 
+let littlePaletteColor1 : string;
 let hoverColor : string;
+let otherHoverColor : string;
 let normalColor : string;
 
 let currentColors: string[] = [];
@@ -91,18 +94,33 @@ async function loadAPI(testColor: string) {
         const [color1, color2, color3] = colors;
 
         contrastColor = data.colors[1].contrast.value;
+        // contrastColor = data.colors[0].hex.value;
+
 
         titleColor = data.colors[1].name.value;
+        console.log(data.colors[1].name.value)
+
+        if (titleColor.length > 13) {
+            if (titleColor.includes(" ")) {
+                titleColor = titleColor.split(" ")[0];
+            } else {
+                titleColor = titleColor.slice(0, 13);
+            }
+        }
+
+        console.log(titleColor);
+
 
         bigTitleContainer.innerHTML = titleColor;
 
         document.body.classList.remove("hidden");
 
         buttonToggleMode.innerHTML = `${currentMode.toUpperCase()}`;
-        // buttonToggleScheme.innerHTML = `${currentSchemeMode.toUpperCase()}`;
         buttonToggleScheme.innerHTML = `${currentSchemeMode.toUpperCase().slice(0,4)}`;
+        // buttonToggleScheme.innerHTML = `${currentSchemeMode.toUpperCase()}`;
 
         setColors(color1, color2, color3, contrastColor);
+
 
         const newPalette: ColorPalette = {
             colors: [color1, color2, color3],
@@ -125,6 +143,7 @@ function setColors(color1:string,color2:string,color3:string,contrastColor:strin
     currentColors = [color1, color2, color3];
 
     hoverColor = color2;
+    otherHoverColor = color3;
     normalColor = color3;
 
     copyColor1 = color1
@@ -144,7 +163,9 @@ function setColors(color1:string,color2:string,color3:string,contrastColor:strin
     buttonContainers[0].style.backgroundColor = color3;
     buttonContainers[1].style.backgroundColor = color3;
     buttonContainers[2].style.backgroundColor = color3;
-    buttonContainers[3].style.backgroundColor = color3;
+
+    // buttonContainers[3].style.backgroundColor = color1;
+    buttonContainerSettings.style.backgroundColor = color3;
     buttonContainerPalette.style.backgroundColor = color3;
 
     document.body.style.background = `linear-gradient(1turn,${color1}, ${color2}, ${color3})`;
@@ -262,37 +283,56 @@ function loadEventListeners() {
         buttonContainerPalette.classList.remove(":hover");
     });
 
-   buttonSettings.addEventListener("click", () => {
+    buttonContainerSettings.addEventListener("mouseover", () => {
+        buttonContainerSettings.classList.add(":hover");
+        buttonContainerSettings.style.backgroundColor = hoverColor;
+    });
+
+    buttonContainerSettings.addEventListener("mouseout", () => {
+        buttonContainerSettings.style.backgroundColor = normalColor;
+        buttonContainerSettings.classList.remove(":hover");
+    });
+
+     buttonSettings.addEventListener("click", () => {
         settingsOpen = !settingsOpen;
         
         if (settingsOpen) {
             settingsExpanded.classList.add("expanded");
+            buttonContainerPalette.classList.add("shrunk");
+
             if (paletteOpen) {
                 paletteOpen = false;
                 paletteHistoryExpanded.classList.remove("expanded");
+                buttonContainerPalette.classList.add("shrunk");
             }
         } else {
             settingsExpanded.classList.remove("expanded");
+            buttonContainerPalette.classList.remove("shrunk");
         }
         
         console.log(`Settings ${settingsOpen ? "open" : "closed"}`);
     });
 
-       buttonPalette.addEventListener("click", () => {
+    buttonPalette.addEventListener("click", () => {
         paletteOpen = !paletteOpen;
         
         if (paletteOpen) {
+            updateHistoryBar();
             paletteHistoryExpanded.classList.add("expanded");
+            buttonContainerSettings.classList.add("shrunk")
             if (settingsOpen) {
                 settingsOpen = false;
                 settingsExpanded.classList.remove("expanded");
+                buttonContainerPalette.classList.remove("shrunk");
             }
         } else {
             paletteHistoryExpanded.classList.remove("expanded");
+            buttonContainerSettings.classList.remove("shrunk")
         }
         
-        console.log(`Palette ${paletteOpen ? "open" : "closed"}`);
+        console.log(`Palette ${paletteOpen ? "open" : "closed"}`, 'History length:', paletteHistory.length);
     });
+
 
     copyButtons.forEach((btn, i) => {
         btn.addEventListener("click", () => {
@@ -316,8 +356,9 @@ function updateHistoryBar() {
     
     historyBar.innerHTML = '';
     
-    // Show last 4 palettes (excluding current one if it's the same)
-    const displayPalettes = paletteHistory.slice(-4);
+    // const displayPalettes = paletteHistory.slice(-4);
+    const currentPalette = paletteHistory[paletteHistory.length - 1];
+    const displayPalettes = paletteHistory.filter(palette => palette !== currentPalette).slice(-3);
     
     displayPalettes.forEach((palette, index) => {
         const actualIndex = paletteHistory.indexOf(palette);
