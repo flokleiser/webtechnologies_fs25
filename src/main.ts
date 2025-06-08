@@ -34,6 +34,7 @@ let currentSchemeMode = schemeModes[currentSchemeIndex]
 let color : string
 let testColor : string
 let titleColor : string
+let contrastColor : string;
 
 let copyColor1 : string;
 let copyColor2 : string;
@@ -67,27 +68,18 @@ async function loadAPI(testColor: string) {
         const colors = data.colors.map((color: { [x: string]: { value: any; }; }) => color[currentMode].value);
         const [color1, color2, color3] = colors;
 
+        contrastColor = data.colors[1].contrast.value;
+
         titleColor = data.colors[1].name.value;
 
         bigTitleContainer.innerHTML = titleColor;
-
-        document.body.style.background = `linear-gradient(1turn,${color1}, ${color2}, ${color3})`;
 
         document.body.classList.remove("hidden");
 
         buttonToggleMode.innerHTML = `${currentMode.toUpperCase()}`;
         buttonToggleScheme.innerHTML = `${currentSchemeMode.toUpperCase()}`;
 
-        setColors(color1, color2, color3);
-      
-
-        cardFooter.style.backgroundColor = color3;
-        cardHeader.style.backgroundColor = color3;
-
-        setTextColor(data.colors[1].contrast.value)
-
-        hoverColor = color2;
-        normalColor = color3;
+        setColors(color1, color2, color3, contrastColor);
 
 
     } catch (error) {
@@ -95,25 +87,12 @@ async function loadAPI(testColor: string) {
     }
 }
 
-function setTextColor(hex: string){
-        bigTitleContainer.style.color = hex;
-        button1.style.color = hex;
-        buttonToggleMode.style.color = hex;
-        buttonReload.style.color = hex;
-        buttonToggleScheme.style.color = hex;
-
-        titleContainers.forEach((container) => {
-            container.style.color = hex;
-        });
-
-        copyButtons.forEach((button) => {
-            button.style.color = hex;
-        });
-}
-
-function setColors(color1:string,color2:string,color3:string) {
+function setColors(color1:string,color2:string,color3:string,contrastColor:string) {
 
     currentColors = [color1, color2, color3];
+
+    hoverColor = color2;
+    normalColor = color3;
 
     copyColor1 = color1
     copyColor2 = color2
@@ -132,12 +111,44 @@ function setColors(color1:string,color2:string,color3:string) {
 
     button1.style.backgroundColor = color2;
 
-    buttonContainers.forEach((container) => {
-        container.style.backgroundColor = color3;
+    buttonContainers[0].style.backgroundColor = color3;
+    buttonContainers[1].style.backgroundColor = color3;
+    buttonContainers[2].style.backgroundColor = color3;
+
+
+    // buttonContainers.forEach((container) => {
+    //     container.style.backgroundColor = color3;
+    // });
+
+    document.body.style.background = `linear-gradient(1turn,${color1}, ${color2}, ${color3})`;
+
+    cardFooter.style.backgroundColor = color3;
+    cardHeader.style.backgroundColor = color3;
+
+    //text
+    bigTitleContainer.style.color = contrastColor;
+    button1.style.color = contrastColor;
+    buttonToggleMode.style.color = contrastColor;
+    buttonReload.style.color = contrastColor;
+    buttonToggleScheme.style.color = contrastColor;
+
+    titleContainers.forEach((container) => {
+        container.style.color = contrastColor;
     });
 
-    hoverColor = color2;
-    normalColor = color3;
+    copyButtons.forEach((button) => {
+        button.style.color = contrastColor;
+    });
+
+    preserveHoverState();
+}
+
+function preserveHoverState() {
+    buttonContainers.forEach((container) => {
+        if(container.matches(":hover")) {
+            container.style.backgroundColor = hoverColor;
+        }
+    })
 }
 
 function loadEventListenersOnce() {
@@ -165,7 +176,6 @@ function loadEventListenersOnce() {
             container.style.backgroundColor = normalColor;
             container.classList.remove(":hover");
         });
-
     });
 
     copyButtons.forEach((btn, i) => {
@@ -211,6 +221,13 @@ function loadEventListenersOnce() {
         loadAPI(testColor);
     });
 
+    copyButtons.forEach((btn, i) => {
+        btn.addEventListener("click", () => {
+            const colorToCopy = i === 0 ? copyColor1 : i === 1 ? copyColor2 : copyColor3;
+            copyToClipboard(colorToCopy);
+        });
+    });
+
 }
 
 function copyToClipboard(color: string) {
@@ -239,6 +256,7 @@ function handleCardHover(e: MouseEvent) {
 function resetCardStyle() {
     cardContainer.style.transform = `perspective(450px) rotateX(0deg) rotateY(0deg)`;
 }
+
 
 document.addEventListener("DOMContentLoaded", async () => {
     
