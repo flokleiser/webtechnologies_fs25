@@ -18,10 +18,13 @@ const button1 = document.querySelector(".button1");
 const buttonToggleMode = document.querySelector(".buttonToggleMode");
 const buttonReload = document.querySelector(".buttonReload");
 const buttonToggleScheme = document.querySelector(".buttonToggleScheme");
+const buttonContainer1 = document.querySelector(".buttonContainer1");
+const buttonContainer2 = document.querySelector(".buttonContainer2");
+const buttonContainer3 = document.querySelector(".buttonContainer3");
 let cardBounds = card.getBoundingClientRect();
 let cardContainerBounds = cardContainer.getBoundingClientRect();
 const threshold = 5;
-const colorModes = ["hex", "rgb", "hsl", "name"];
+const colorModes = ["hex", "rgb", "hsl"];
 let currentModeIndex = 0;
 let currentMode = colorModes[currentModeIndex];
 const schemeModes = [
@@ -50,12 +53,9 @@ async function loadAPI(testColor) {
     try {
         const response = await fetch(`https://www.thecolorapi.com/scheme?&mode=${currentSchemeMode}&hex=${testColor}&count=3`);
         const data = await response.json();
-        const color1 = (currentMode == "name") ? data.colors[0][currentMode].value : data.colors[0].hex.value;
-        const color2 = (currentMode == "name") ? data.colors[1][currentMode].value : data.colors[1].hex.value;
-        const color3 = (currentMode == "name") ? data.colors[2][currentMode].value : data.colors[2].hex.value;
-        // const color1 = data.colors[0][currentMode].value
-        // const color2 = data.colors[1][currentMode].value;
-        // const color3 = data.colors[2][currentMode].value;
+        const color1 = data.colors[0][currentMode].value;
+        const color2 = data.colors[1][currentMode].value;
+        const color3 = data.colors[2][currentMode].value;
         titleColor = data.colors[1].name.value;
         // const gradientName = await generateGradientName(testColor);
         // bigTitleContainer.innerHTML = gradientName;
@@ -66,9 +66,13 @@ async function loadAPI(testColor) {
         buttonToggleMode.innerHTML = `${currentMode.toUpperCase()}`;
         buttonToggleScheme.innerHTML = `${currentSchemeMode.toUpperCase()}`;
         button1.style.backgroundColor = color3;
-        buttonReload.style.backgroundColor = color3;
+        // buttonReload.style.backgroundColor = color3;
+        buttonReload.style.backgroundColor = "rgba(255, 255, 255, 0.0)";
         buttonToggleMode.style.backgroundColor = color3;
         buttonToggleScheme.style.backgroundColor = color3;
+        buttonContainer1.style.backgroundColor = color3;
+        buttonContainer2.style.backgroundColor = color3;
+        buttonContainer3.style.backgroundColor = color3;
         card.style.backgroundColor = color2;
         colorSection1.style.backgroundColor = color1;
         colorSection2.style.backgroundColor = color2;
@@ -143,6 +147,12 @@ buttonToggleScheme.addEventListener("click", () => {
     console.log(`Scheme mode switched to: ${currentSchemeMode}`);
     loadAPI(testColor);
 });
+buttonContainer3.addEventListener("mouseenter", () => {
+    buttonReload.classList.add(":hovered");
+});
+buttonContainer3.addEventListener("mouseleave", () => {
+    buttonReload.classList.remove(":hovered");
+});
 function handleHover(e) {
     const { clientX, clientY, currentTarget } = e;
     const target = currentTarget;
@@ -153,7 +163,7 @@ function handleHover(e) {
     const vertical = (clientY - offsetTop) / clientHeight;
     const rotateX = (horizontal * threshold - threshold / 2).toFixed(2);
     const rotateY = (threshold / 2 - vertical * threshold).toFixed(2);
-    cardContainer.style.transform = `perspective(${clientWidth}px) rotateX(${rotateY}deg) rotateY(${rotateX}deg) scale3d(1, 1, 1)`;
+    cardContainer.style.transform = `perspective(${clientWidth}px) rotateX(${rotateY}deg) rotateY(${rotateX}deg) scale3d(1.02, 1.02, 1.02)`;
 }
 function resetStyles() {
     cardContainer.style.transform = `perspective(450px) rotateX(0deg) rotateY(0deg)`;

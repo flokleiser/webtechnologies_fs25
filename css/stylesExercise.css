@@ -271,18 +271,48 @@ a {
     cursor:pointer;
 }
 
+.buttonContainer1,
+.buttonContainer2,
+.buttonContainer3 {
+    height:120px;
+    width:120px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 20px;
+    box-shadow: none;
+    transition: box-shadow 300ms ease;
+    overflow: hidden; 
+}
+
+.buttonContainer1:hover,
+.buttonContainer2:hover,
+.buttonContainer3:hover {
+    box-shadow: var(--shadow);
+    transition: box-shadow 300ms ease;
+    /* cursor:pointer; */
+}
+
 .buttonReload {
-    padding: 10px 10px;
-    border-radius: 5px;
-    margin: 10px;
+    /* padding: 10px 10px; */
+    /* border-radius: 5px; */
+    /* margin: 10px; */
     background-color: var(--bg-secondary);
     color: var(--card-text);
     border:none;
     font-weight: var(--weight-semibold);
 
+    height:100%;
+    width:100%;
+
     display: flex;
     align-items: center;
-    gap:5px;
+    /* gap:5px; */
+    justify-content: center;
+
+    /* box-shadow: 0 1px 50px rgba(0, 0, 0, 0.2); */
 
     transition-duration: 300ms;
     transition-property: transform;
@@ -291,24 +321,27 @@ a {
 
 .buttonReload:hover {
     transform:rotate(80deg) scale(1.2);
+    cursor:pointer;
     transition: transform 300ms ease;
 }
 
 .buttonToggleMode,
 .buttonToggleScheme {
-    padding: 10px 10px;
+    /* padding: 10px 10px;
     border-radius: 5px;
-    margin: 10px;
-    background-color: var(--bg-secondary);
+    margin: 10px; */
+
     color: var(--card-text);
-    /* border: 1px solid var(--primary-color); */
     border:none;
-    /* box-shadow: var(--shadow); */
+    height:100%;
+    width:100%;
+    /* box-shadow: 0 1px 50px rgba(0, 0, 0, 0.2); */
+
     font-weight: var(--weight-semibold);
 
     display: flex;
     align-items: center;
-    gap:5px;
+    justify-content: center;
 
     transition-duration: 300ms;
     transition-property: box-shadow;
