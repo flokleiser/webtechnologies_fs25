@@ -271,14 +271,34 @@ a {
     cursor:pointer;
 }
 
-.buttonFooter,
-.buttonToggleMode,
-.buttonToggleScheme {
-
+.buttonReload {
     padding: 10px 10px;
     border-radius: 5px;
     margin: 10px;
-    /* min-width:150px; */
+    background-color: var(--bg-secondary);
+    color: var(--card-text);
+    border:none;
+    font-weight: var(--weight-semibold);
+
+    display: flex;
+    align-items: center;
+    gap:5px;
+
+    transition-duration: 300ms;
+    transition-property: transform;
+    transition-timing-function: ease;
+}
+
+.buttonReload:hover {
+    transform:rotate(80deg) scale(1.2);
+    transition: transform 300ms ease;
+}
+
+.buttonToggleMode,
+.buttonToggleScheme {
+    padding: 10px 10px;
+    border-radius: 5px;
+    margin: 10px;
     background-color: var(--bg-secondary);
     color: var(--card-text);
     /* border: 1px solid var(--primary-color); */
@@ -286,17 +306,17 @@ a {
     /* box-shadow: var(--shadow); */
     font-weight: var(--weight-semibold);
 
+    display: flex;
+    align-items: center;
+    gap:5px;
+
     transition-duration: 300ms;
     transition-property: box-shadow;
     transition-timing-function: ease-out;
 }
 
-.buttonFooter:hover,
 .buttonToggleMode:hover,
 .buttonToggleScheme:hover {
-    /* box-shadow: var(--shadow-hover); */
-    /* transform: translateY(-2px); */
-    transition-duration: 150ms;
     cursor:pointer;
 }
 

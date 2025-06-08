@@ -5,8 +5,8 @@ ___
 
 ___
 
-https://www.thecolorapi.com/docs
-https://publicapi.dev/x-colors-api
+- https://www.thecolorapi.com/docs
+- https://publicapi.dev/x-colors-api
 
 ___
 
