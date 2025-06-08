@@ -42,6 +42,10 @@
   pointer-events: none;
 }
 
+.card, .colorSection, .cardHeader, .cardFooter .buttonContainer1, .buttonContainer2, .buttonContainer3 {
+    transition: background-color 0.6s ease;
+}
+
 .unselectable {
   pointer-events: none;
 }
@@ -108,7 +112,9 @@ a {
 
 
 .cardContainer{
-    margin: 40px auto 0 auto;
+    /* incase margin top is too small: */
+    margin: 75px auto 0 auto;
+    /* margin: -30px auto  0 auto; */
     width: fit-content; 
 
     transform-style: preserve-3d;
@@ -222,7 +228,7 @@ a {
 .copyButton3 {
     padding: 10px 10px;
     border-radius: 5px;
-    min-width: 100px;;
+    min-width: 100px;
     margin: 10px;
     opacity:0;
     border:none;
@@ -368,4 +374,94 @@ a {
 .main-image img {
     width: 100%;
     display: block;
+}
+
+
+
+.history-container {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+    align-items: center;
+    gap: 10px;
+    /* background-color: rgba(255, 255, 255, 0.1); */
+    /* backdrop-filter: blur(10px); */
+    padding: 10px 15px;
+    /* border-radius: 20px; */
+    box-shadow: var(--shadow);
+    z-index: 100;
+}
+
+.history-bar {
+    display: flex;
+    gap: 8px;
+    max-width: 400px;
+    overflow-x: hidden;
+}
+
+.history-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 60px;
+    height: 45px;
+    padding: 4px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.history-item:hover {
+    transform: translateY(-2px);
+    /* box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); */
+}
+
+.history-item:active {
+    transform: translateY(0);
+}
+
+.history-swatch {
+    flex: 1;
+    border-radius: 3px;
+    min-height: 12px;
+    transition: background-color 0.3s ease;
+}
+
+.history-nav-btn {
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.history-nav-btn:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.history-nav-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+    .history-container {
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+        transform: none;
+    }
+    
+    .history-bar {
+        max-width: none;
+    }
 }

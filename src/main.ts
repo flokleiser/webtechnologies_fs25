@@ -8,7 +8,7 @@ const card = document.querySelector(".card") as HTMLElement;
 const cardContainer = document.querySelector(".cardContainer") as HTMLElement;
 const cardHeader = document.querySelector(".cardHeader") as HTMLElement;
 const cardFooter = document.querySelector(".cardFooter") as HTMLElement;
-const button1 = document.querySelector(".button1") as HTMLElement
+// const button1 = document.querySelector(".button1") as HTMLElement
 const buttonToggleMode = document.querySelector(".buttonToggleMode") as HTMLElement;
 const buttonReload = document.querySelector(".buttonReload") as HTMLElement;
 const buttonToggleScheme = document.querySelector(".buttonToggleScheme") as HTMLElement;
@@ -44,6 +44,24 @@ let hoverColor : string;
 let normalColor : string;
 
 let currentColors: string[] = [];
+
+interface ColorPalette {
+    colors: string[];
+    mode: string;
+    scheme: string;
+    title: string
+    contrast: string;
+}
+
+let paletteHistory: ColorPalette[] = [];
+const maxHistorySize = 3;
+
+const historyContainer = document.querySelector(".history-container") as HTMLElement;
+const historyBar = document.querySelector(".history-bar") as HTMLElement;
+const historyPrevBtn = document.querySelector(".history-prev") as HTMLElement;
+const historyNextBtn = document.querySelector(".history-next") as HTMLElement;
+
+let historyScrollPosition = 0;
 
 async function getRandomColor() {
     try {
@@ -81,6 +99,17 @@ async function loadAPI(testColor: string) {
 
         setColors(color1, color2, color3, contrastColor);
 
+        const newPalette: ColorPalette = {
+            colors: [color1, color2, color3],
+            mode: currentMode,
+            scheme: currentSchemeMode,
+            title: titleColor,
+            contrast: contrastColor
+        };
+
+        addToHistory(newPalette);
+        console.log(newPalette);
+
 
     } catch (error) {
         console.error("Error:", error);
@@ -109,16 +138,11 @@ function setColors(color1:string,color2:string,color3:string,contrastColor:strin
     copyButtons[2].style.backgroundColor= color3;
 
 
-    button1.style.backgroundColor = color2;
+    // button1.style.backgroundColor = color2;
 
     buttonContainers[0].style.backgroundColor = color3;
     buttonContainers[1].style.backgroundColor = color3;
     buttonContainers[2].style.backgroundColor = color3;
-
-
-    // buttonContainers.forEach((container) => {
-    //     container.style.backgroundColor = color3;
-    // });
 
     document.body.style.background = `linear-gradient(1turn,${color1}, ${color2}, ${color3})`;
 
@@ -127,7 +151,7 @@ function setColors(color1:string,color2:string,color3:string,contrastColor:strin
 
     //text
     bigTitleContainer.style.color = contrastColor;
-    button1.style.color = contrastColor;
+    // button1.style.color = contrastColor;
     buttonToggleMode.style.color = contrastColor;
     buttonReload.style.color = contrastColor;
     buttonToggleScheme.style.color = contrastColor;
@@ -238,6 +262,74 @@ function copyToClipboard(color: string) {
     });
 }
 
+function addToHistory(palette: ColorPalette) {
+    if (paletteHistory.length > 0) {
+        const lastPalette = paletteHistory[paletteHistory.length - 1];
+        if (JSON.stringify(lastPalette.colors) === JSON.stringify(palette.colors)) {
+            return;
+        }
+    }
+    
+    paletteHistory.push(palette);
+    
+    if (paletteHistory.length > maxHistorySize) {
+        paletteHistory.shift();
+    }
+    
+    updateHistoryBar();
+}
+
+function updateHistoryBar() {
+    if (!historyBar) return;
+    
+    historyBar.innerHTML = '';
+    
+    paletteHistory.forEach((palette, index) => {
+        const historyItem = document.createElement('div');
+        historyItem.className = 'history-item';
+        historyItem.setAttribute('data-index', index.toString());
+        
+        palette.colors.forEach(color => {
+            const colorSwatch = document.createElement('div');
+            colorSwatch.className = 'history-swatch';
+            colorSwatch.style.backgroundColor = color;
+            historyItem.appendChild(colorSwatch);
+        });
+        
+        historyItem.addEventListener('click', () => restorePalette(index));
+        
+        historyBar.appendChild(historyItem);
+    });
+    
+    if (historyContainer) {
+        historyContainer.style.display = paletteHistory.length > 0 ? 'flex' : 'none';
+    }
+}
+
+function restorePalette(index: number) {
+    if (index < 0 || index >= paletteHistory.length) return;
+    
+    const palette = paletteHistory[index];
+    
+    currentColors = palette.colors;
+    currentMode = palette.mode;
+    currentSchemeMode = palette.scheme;
+    currentModeIndex = colorModes.indexOf(palette.mode);
+    currentSchemeIndex = schemeModes.indexOf(palette.scheme);
+    
+    setColors(palette.colors[0], palette.colors[1], palette.colors[2], palette.contrast);
+    
+    bigTitleContainer.innerHTML = palette.title;
+    buttonToggleMode.innerHTML = `${currentMode.toUpperCase()}`;
+    buttonToggleScheme.innerHTML = `${currentSchemeMode.toUpperCase()}`;
+    
+    titles.forEach((title, i) => {
+        if (title.classList.contains('visible')) {
+            title.innerHTML = currentColors[i];
+        }
+    });
+}
+
 function handleCardHover(e: MouseEvent) {
     const { clientX, clientY, currentTarget } = e;
     const target = currentTarget as HTMLElement;
@@ -256,7 +348,6 @@ function handleCardHover(e: MouseEvent) {
 function resetCardStyle() {
     cardContainer.style.transform = `perspective(450px) rotateX(0deg) rotateY(0deg)`;
 }
-
 
 document.addEventListener("DOMContentLoaded", async () => {
     
