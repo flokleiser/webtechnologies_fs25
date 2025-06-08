@@ -42,8 +42,8 @@
   pointer-events: none;
 }
 
-.card, .colorSection, .cardHeader, .cardFooter .buttonContainer1, .buttonContainer2, .buttonContainer3 {
-    transition: background-color 0.6s ease;
+.card, .colorSection, .cardHeader, .cardFooter .buttonContainer1, .buttonContainer2, .buttonContainer3, .buttonContainer4 {
+    transition: background-color 0.2s ease;
 }
 
 .unselectable {
@@ -113,7 +113,7 @@ a {
 
 .cardContainer{
     /* incase margin top is too small: */
-    margin: 75px auto 0 auto;
+    margin: 100px auto 0 auto;
     /* margin: -30px auto  0 auto; */
     width: fit-content; 
 
@@ -286,7 +286,8 @@ a {
 
 .buttonContainer1,
 .buttonContainer2,
-.buttonContainer3 {
+.buttonContainer3,
+.buttonContainer4 {
     height:120px;
     width:120px;
 
@@ -299,20 +300,22 @@ a {
 
     background-color: transparent;
 
-    transition: background-color 75ms ease-out, box-shadow 300ms ease;
+    /* transition: background-color 75ms ease-out, box-shadow 300ms ease; */
     overflow: hidden; 
 }
 
 .buttonContainer1:hover,
 .buttonContainer2:hover,
-.buttonContainer3:hover {
-    transition: background-color 75ms ease-out, box-shadow 300ms ease;
+.buttonContainer3:hover,
+.buttonContainer4:hover {
+    /* transition: background-color 75ms ease-out, box-shadow 300ms ease; */
     background-color: var(--hover-color),
 }
 
 .buttonContainer1:active,
 .buttonContainer2:active,
-.buttonContainer3:active {
+.buttonContainer3:active,
+.buttonContainer4:active {
     background-color: var(--hover-color);
     scale: 1.05;
     transition: scale 100ms ease;
@@ -349,7 +352,8 @@ a {
 }
 
 .buttonToggleMode,
-.buttonToggleScheme {
+.buttonToggleScheme,
+.buttonSettings {
     color: var(--card-text);
     border:none;
     height:100%;
@@ -367,7 +371,8 @@ a {
 }
 
 .buttonToggleMode:hover,
-.buttonToggleScheme:hover {
+.buttonToggleScheme:hover,
+.buttonSettings:hover {
     cursor:pointer;
 }
 
@@ -377,27 +382,106 @@ a {
 }
 
 
+/* ------------------------------------------------------------------------------------------------------------------------------------------ */
 
-.history-container {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: none;
+.palette-section, .settings-section {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.settings-section {
+    justify-content: flex-end;
+}
+
+.palette-section {
+    justify-content: flex-start;
+}
+
+.settings-expanded, .palette-history-expanded {
+    display: flex;
     align-items: center;
     gap: 10px;
-    /* background-color: rgba(255, 255, 255, 0.1); */
-    /* backdrop-filter: blur(10px); */
+    max-width: 0;
+    overflow: hidden;
+    transition: max-width 0.3s ease, padding 0.3s ease;
+    white-space: nowrap;
+}
+
+.settings-expanded.expanded {
+    max-width: 280px;
+    padding-right: 10px;
+}
+
+.palette-history-expanded.expanded {
+    max-width: 400px;
+    padding-left: 10px;
+}
+
+.buttonContainer-palette {
+    height: 120px;
+    width: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    box-shadow: none;
+    background-color: transparent;
+    overflow: hidden;
+    transition: background-color 0.3s ease;
+}
+
+.buttonContainer-palette:hover {
+    background-color: var(--hover-color);
+}
+
+.buttonContainer-palette:active {
+    background-color: var(--hover-color);
+    scale: 1.05;
+    transition: scale 100ms ease;
+}
+
+.buttonPalette {
+    color: var(--card-text);
+    border: none;
+    height: 100%;
+    width: 100%;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.palette-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    width: 60px;
+    height: 60px;
+}
+
+.palette-swatch {
+    flex: 1;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.history-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
     padding: 10px 15px;
-    /* border-radius: 20px; */
-    box-shadow: var(--shadow);
     z-index: 100;
+    min-height: 65px;
 }
 
 .history-bar {
     display: flex;
     gap: 8px;
-    max-width: 400px;
+    max-width: 320px;
     overflow-x: hidden;
 }
 
@@ -416,7 +500,6 @@ a {
 
 .history-item:hover {
     transform: translateY(-2px);
-    /* box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); */
 }
 
 .history-item:active {
@@ -428,40 +511,4 @@ a {
     border-radius: 3px;
     min-height: 12px;
     transition: background-color 0.3s ease;
-}
-
-.history-nav-btn {
-    width: 30px;
-    height: 30px;
-    border: none;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.2);
-    color: white;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.2s ease;
-}
-
-.history-nav-btn:hover {
-    background-color: rgba(255, 255, 255, 0.3);
-}
-
-.history-nav-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-@media (max-width: 768px) {
-    .history-container {
-        bottom: 10px;
-        left: 10px;
-        right: 10px;
-        transform: none;
-    }
-    
-    .history-bar {
-        max-width: none;
-    }
 }
