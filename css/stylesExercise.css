@@ -114,11 +114,10 @@ a {
     display: flex;
     flex-wrap: wrap;
     align-content: center;
-    margin-left: 1rem;
+    margin-left: 1.5rem;
     opacity:1;
 
     transition: opacity 300ms ease;
-
 }
 
 
@@ -268,6 +267,35 @@ a {
 .button1:hover,
 .button2:hover {
     box-shadow: var(--shadow-hover);
+    transition-duration: 150ms;
+    cursor:pointer;
+}
+
+.buttonFooter,
+.buttonToggleMode,
+.buttonToggleScheme {
+
+    padding: 10px 10px;
+    border-radius: 5px;
+    margin: 10px;
+    /* min-width:150px; */
+    background-color: var(--bg-secondary);
+    color: var(--card-text);
+    /* border: 1px solid var(--primary-color); */
+    border:none;
+    /* box-shadow: var(--shadow); */
+    font-weight: var(--weight-semibold);
+
+    transition-duration: 300ms;
+    transition-property: box-shadow;
+    transition-timing-function: ease-out;
+}
+
+.buttonFooter:hover,
+.buttonToggleMode:hover,
+.buttonToggleScheme:hover {
+    /* box-shadow: var(--shadow-hover); */
+    /* transform: translateY(-2px); */
     transition-duration: 150ms;
     cursor:pointer;
 }

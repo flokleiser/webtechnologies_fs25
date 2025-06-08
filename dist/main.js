@@ -15,13 +15,31 @@ const cardContainer = document.querySelector(".cardContainer");
 const cardHeader = document.querySelector(".cardHeader");
 const cardFooter = document.querySelector(".cardFooter");
 const button1 = document.querySelector(".button1");
-const button2 = document.querySelector(".button2");
+const buttonToggleMode = document.querySelector(".buttonToggleMode");
+const buttonFooter = document.querySelector(".buttonFooter");
+const buttonToggleScheme = document.querySelector(".buttonToggleScheme");
 let cardBounds = card.getBoundingClientRect();
 let cardContainerBounds = cardContainer.getBoundingClientRect();
 const threshold = 5;
+const colorModes = ["hex", "rgb", "hsl"];
+let currentModeIndex = 0;
+let currentMode = colorModes[currentModeIndex];
+const schemeModes = [
+    "monochrome",
+    "monochrome-dark",
+    "monochrome-light",
+    "analogic",
+    "complement",
+    "analogic-complement",
+    "triad",
+    "quad"
+];
+let currentSchemeIndex = 0; // Start with the first scheme mode
+let currentSchemeMode = schemeModes[currentSchemeIndex];
 let color;
 let testColor;
 let titleColor;
+let schemeMode = "monochrome";
 async function getRandomColor() {
     try {
         const response = await fetch("https://x-colors.yurace.pro/api/random");
@@ -37,19 +55,24 @@ async function getRandomColor() {
 }
 async function loadAPI() {
     try {
-        const response = await fetch(`https://www.thecolorapi.com/scheme?hex=${testColor}&count=3`);
+        const response = await fetch(`https://www.thecolorapi.com/scheme?&mode=${currentSchemeMode}&hex=${testColor}&count=3`);
         const data = await response.json();
-        const color1 = data.colors[0].hex.value;
-        const color2 = data.colors[1].hex.value;
-        const color3 = data.colors[2].hex.value;
+        const color1 = data.colors[0][currentMode].value;
+        const color2 = data.colors[1][currentMode].value;
+        const color3 = data.colors[2][currentMode].value;
+        console.log(data.colors[1][currentMode]);
         titleColor = data.colors[1].name.value;
         // const gradientName = await generateGradientName(testColor);
         // bigTitleContainer.innerHTML = gradientName;
         bigTitleContainer.innerHTML = titleColor;
         document.body.style.background = `linear-gradient(1turn,${color1}, ${color2}, ${color3})`;
         document.body.classList.remove("hidden");
+        buttonToggleMode.innerHTML = `${currentMode.toUpperCase()}`;
+        buttonToggleScheme.innerHTML = `${currentSchemeMode.toUpperCase()}`;
         button1.style.backgroundColor = color3;
-        button2.style.backgroundColor = color3;
+        buttonFooter.style.backgroundColor = color3;
+        buttonToggleMode.style.backgroundColor = color3;
+        buttonToggleScheme.style.backgroundColor = color3;
         card.style.backgroundColor = color2;
         colorSection1.style.backgroundColor = color1;
         colorSection2.style.backgroundColor = color2;
@@ -80,7 +103,12 @@ async function loadAPI() {
         });
         cardFooter.style.backgroundColor = color3;
         cardHeader.style.backgroundColor = color3;
-        setTextColor(color3);
+        // setTextColor(color3);
+        setTextColor(data.colors[1].contrast.value);
+        // console.log(data.colors[1].contrast)
+        // titleContainer1.style.color = data.colors[0].contrast.value;  
+        // titleContainer2.style.color = data.colors[1].contrast.value;
+        // titleContainer3.style.color = data.colors[2].contrast.value;
     }
     catch (error) {
         console.error("Error:", error);
@@ -110,37 +138,14 @@ async function loadAPI() {
 //   }
 // }
 function setTextColor(hex) {
-    const rgbColor3 = hexToRgb(hex);
-    const luminance = rgbToLuminance(rgbColor3);
-    if (luminance < 0.5) {
-        bigTitleContainer.style.color = "#FFFFFF";
-        button1.style.color = "#FFFFFF";
-        button2.style.color = "#FFFFFF";
-        titleContainer1.style.color = "#FFFFFF";
-        titleContainer2.style.color = "#FFFFFF";
-        titleContainer3.style.color = "#FFFFFF";
-    }
-    else {
-        bigTitleContainer.style.color = "#000000";
-        button1.style.color = "#000000";
-        button2.style.color = "#000000";
-        titleContainer1.style.color = "#000000";
-        titleContainer2.style.color = "#000000";
-        titleContainer3.style.color = "#000000";
-    }
-}
-function hexToRgb(hex) {
-    const bigint = parseInt(hex.replace("#", ""), 16);
-    const r = (bigint >> 16) & 255;
-    const g = (bigint >> 8) & 255;
-    const b = bigint & 255;
-    return { r, g, b };
-}
-function rgbToLuminance({ r, g, b }) {
-    const normalizedR = r / 255;
-    const normalizedG = g / 255;
-    const normalizedB = b / 255;
-    return 0.2126 * normalizedR + 0.7152 * normalizedG + 0.0722 * normalizedB;
+    bigTitleContainer.style.color = hex;
+    button1.style.color = hex;
+    buttonToggleMode.style.color = hex;
+    buttonFooter.style.color = hex;
+    titleContainer1.style.color = hex;
+    titleContainer2.style.color = hex;
+    titleContainer3.style.color = hex;
+    buttonToggleScheme.style.color = hex;
 }
 cardContainer.addEventListener("mouseenter", () => {
     cardBounds = cardContainer.getBoundingClientRect();
@@ -149,6 +154,23 @@ cardContainer.addEventListener("mouseenter", () => {
 cardContainer.addEventListener("mouseleave", () => {
     cardContainer.removeEventListener("mousemove", handleHover);
     resetStyles();
+});
+buttonFooter.addEventListener("click", () => {
+    console.log("click");
+    getRandomColor().then(() => {
+        loadAPI();
+    });
+});
+buttonToggleMode.addEventListener("click", () => {
+    currentModeIndex = (currentModeIndex + 1) % colorModes.length;
+    currentMode = colorModes[currentModeIndex];
+    loadAPI();
+});
+buttonToggleScheme.addEventListener("click", () => {
+    currentSchemeIndex = (currentSchemeIndex + 1) % schemeModes.length;
+    currentSchemeMode = schemeModes[currentSchemeIndex];
+    console.log(`Scheme mode switched to: ${currentSchemeMode}`);
+    loadAPI();
 });
 function handleHover(e) {
     const { clientX, clientY, currentTarget } = e;

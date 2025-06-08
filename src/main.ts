@@ -2,23 +2,21 @@ const bigTitleContainer = document.querySelector("[data-js='big-title']") as HTM
 const titleContainer1 = document.querySelector("[data-js='colorname1']") as HTMLElement;
 const titleContainer2 = document.querySelector("[data-js='colorname2']") as HTMLElement;
 const titleContainer3 = document.querySelector("[data-js='colorname3']") as HTMLElement;
-
 const title1= document.querySelector("[data-js='title1']") as HTMLElement;
 const title2= document.querySelector("[data-js='title2']") as HTMLElement;
 const title3= document.querySelector("[data-js='title3']") as HTMLElement;
-
 const imgContainer = document.querySelector("[data-js='photo']") as HTMLElement;
-
 const colorSection1= document.querySelector("[data-js='colorname1']") as HTMLElement;
 const colorSection2= document.querySelector("[data-js='colorname2']") as HTMLElement;
 const colorSection3= document.querySelector("[data-js='colorname3']") as HTMLElement;
-
 const card = document.querySelector(".card") as HTMLElement;
 const cardContainer = document.querySelector(".cardContainer") as HTMLElement;
 const cardHeader = document.querySelector(".cardHeader") as HTMLElement;
 const cardFooter = document.querySelector(".cardFooter") as HTMLElement;
 const button1 = document.querySelector(".button1") as HTMLElement
-const button2 = document.querySelector(".button2") as HTMLElement
+const buttonToggleMode = document.querySelector(".buttonToggleMode") as HTMLElement;
+const buttonFooter = document.querySelector(".buttonFooter") as HTMLElement;
+const buttonToggleScheme = document.querySelector(".buttonToggleScheme") as HTMLElement;
 
 
 let cardBounds = card.getBoundingClientRect() as DOMRect;
@@ -26,9 +24,27 @@ let cardContainerBounds = cardContainer.getBoundingClientRect() as DOMRect;
 
 const threshold = 5;
 
+const colorModes = ["hex", "rgb", "hsl"];
+let currentModeIndex = 0;
+let currentMode = colorModes[currentModeIndex];
+
+const schemeModes = [
+    "monochrome",
+    "monochrome-dark",
+    "monochrome-light",
+    "analogic",
+    "complement",
+    "analogic-complement",
+    "triad",
+    "quad"
+];
+let currentSchemeIndex = 0; // Start with the first scheme mode
+let currentSchemeMode = schemeModes[currentSchemeIndex]
+
 let color : string
 let testColor : string
 let titleColor : string
+let schemeMode: string = "monochrome"
 
 async function getRandomColor() {
     try {
@@ -38,7 +54,6 @@ async function getRandomColor() {
         }
         const data = await response.json();
         testColor = data.hex.split("#")[1];
-        
 
     } catch (error) {
         console.error("Error: ", error);
@@ -46,15 +61,15 @@ async function getRandomColor() {
 }
 
 async function loadAPI() {
-
     try {
-        const response = await fetch(`https://www.thecolorapi.com/scheme?hex=${testColor}&count=3`);
+        const response = await fetch(`https://www.thecolorapi.com/scheme?&mode=${currentSchemeMode}&hex=${testColor}&count=3`);
         const data = await response.json();
 
+        const color1 = data.colors[0][currentMode].value;
+        const color2 = data.colors[1][currentMode].value;
+        const color3 = data.colors[2][currentMode].value;
 
-        const color1 = data.colors[0].hex.value;
-        const color2 = data.colors[1].hex.value;
-        const color3 = data.colors[2].hex.value;
+        console.log(data.colors[1][currentMode])
 
         titleColor = data.colors[1].name.value;
 
@@ -67,9 +82,14 @@ async function loadAPI() {
 
         document.body.classList.remove("hidden");
 
+        buttonToggleMode.innerHTML = `${currentMode.toUpperCase()}`;
+        buttonToggleScheme.innerHTML = `${currentSchemeMode.toUpperCase()}`;
+
 
         button1.style.backgroundColor = color3;
-        button2.style.backgroundColor = color3;
+        buttonFooter.style.backgroundColor = color3;
+        buttonToggleMode.style.backgroundColor = color3;
+        buttonToggleScheme.style.backgroundColor = color3;
 
         card.style.backgroundColor = color2;
 
@@ -107,11 +127,16 @@ async function loadAPI() {
             title3.classList.remove("visible");
         });
 
-
         cardFooter.style.backgroundColor = color3;
         cardHeader.style.backgroundColor = color3;
 
-        setTextColor(color3);
+        // setTextColor(color3);
+        setTextColor(data.colors[1].contrast.value)
+        // console.log(data.colors[1].contrast)
+
+        // titleContainer1.style.color = data.colors[0].contrast.value;  
+        // titleContainer2.style.color = data.colors[1].contrast.value;
+        // titleContainer3.style.color = data.colors[2].contrast.value;
 
     } catch (error) {
         console.error("Error:", error);
@@ -150,45 +175,15 @@ async function loadAPI() {
 
 
 function setTextColor(hex: string){
-        const rgbColor3 = hexToRgb(hex);
-        const luminance = rgbToLuminance(rgbColor3);
-
-        if (luminance < 0.5) {
-            bigTitleContainer.style.color = "#FFFFFF";
-            button1.style.color = "#FFFFFF";
-            button2.style.color = "#FFFFFF";
-            titleContainer1.style.color = "#FFFFFF";
-            titleContainer2.style.color = "#FFFFFF";
-            titleContainer3.style.color = "#FFFFFF";
-            
-        } else {
-            bigTitleContainer.style.color = "#000000"; 
-            button1.style.color = "#000000";
-            button2.style.color = "#000000";
-            titleContainer1.style.color = "#000000";
-            titleContainer2.style.color = "#000000";
-            titleContainer3.style.color = "#000000";
-        }
+        bigTitleContainer.style.color = hex;
+        button1.style.color = hex;
+        buttonToggleMode.style.color = hex;
+        buttonFooter.style.color = hex;
+        titleContainer1.style.color = hex;  
+        titleContainer2.style.color = hex;
+        titleContainer3.style.color = hex;
+        buttonToggleScheme.style.color = hex;
 }
-
-
-
-function hexToRgb(hex: string): { r: number; g: number; b: number } {
-    const bigint = parseInt(hex.replace("#", ""), 16);
-    const r = (bigint >> 16) & 255;
-    const g = (bigint >> 8) & 255;
-    const b = bigint & 255;
-    return {r,g,b};
-}
-
-function rgbToLuminance({r,g,b}: { r: number; g: number; b: number }): number {
-    const normalizedR = r / 255;
-    const normalizedG = g / 255;
-    const normalizedB = b / 255;
-
-    return 0.2126 * normalizedR + 0.7152 * normalizedG + 0.0722 * normalizedB;
-}
-
 
 
 cardContainer.addEventListener("mouseenter", () => {
@@ -199,6 +194,27 @@ cardContainer.addEventListener("mouseenter", () => {
 cardContainer.addEventListener("mouseleave", () => {
     cardContainer.removeEventListener("mousemove", handleHover);
     resetStyles();
+});
+
+buttonFooter.addEventListener("click", () => {
+    console.log("click")
+    getRandomColor().then(() => {
+        loadAPI();
+    })
+});
+
+buttonToggleMode.addEventListener("click", () => {
+    currentModeIndex = (currentModeIndex + 1) % colorModes.length;
+    currentMode = colorModes[currentModeIndex];
+    loadAPI(); 
+});
+
+buttonToggleScheme.addEventListener("click", () => {
+    currentSchemeIndex = (currentSchemeIndex + 1) % schemeModes.length;
+    currentSchemeMode = schemeModes[currentSchemeIndex];
+
+    console.log(`Scheme mode switched to: ${currentSchemeMode}`);
+    loadAPI();
 });
 
 function handleHover(e: MouseEvent) {
