@@ -235,7 +235,7 @@ a {
     display: flex;
     position:absolute;
     border-radius: 20px;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     background-color: var(--bg-secondary);
     box-shadow: var(--shadow);

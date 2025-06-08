@@ -11,7 +11,7 @@ ___
 ___
 
 ### To-Do/Ideas
-- [ ] buttons on cardfooter to switch from steps to gradient
 - [x] color names on the image
-- [ ] maybe name generator for gradient
 - [x] maybe button to switch from color name to rgb/hex/hsl etc
+- [ ] buttons on cardfooter to switch from steps to gradient
+- [ ] maybe name generator for gradient
