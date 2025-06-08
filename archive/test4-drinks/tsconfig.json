@@ -9,7 +9,8 @@
         "skipLibCheck": true,
         "outDir": "./dist",
         "rootDir": "./src",
+        // "composite": true 
     },
-    "include": ["./src/*"],
-    "exclude": ["./**/*.js"],
+    "include": ["./src/**/*"],
+    "exclude": ["./**/*.js"] 
 }

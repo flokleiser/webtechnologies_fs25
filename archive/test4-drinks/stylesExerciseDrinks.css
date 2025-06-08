@@ -1,0 +1,393 @@
+:root {
+    --primary-color: #000000;
+    --bg-primary: #333333;
+    --bg-secondary: #ffffff;
+    --text-color: #222222;
+    --text-color-two: #ffffff;
+    --card-text: #000000;
+    --shadow: 0 5px 30px rgba(0, 0, 0, 0.2);
+    --shadow-hover: 0 10px 30px rgba(0, 0, 0, 0.4);
+    --weight-small: 400;
+    --weight-semibold: 600;
+    --weight-bold: 800;
+    --width-small: 600px;
+    --width-medium: 1100px;
+    --width-large: 1300px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, sans-serif;
+}
+
+#loading-screen.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.card, .colorSection, .cardHeader, .cardFooter .buttonContainer1, .buttonContainer2, .buttonContainer3, .buttonContainer4 {
+    transition: background-color 0.2s ease;
+}
+
+.unselectable {
+  pointer-events: none;
+}
+
+body {
+    background-color: var(--bg-primary);
+    height:100vh;
+    transition: opacity 300ms ease;
+
+}
+
+body.hidden {
+    opacity: 0;
+    transition: opacity 300ms ease; 
+}
+
+p {
+    margin-bottom: 90px;
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary-color);
+}
+
+.main-image {
+    width: 100%;
+    /* height: 400px; */
+    height:100%;
+    display: flex;
+    justify-content: center;
+    border-radius: 20px;
+}
+
+.ingredients-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.colorSection {
+    height: 140px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.colorSectionName {
+    opacity:0;
+    height: 140px;
+    transition: opacity 300ms ease;
+}
+
+.visible{
+    height: 140px;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    margin-left: 1.5rem;
+    opacity:1;
+
+    transition: opacity 300ms ease;
+}
+
+
+.divider {
+    width: 100%;
+    height: 2px;
+    padding: 0;
+    background-color: var(--card-background);
+}
+
+h1 {
+    padding-left: 1.5rem;;
+}
+
+.cardContainer{
+    /* incase margin top is too small: */
+    /* margin: 100px auto 0 auto; */
+    /* margin: -30px auto  0 auto; */
+    margin: 0 auto 0 auto;
+
+    width: fit-content; 
+
+    transform-style: preserve-3d;
+    transition-duration: 300ms;
+    transition-property: transform, box-shadow, scale;
+    transition-timing-function: ease-out;
+}
+
+.cardContainer:hover {
+    transition-duration: 150ms;
+}
+
+.content {
+    position:relative;
+    z-index:1;
+    transition: transform 300ms ease;
+}
+
+.contentBottom {
+    position:relative;
+    z-index:1;
+    transition: transform 300ms ease;
+}
+
+.cardContainer:hover .content{
+    transform: translate(-50%, -20%) translateZ(12px);
+    transition: transform 300ms ease, 
+}
+
+.cardContainer:hover .contentBottom{
+    transform: translate(-50%, -70%) translateZ(12px);
+    transition: transform 300ms ease, 
+}
+
+.card-front {
+    height:100%;
+    width:100%;
+}
+
+.card {
+    width: 450px;
+    height: 700px;
+    /* margin: 40px auto 0 auto; */
+    /* padding-top:3%; */
+    scale:1;
+    background-color: var(--bg-secondary);
+    color: var(--card-text);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    transition-duration: 300ms;
+    transition-property: transform, box-shadow, scale;
+    transition-timing-function: ease-out;
+
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.card:hover {
+    box-shadow: var(--shadow-hover);
+    transition-duration: 150ms;
+}
+
+.cardHeader {
+    width: 430px;
+    height: 150px;
+    left:50%;
+    padding:20px;
+    z-index: 1;
+    transform: translate(-50%, -20%);
+
+    display: flex;
+    position:absolute;
+    border-radius: 20px;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--bg-secondary);
+    box-shadow: var(--shadow);
+
+    transition: box-shadow 250ms ease, transform 250ms ease;
+}
+
+.cardHeader:hover, 
+.cardFooter:hover {
+    box-shadow: var(--shadow-hover);
+    transition-duration: 250ms;
+}
+
+
+.cardFooter{
+    width: 430px;
+    height: 150px;
+    left:50%;
+    transform: translate(-50%, -70%);
+    padding:20px;
+    z-index: 1;
+
+    display: flex;
+    position:absolute;
+    border-radius: 20px;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--bg-secondary);
+    box-shadow: var(--shadow);
+
+    transition: box-shadow 250ms ease, transform 250ms ease;
+}
+
+.copyButton1,
+.copyButton2,
+.copyButton3 {
+    padding: 10px 10px;
+    border-radius: 5px;
+    min-width: 100px;
+    margin: 10px;
+    opacity:0;
+    border:none;
+    border-radius: 15px;
+    box-shadow: none;
+    background-color: transparent;
+
+    transition: opacity 300ms ease, background-color 300ms ease;
+}
+
+.copyButton1:hover,
+.copyButton2:hover,
+.copyButton3:hover {
+    cursor:pointer;
+    background-color: transparent;
+    transition: opacity 300ms ease, background-color 300ms ease;
+}
+
+
+.copyButton-visible {
+    opacity:1;
+}
+
+.copyButton1:active,
+.copyButton2:active,
+.copyButton3:active {
+    scale:1.05;
+    transition: scale 100ms ease;
+}
+
+
+
+.button1,
+.button2 {
+    padding: 10px 10px;
+    border-radius: 5px;
+    margin: 10px;
+    /* min-width:150px; */
+    background-color: var(--bg-secondary);
+    color: var(--card-text);
+    border:none;
+    font-weight: var(--weight-semibold);
+
+    transition-duration: 300ms;
+    transition-property: box-shadow;
+    transition-timing-function: ease-out;
+}
+
+.button1:hover,
+.button2:hover {
+    box-shadow: var(--shadow);
+    transition-duration: 150ms;
+    cursor:pointer;
+}
+
+
+.buttonContainer1,
+.buttonContainer2 {
+    height:55px;
+    width:120px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 15px;
+    box-shadow: none;
+
+    background-color: transparent;
+
+    /* transition: background-color 75ms ease-out, box-shadow 300ms ease; */
+    overflow: hidden; 
+}
+
+.buttonContainer3,
+.buttonContainer4 {
+    height:120px;
+    width:120px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 15px;
+    box-shadow: none;
+
+    background-color: transparent;
+
+    overflow: hidden; 
+}
+
+
+.buttonContainer1:hover,
+.buttonContainer2:hover,
+.buttonContainer3:hover,
+.buttonContainer4:hover {
+    background-color: var(--hover-color),
+}
+
+.buttonContainer1:active,
+.buttonContainer2:active,
+.buttonContainer3:active,
+.buttonContainer4:active {
+    background-color: var(--hover-color);
+    scale: 1.05;
+    transition: scale 100ms ease;
+}
+
+.fade-hidden {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.buttonReload {
+    color: var(--card-text);
+    border:none;
+    font-weight: var(--weight-semibold);
+
+    height:100%;
+    width:100%;
+
+    background-color: transparent;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition-duration: 300ms;
+    transition-property: transform;
+    transition-timing-function: ease;
+}
+
+.buttonReload:hover {
+    transform:rotate(80deg) scale(1.2);
+    cursor:pointer;
+    transition: transform 300ms ease;
+}
+
+.buttonToggleMode,
+.buttonToggleScheme,
+.buttonSettings {
+    color: var(--card-text);
+    border:none;
+    height:100%;
+    width:100%;
+
+    font-weight: var(--weight-semibold);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: transparent;
+    font-size: medium;
+
+    transition: box-shadow 300ms ease, background-color 300ms ease;
+}
+
+.buttonToggleMode:hover,
+.buttonToggleScheme:hover,
+.buttonSettings:hover {
+    cursor:pointer;
+}
