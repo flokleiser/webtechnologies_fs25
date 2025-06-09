@@ -11,31 +11,13 @@ const ingredientsSection = document.querySelector(".ingredients-section");
 let cardBounds = card.getBoundingClientRect();
 let cardContainerBounds = cardContainer.getBoundingClientRect();
 const threshold = 3;
-const key = window.env.UNSPLASH_ACCESS_KEY;
-const testName = "mac";
-console.log('this might not work on gh pages because api key');
-// async function fetchSomeImage(){
-//     try {
-//         const response = await fetch(`https://api.unsplash.com/search/photos?query=${testName}&per_page=1`, {
-//             headers: {
-//                 'Authorization': `Client-ID ${key}`
-//             }
-//         });
-//         const data = await response.json();
-//         if (data.results && data.results.length > 0) {
-//             return data.results[0].urls.small;
-//         }
-//     } catch (error) {
-//         console.error("Error:", error);
-//     }
-// }
 async function fetchIngredientImage(ingredientName) {
     try {
         const ingredientSeed = ingredientName.toLowerCase().replace(/\s+/g, '');
         // return `https://picsum.photos/seed/${ingredientSeed}/150/150`;
         const response = await fetch(`https://api.unsplash.com/search/photos?query=${ingredientSeed}&per_page=1`, {
             headers: {
-                'Authorization': `Client-ID ${key}`
+                'Authorization': `Client-ID bwurEy8CQo5GQY30eI8kTdLv7QM_b_2ssJyjMtOW9e4`
             }
         });
         const data = await response.json();
@@ -93,7 +75,7 @@ async function loadAPI() {
             }
             i++;
         }
-        console.log('Ingredients:', ingredients);
+        // console.log('Ingredients:', ingredients);
         await displayIngredients(ingredients);
     }
     catch (error) {
