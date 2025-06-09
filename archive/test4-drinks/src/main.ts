@@ -15,35 +15,14 @@ let cardContainerBounds = cardContainer.getBoundingClientRect() as DOMRect;
 
 const threshold = 3;
 
-
 interface Ingredient {
     name: string;
     measure?: string;
     imageUrl?: string;
 }
 
-
-async function fetchIngredientImage(ingredientName: string): Promise<string> {
-    try {
-        const ingredientSeed = ingredientName.toLowerCase().replace(/\s+/g, '');
-        // return `https://picsum.photos/seed/${ingredientSeed}/150/150`;
-        const response = await fetch(`https://api.unsplash.com/search/photos?query=${ingredientSeed}&per_page=1`, {
-            headers: {
-                'Authorization': `Client-ID bwurEy8CQo5GQY30eI8kTdLv7QM_b_2ssJyjMtOW9e4`
-            }
-        });
-
-        const data = await response.json();
-        if (data.results && data.results.length > 0) {
-            return data.results[0].urls.small;
-        } else {
-            console.warn(`No image found for ingredient: ${ingredientName}`);
-            return '';
-        }
-    } catch (error) {
-        console.error(`Error fetching image for ${ingredientName}:`, error);
-        return '';
-    }
+function getIngredientThumbnail(ingredientName: string): string {
+    return `https://www.thecocktaildb.com/images/ingredients/${ingredientName}.png`;
 }
 
 async function displayIngredients(ingredients: Ingredient[]) {
@@ -81,9 +60,6 @@ async function loadAPI() {
         const ingredients: Ingredient[] = [];
         let i = 1;
 
-        // await fetchSomeImage();
-        // cardImage.src = await fetchSomeImage() 
-
         while (drink[`strIngredient${i}`] !== null && drink[`strIngredient${i}`] !== undefined) {
             const ingredientName = drink[`strIngredient${i}`];
             const measure = drink[`strMeasure${i}`];
@@ -94,7 +70,6 @@ async function loadAPI() {
                     measure: measure ? measure.trim() : undefined
                 };
                 
-                ingredient.imageUrl = await fetchIngredientImage(ingredient.name);
                 ingredients.push(ingredient);
             }
             i++;
@@ -111,14 +86,12 @@ async function loadAPI() {
 function createIngredientBox(ingredient: Ingredient): HTMLElement {
     const ingredientBox = document.createElement('div');
     ingredientBox.className = 'ingredient-box';
-    
+
     const ingredientImage = document.createElement('img');
     ingredientImage.className = 'ingredient-image';
-    // ingredientImage.src = ingredient.imageUrl || '';
-    ingredientImage.src = ingredient.imageUrl || 'https://placehold.co/150';
+    ingredientImage.src = getIngredientThumbnail(ingredient.name);
     ingredientImage.alt = ingredient.name;
     ingredientImage.loading = 'lazy';
-    // ingredientImage.loading = 'eager';
     
     const ingredientName = document.createElement('div');
     ingredientName.className = 'ingredient-name';
