@@ -340,15 +340,15 @@ h1 {
 }
 
 .ingredient-image {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     border-radius: 8px;
     object-fit: cover;
     margin-bottom: 10px;
 }
 
 .ingredient-name {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: var(--weight-semibold);
     text-align: center;
     color: var(--card-text);
