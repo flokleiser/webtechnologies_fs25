@@ -75,7 +75,6 @@ async function loadAPI() {
             }
             i++;
         }
-        // console.log('Ingredients:', ingredients);
         await displayIngredients(ingredients);
     }
     catch (error) {

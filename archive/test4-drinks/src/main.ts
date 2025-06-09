@@ -15,11 +15,13 @@ let cardContainerBounds = cardContainer.getBoundingClientRect() as DOMRect;
 
 const threshold = 3;
 
+
 interface Ingredient {
     name: string;
     measure?: string;
     imageUrl?: string;
 }
+
 
 async function fetchIngredientImage(ingredientName: string): Promise<string> {
     try {
@@ -98,7 +100,6 @@ async function loadAPI() {
             i++;
         }
 
-        // console.log('Ingredients:', ingredients);
         
         await displayIngredients(ingredients);
 
