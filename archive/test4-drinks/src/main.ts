@@ -15,49 +15,56 @@ let cardContainerBounds = cardContainer.getBoundingClientRect() as DOMRect;
 
 const threshold = 3;
 
+const key = (window as any).env.UNSPLASH_ACCESS_KEY;
+const testName = "mac"
+
 interface Ingredient {
     name: string;
     measure?: string;
     imageUrl?: string;
 }
 
+console.log('this might not work on gh pages because api key')
+
+// async function fetchSomeImage(){
+//     try {
+//         const response = await fetch(`https://api.unsplash.com/search/photos?query=${testName}&per_page=1`, {
+//             headers: {
+//                 'Authorization': `Client-ID ${key}`
+//             }
+//         });
+
+//         const data = await response.json();
+//         if (data.results && data.results.length > 0) {
+//             return data.results[0].urls.small;
+//         }
+
+//     } catch (error) {
+//         console.error("Error:", error);
+//     }
+// }
+
 async function fetchIngredientImage(ingredientName: string): Promise<string> {
     try {
         const ingredientSeed = ingredientName.toLowerCase().replace(/\s+/g, '');
-        return `https://picsum.photos/seed/${ingredientSeed}/150/150`;
+        // return `https://picsum.photos/seed/${ingredientSeed}/150/150`;
+        const response = await fetch(`https://api.unsplash.com/search/photos?query=${ingredientSeed}&per_page=1`, {
+            headers: {
+                'Authorization': `Client-ID ${key}`
+            }
+        });
 
+        const data = await response.json();
+        if (data.results && data.results.length > 0) {
+            return data.results[0].urls.small;
+        } else {
+            console.warn(`No image found for ingredient: ${ingredientName}`);
+            return '';
+        }
     } catch (error) {
         console.error(`Error fetching image for ${ingredientName}:`, error);
-        // return `https://via.placeholder.com/150x150/cccccc/666666?text=${encodeURIComponent(ingredientName.substring(0, 3))}`;
-        return ''
+        return '';
     }
-}
-
-function createIngredientBox(ingredient: Ingredient): HTMLElement {
-    const ingredientBox = document.createElement('div');
-    ingredientBox.className = 'ingredient-box';
-    
-    const ingredientImage = document.createElement('img');
-    ingredientImage.className = 'ingredient-image';
-    ingredientImage.src = ingredient.imageUrl || '';
-    ingredientImage.alt = ingredient.name;
-    ingredientImage.loading = 'lazy';
-    
-    const ingredientName = document.createElement('div');
-    ingredientName.className = 'ingredient-name';
-    ingredientName.textContent = ingredient.name;
-    
-    const ingredientMeasure = document.createElement('div');
-    ingredientMeasure.className = 'ingredient-measure';
-    ingredientMeasure.textContent = ingredient.measure || '';
-    
-    ingredientBox.appendChild(ingredientImage);
-    ingredientBox.appendChild(ingredientName);
-    if (ingredient.measure) {
-        ingredientBox.appendChild(ingredientMeasure);
-    }
-    
-    return ingredientBox;
 }
 
 async function displayIngredients(ingredients: Ingredient[]) {
@@ -82,6 +89,7 @@ async function displayIngredients(ingredients: Ingredient[]) {
     }
 }
 
+
 async function loadAPI() {
     try {
         const response = await fetch("https://www.thecocktaildb.com/api/json/v1/1/random.php");
@@ -93,6 +101,9 @@ async function loadAPI() {
 
         const ingredients: Ingredient[] = [];
         let i = 1;
+
+        // await fetchSomeImage();
+        // cardImage.src = await fetchSomeImage() 
 
         while (drink[`strIngredient${i}`] !== null && drink[`strIngredient${i}`] !== undefined) {
             const ingredientName = drink[`strIngredient${i}`];
@@ -119,6 +130,34 @@ async function loadAPI() {
     }
 }
 
+function createIngredientBox(ingredient: Ingredient): HTMLElement {
+    const ingredientBox = document.createElement('div');
+    ingredientBox.className = 'ingredient-box';
+    
+    const ingredientImage = document.createElement('img');
+    ingredientImage.className = 'ingredient-image';
+    // ingredientImage.src = ingredient.imageUrl || '';
+    ingredientImage.src = ingredient.imageUrl || 'https://placehold.co/150';
+    ingredientImage.alt = ingredient.name;
+    ingredientImage.loading = 'lazy';
+    // ingredientImage.loading = 'eager';
+    
+    const ingredientName = document.createElement('div');
+    ingredientName.className = 'ingredient-name';
+    ingredientName.textContent = ingredient.name;
+    
+    const ingredientMeasure = document.createElement('div');
+    ingredientMeasure.className = 'ingredient-measure';
+    ingredientMeasure.textContent = ingredient.measure || '';
+    
+    ingredientBox.appendChild(ingredientImage);
+    ingredientBox.appendChild(ingredientName);
+    if (ingredient.measure) {
+        ingredientBox.appendChild(ingredientMeasure);
+    }
+    
+    return ingredientBox;
+}
 
 function loadEventListeners() {
     cardContainer.addEventListener("mouseenter", () => {
@@ -148,8 +187,6 @@ function loadEventListeners() {
         loadAPI();
     });
 } 
-
-
 
 function expandFooter() {
     cardFooter.style.width = "500px";
