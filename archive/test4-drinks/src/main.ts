@@ -6,6 +6,8 @@ const cardFooter = document.querySelector(".cardFooter") as HTMLElement;
 const buttonReload = document.querySelector(".buttonReload") as HTMLElement;
 const cardImage = document.querySelector(".main-image") as HTMLImageElement;
 
+const button1 = document.querySelector(".button1") as HTMLElement
+
 const ingredientsSection= document.querySelector(".ingredience-section") as HTMLElement;
 
 let cardBounds = card.getBoundingClientRect() as DOMRect;
@@ -85,6 +87,16 @@ function resetCardStyle() {
 
 document.addEventListener("DOMContentLoaded", async () => {
 
+
+    // document.body.classList.add("hidden"); 
+
     await loadAPI(); 
     loadEventListeners()
+
+    const loadingScreen = document.getElementById("loading-screen");
+    if (loadingScreen) {
+        loadingScreen.classList.add("fade-out");
+        setTimeout(() => loadingScreen.remove(), 500);
+    }
+
 });

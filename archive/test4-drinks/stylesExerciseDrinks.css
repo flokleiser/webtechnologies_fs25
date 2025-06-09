@@ -262,6 +262,7 @@ h1 {
 
 .button1,
 .button2 {
+    position: absolute;
     padding: 10px 10px;
     border-radius: 5px;
     margin: 10px;

@@ -20,6 +20,7 @@ const paletteHistoryExpanded = document.querySelector(".palette-history-expanded
 const paletteSwatches = [...document.querySelectorAll(".palette-swatch")];
 const buttonContainerPalette = document.querySelector(".buttonContainer-palette");
 const buttonContainerSettings = document.querySelector(".buttonContainer-settings");
+const button1 = document.querySelector(".button1");
 let settingsOpen = false;
 let paletteOpen = false;
 let cardBounds = card.getBoundingClientRect();
@@ -109,6 +110,7 @@ function setColors(color1, color2, color3, contrastColor) {
     copyColor2 = color2;
     copyColor3 = color3;
     card.style.backgroundColor = color2;
+    button1.style.backgroundColor = color3;
     titleContainers[0].style.backgroundColor = color1;
     titleContainers[1].style.backgroundColor = color2;
     titleContainers[2].style.backgroundColor = color3;
@@ -133,6 +135,7 @@ function setColors(color1, color2, color3, contrastColor) {
     buttonReload.style.color = contrastColor;
     buttonToggleScheme.style.color = contrastColor;
     buttonSettings.style.color = contrastColor;
+    button1.style.color = contrastColor;
     titleContainers.forEach((container) => {
         container.style.color = contrastColor;
     });

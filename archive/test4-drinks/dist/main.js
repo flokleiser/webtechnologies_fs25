@@ -6,6 +6,7 @@ const cardHeader = document.querySelector(".cardHeader");
 const cardFooter = document.querySelector(".cardFooter");
 const buttonReload = document.querySelector(".buttonReload");
 const cardImage = document.querySelector(".main-image");
+const button1 = document.querySelector(".button1");
 const ingredientsSection = document.querySelector(".ingredience-section");
 let cardBounds = card.getBoundingClientRect();
 let cardContainerBounds = cardContainer.getBoundingClientRect();
@@ -64,6 +65,12 @@ function resetCardStyle() {
     cardContainer.style.transform = `perspective(450px) rotateX(0deg) rotateY(0deg)`;
 }
 document.addEventListener("DOMContentLoaded", async () => {
+    // document.body.classList.add("hidden"); 
     await loadAPI();
     loadEventListeners();
+    const loadingScreen = document.getElementById("loading-screen");
+    if (loadingScreen) {
+        loadingScreen.classList.add("fade-out");
+        setTimeout(() => loadingScreen.remove(), 500);
+    }
 });
