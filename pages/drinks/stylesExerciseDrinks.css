@@ -14,10 +14,8 @@
     --width-small: 600px;
     --width-medium: 1100px;
     --width-large: 1300px;
-
     --bg-button: rgba(255, 255, 255, 0.3);
     --backdrop-blur: blur(20px);
-
 }
 
 * {
@@ -27,20 +25,14 @@
     font-family: system-ui, sans-serif;
 }
 
-.unselectable {
-  pointer-events: none;
-}
-
 body {
     background-color: var(--bg-primary);
-    height:100vh;
+    height: 100vh;
     transition: opacity 300ms ease;
-
 }
 
 body.hidden {
     opacity: 0;
-    transition: opacity 300ms ease; 
 }
 
 p {
@@ -52,114 +44,117 @@ a {
     color: var(--primary-color);
 }
 
+h1 {
+    padding-left: 1.5rem;
+}
+
 .main-image {
     width: 100%;
-    height:100%;
+    height: 100%;
     display: flex;
     justify-content: center;
     border-radius: 20px;
     object-fit: cover;
 }
 
-h1 {
-    padding-left: 1.5rem;;
+.unselectable {
+    pointer-events: none;
 }
 
-.cardContainer{
-    margin: 0 auto 0 auto;
-
-    width: fit-content; 
-
-    transform-style: preserve-3d;
+.cardContainer,
+.card {
     transition-duration: 300ms;
-    transition-property: transform, box-shadow, scale;
     transition-timing-function: ease-out;
+}
+
+.cardContainer {
+    margin: 0 auto;
+    width: fit-content;
+    transform-style: preserve-3d;
+    transition-property: transform, box-shadow, scale;
 }
 
 .cardContainer:hover {
     transition-duration: 150ms;
 }
 
-.content {
-    position:relative;
-    z-index:1;
-    transition: transform 300ms ease;
-}
-
-.contentBottom {
-    position:relative;
-    z-index:1;
-    transition: all 300ms ease;
-}
-
-.cardContainer:hover .content{
-    transform: translate(-50%, -30%) translateZ(12px);
-    transition: transform 300ms ease, 
-}
-
-.cardContainer:hover .contentBottom{
-    transform: translate(-50%, -60%) translateZ(12px);
-    transition: all 300ms ease;
-}
-
-.card-front {
-    height:100%;
-    width:100%;
-}
-
 .card {
     width: 450px;
     height: 700px;
-    scale:1;
+    scale: 1;
     background-color: var(--bg-secondary);
     color: var(--card-text);
     border-radius: 20px;
     box-shadow: var(--shadow);
-    transition-duration: 300ms;
-    transition-property: transform, box-shadow, scale;
-    transition-timing-function: ease-out;
-
-    display:flex;
+    display: flex;
     align-items: center;
     justify-content: center;
+    transition-property: transform, box-shadow, scale;
 }
-
 
 .card:hover {
     box-shadow: var(--shadow-hover);
     transition-duration: 150ms;
 }
 
-.cardHeader {
+.card-front {
+    height: 100%;
+    width: 100%;
+}
+
+.content,
+.contentBottom {
+    position: relative;
+    z-index: 1;
+    transition: transform 300ms ease;
+}
+
+.cardContainer:hover .content {
+    transform: translate(-50%, -30%) translateZ(12px);
+}
+
+.cardContainer:hover .contentBottom {
+    transform: translate(-50%, -60%) translateZ(12px);
+    transition: all 300ms ease;
+}
+
+.cardHeader,
+.cardFooter {
     width: 430px;
     height: 150px;
-    left:50%;
-    padding:20px;
+    left: 50%;
+    padding: 20px;
     z-index: 1;
-    transform: translate(-50%, -20%);
-
+    position: absolute;
     display: flex;
-    position:absolute;
     border-radius: 20px;
-    justify-content: space-between;
     align-items: center;
     background-color: var(--bg-button);
     backdrop-filter: var(--backdrop-blur);
-
     box-shadow: var(--shadow);
-
     transition: box-shadow 250ms ease, transform 250ms ease;
 }
 
-.cardHeader:hover {
+.cardHeader {
+    justify-content: space-between;
+    transform: translate(-50%, -20%);
+}
+
+.cardFooter {
+    justify-content: center;
+    transform: translate(-50%, -70%);
+    overflow: hidden;
+}
+
+.cardHeader:hover,
+.cardFooter:hover {
     box-shadow: var(--shadow-hover);
-    transition-duration: 250ms;
 }
 
 .cardFooter:hover .ingredient-box {
     width: calc(100% / 6);
-    height: 100%; 
-    flex-grow: 1; 
+    height: 100%;
+    flex-grow: 1;
     flex-basis: auto;
     transition: width 300ms ease, height 300ms ease, background-color 300ms ease;
 }
@@ -169,98 +164,83 @@ h1 {
     transition: opacity 300ms ease;
 }
 
-.cardFooter:hover {
-    transition: all 300ms ease;
-}
-
-
-.cardFooter{
-    width: 430px;
-    height: 150px;
-    left:50%;
-    transform: translate(-50%, -70%);
-    padding:20px;
-    z-index: 1;
-
+.button1,
+.button2,
+.buttonReload {
+    color: var(--card-text);
+    border: none;
+    font-weight: var(--weight-semibold);
+    background-color: transparent;
     display: flex;
-    position:absolute;
-    border-radius: 20px;
-    justify-content: center;
     align-items: center;
-    box-shadow: var(--shadow);
-    background-color: var(--bg-button);
-    backdrop-filter: var(--backdrop-blur);
-
-    overflow: hidden;
-
-    transition: box-shadow 250ms ease, transform 250ms ease;
+    justify-content: center;
+    transition-duration: 300ms;
+    transition-timing-function: ease;
 }
 
 .button1,
 .button2 {
     position: absolute;
-    padding: 10px 10px;
+    padding: 10px;
     border-radius: 5px;
     margin: 10px;
-
     background-color: var(--bg-button);
     backdrop-filter: var(--backdrop-blur);
-
-    color: var(--card-text);
-    border:none;
-    font-weight: var(--weight-semibold);
-
-    transition-duration: 300ms;
     transition-property: box-shadow;
-    transition-timing-function: ease-out;
+}
+
+.buttonReload {
+    height: 100%;
+    width: 100%;
+    transition-property: transform;
+}
+
+.button1:hover,
+.button2:hover,
+.buttonReload:hover {
+    cursor: pointer;
 }
 
 .button1:hover,
 .button2:hover {
     box-shadow: var(--shadow);
     transition-duration: 150ms;
-    cursor:pointer;
 }
 
+.buttonReload:hover {
+    transform: rotate(80deg) scale(1.2);
+}
 
 .buttonContainer1,
-.buttonContainer2 {
-    height:55px;
-    width:120px;
-
+.buttonContainer2,
+.buttonContainer3,
+.buttonContainer4 {
     display: flex;
     align-items: center;
     justify-content: center;
-
     border-radius: 15px;
     box-shadow: none;
-
+    overflow: hidden;
     background-color: transparent;
+}
 
-    overflow: hidden; 
+.buttonContainer1,
+.buttonContainer2 {
+    height: 55px;
+    width: 120px;
 }
 
 .buttonContainer3,
 .buttonContainer4 {
-    height:120px;
-    width:120px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 15px;
-    box-shadow: none;
-
-    overflow: hidden; 
+    height: 120px;
+    width: 120px;
 }
-
 
 .buttonContainer1:hover,
 .buttonContainer2:hover,
 .buttonContainer3:hover,
 .buttonContainer4:hover {
-    background-color: var(--hover-color),
+    background-color: var(--hover-color);
 }
 
 .buttonContainer1:active,
@@ -272,33 +252,6 @@ h1 {
     transition: scale 100ms ease;
 }
 
-
-.buttonReload {
-    color: var(--card-text);
-    border:none;
-    font-weight: var(--weight-semibold);
-
-    height:100%;
-    width:100%;
-
-    background-color: transparent;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    transition-duration: 300ms;
-    transition-property: transform;
-    transition-timing-function: ease;
-}
-
-.buttonReload:hover {
-    transform:rotate(80deg) scale(1.2);
-    cursor:pointer;
-    transition: transform 300ms ease;
-}
-
-
 .ingredients-section {
     display: flex;
     align-items: center;
@@ -306,32 +259,27 @@ h1 {
     flex-wrap: nowrap;
     gap: 6px;
     width: 100%;
-
-    height:120px;
+    height: 120px;
+    padding: 5px;
     overflow-x: hidden;
     overflow-y: hidden;
-    padding: 5px;
-
     transition: width 300ms ease, background-color 300ms ease;
 }
 
-
 .ingredient-box {
-    height:100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 6px;
     border-radius: 12px;
-
     cursor: pointer;
-
     transition: all 300ms ease;
 }
 
 .ingredient-box:hover {
-    background-color: var(--bg-secondary-two)
+    background-color: var(--bg-secondary-two);
 }
 
 .ingredient-image {
@@ -355,12 +303,11 @@ h1 {
 
 .ingredient-measure {
     font-size: 8px;
-    color: var(--card-text);
-    opacity: 0.7;
-    text-align: center;
     font-weight: var(--weight-small);
-    line-height: 1.1;
-
+    color: var(--card-text);
     opacity: 0;
+    text-align: center;
+    line-height: 1.1;
     transition: opacity 300ms ease;
 }
+
