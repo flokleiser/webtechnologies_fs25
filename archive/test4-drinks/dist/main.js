@@ -89,9 +89,6 @@ function loadEventListeners() {
         resetCardStyle();
         resetFooterState();
     });
-    buttonReload.addEventListener("click", () => {
-        loadAPI();
-    });
     cardFooter.addEventListener("mouseenter", () => {
         expandFooter();
     });

@@ -1,7 +1,6 @@
 :root {
     --primary-color: #000000;
-    --bg-primary: #333333;
-    /* --bg-primary: #ffffff; */
+    --bg-primary: #222222;
     --bg-secondary: #ffffff;
     --bg-secondary-two: #e3e3e3;
     --text-color: #222222;
@@ -15,6 +14,10 @@
     --width-small: 600px;
     --width-medium: 1100px;
     --width-large: 1300px;
+
+    --bg-button: rgba(255, 255, 255, 0.3);
+    --backdrop-blur: blur(20px);
+
 }
 
 * {
@@ -22,15 +25,6 @@
     margin: 0;
     padding: 0;
     font-family: system-ui, sans-serif;
-}
-
-#loading-screen.fade-out {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.card, .colorSection, .cardHeader, .cardFooter .buttonContainer1, .buttonContainer2, .buttonContainer3, .buttonContainer4, .ingredient-box {
-    transition: background-color 0.2s ease;
 }
 
 .unselectable {
@@ -60,33 +54,11 @@ a {
 
 .main-image {
     width: 100%;
-    /* height: 400px; */
     height:100%;
     display: flex;
     justify-content: center;
     border-radius: 20px;
     object-fit: cover;
-}
-
-
-
-.visible{
-    height: 140px;
-    display: flex;
-    flex-wrap: wrap;
-    align-content: center;
-    margin-left: 1.5rem;
-    opacity:1;
-
-    transition: opacity 300ms ease;
-}
-
-
-.divider {
-    width: 100%;
-    height: 2px;
-    padding: 0;
-    background-color: var(--card-background);
 }
 
 h1 {
@@ -117,7 +89,6 @@ h1 {
 .contentBottom {
     position:relative;
     z-index:1;
-    /* transition: transform 300ms ease; */
     transition: all 300ms ease;
 }
 
@@ -127,9 +98,7 @@ h1 {
 }
 
 .cardContainer:hover .contentBottom{
-    /* width: 500px; */
     transform: translate(-50%, -60%) translateZ(12px);
-    /* transition: scale 300ms ease, transform 300ms ease,  */
     transition: all 300ms ease;
 }
 
@@ -141,8 +110,6 @@ h1 {
 .card {
     width: 450px;
     height: 700px;
-    /* margin: 40px auto 0 auto; */
-    /* padding-top:3%; */
     scale:1;
     background-color: var(--bg-secondary);
     color: var(--card-text);
@@ -176,7 +143,9 @@ h1 {
     border-radius: 20px;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--bg-secondary);
+    background-color: var(--bg-button);
+    backdrop-filter: var(--backdrop-blur);
+
     box-shadow: var(--shadow);
 
     transition: box-shadow 250ms ease, transform 250ms ease;
@@ -187,11 +156,6 @@ h1 {
     transition-duration: 250ms;
 }
 
-/* .cardFooter:hover {
-    box-shadow: var(--shadow-hover);
-    transition-duration: 250ms;
-} */
-
 .cardFooter:hover .ingredient-box {
     width: calc(100% / 6);
     height: 100%; 
@@ -200,8 +164,12 @@ h1 {
     transition: width 300ms ease, height 300ms ease, background-color 300ms ease;
 }
 
+.cardFooter:hover .ingredient-measure {
+    opacity: 1;
+    transition: opacity 300ms ease;
+}
+
 .cardFooter:hover {
-    /* transition: background-color 300ms ease; */
     transition: all 300ms ease;
 }
 
@@ -219,8 +187,9 @@ h1 {
     border-radius: 20px;
     justify-content: center;
     align-items: center;
-    background-color: var(--bg-secondary);
     box-shadow: var(--shadow);
+    background-color: var(--bg-button);
+    backdrop-filter: var(--backdrop-blur);
 
     overflow: hidden;
 
@@ -233,7 +202,10 @@ h1 {
     padding: 10px 10px;
     border-radius: 5px;
     margin: 10px;
-    background-color: var(--bg-secondary);
+
+    background-color: var(--bg-button);
+    backdrop-filter: var(--backdrop-blur);
+
     color: var(--card-text);
     border:none;
     font-weight: var(--weight-semibold);
@@ -265,7 +237,6 @@ h1 {
 
     background-color: transparent;
 
-    /* transition: background-color 75ms ease-out, box-shadow 300ms ease; */
     overflow: hidden; 
 }
 
@@ -280,9 +251,6 @@ h1 {
 
     border-radius: 15px;
     box-shadow: none;
-
-    /* background-color: transparent; */
-    background-color: var(--bg-secondary-two);
 
     overflow: hidden; 
 }
@@ -304,10 +272,6 @@ h1 {
     transition: scale 100ms ease;
 }
 
-.fade-hidden {
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
 
 .buttonReload {
     color: var(--card-text);
@@ -359,7 +323,6 @@ h1 {
     align-items: center;
     justify-content: center;
     padding: 6px;
-    background-color: var(--bg-secondary-two);
     border-radius: 12px;
 
     cursor: pointer;
@@ -368,17 +331,15 @@ h1 {
 }
 
 .ingredient-box:hover {
-
-    background-color: var(--bg-secondary)
+    background-color: var(--bg-secondary-two)
 }
 
 .ingredient-image {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     border-radius: 8px;
     object-fit: cover;
-    margin-bottom: 4px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
 }
 
 .ingredient-name {
@@ -399,4 +360,7 @@ h1 {
     text-align: center;
     font-weight: var(--weight-small);
     line-height: 1.1;
+
+    opacity: 0;
+    transition: opacity 300ms ease;
 }

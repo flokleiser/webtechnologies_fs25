@@ -118,9 +118,7 @@ h1 {
 }
 
 .cardContainer{
-    /* incase margin top is too small: */
-    /* margin: 100px auto 0 auto; */
-    /* margin: -30px auto  0 auto; */
+
     margin: 0 auto 0 auto;
 
     width: fit-content; 
@@ -164,7 +162,6 @@ h1 {
 .card {
     width: 450px;
     height: 700px;
-    /* margin: 40px auto 0 auto; */
     padding-top:3%;
     scale:1;
     background-color: var(--bg-secondary);
@@ -275,7 +272,6 @@ h1 {
     padding: 10px 10px;
     border-radius: 5px;
     margin: 10px;
-    /* min-width:150px; */
     background-color: var(--bg-secondary);
     color: var(--card-text);
     border:none;
@@ -308,7 +304,6 @@ h1 {
 
     background-color: transparent;
 
-    /* transition: background-color 75ms ease-out, box-shadow 300ms ease; */
     overflow: hidden; 
 }
 
@@ -421,9 +416,7 @@ h1 {
     justify-content: flex-end;
 }
 
-/* .settings-section .active {
-    
-} */
+
 
 .palette-section {
     justify-content: flex-start;
@@ -518,7 +511,6 @@ h1 {
 }
 
 .history-container {
-    /* width:80px; */
     height:120px;
 
     position: relative;

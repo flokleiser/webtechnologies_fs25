@@ -122,10 +122,6 @@ function loadEventListeners() {
         resetFooterState();
     });
 
-    buttonReload.addEventListener("click", () => {
-        loadAPI();
-    });
-
     cardFooter.addEventListener("mouseenter", () => {
         expandFooter();
     });
