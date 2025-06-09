@@ -16,7 +16,10 @@ const buttonSettings = document.querySelector(".buttonSettings") as HTMLElement;
 const historyBar = document.querySelector(".history-bar") as HTMLElement;
 const buttonPalette = document.querySelector(".buttonPalette") as HTMLElement;
 const settingsExpanded = document.querySelector(".settings-expanded") as HTMLElement;
+
 const settingsSection = document.querySelector(".settings-section") as HTMLElement;
+const paletteSection = document.querySelector(".palette-section") as HTMLElement;
+
 const paletteHistoryExpanded = document.querySelector(".palette-history-expanded") as HTMLElement;
 const paletteSwatches = [...document.querySelectorAll<HTMLElement>(".palette-swatch")];
 const buttonContainerPalette = document.querySelector(".buttonContainer-palette") as HTMLElement;
@@ -100,7 +103,7 @@ async function loadAPI(testColor: string) {
         // contrastColor = data.colors[0].hex.value;
 
         transparentColor = data.colors[1].hex.value + "80";
-        console.log(transparentColor);
+        // console.log(transparentColor);
 
         titleColor = data.colors[1].name.value;
         console.log(data.colors[1].name.value)
@@ -113,16 +116,14 @@ async function loadAPI(testColor: string) {
             }
         }
 
-        console.log(titleColor);
-
-
         bigTitleContainer.innerHTML = titleColor;
 
         document.body.classList.remove("hidden");
 
-        buttonToggleMode.innerHTML = `${currentMode.toUpperCase()}`;
+        // buttonToggleMode.innerHTML = `${currentMode.toUpperCase()}`;
+        buttonToggleMode.innerHTML = (currentMode === "hex" ? "#HEX" : currentMode === "rgb" ? "(R,G,B)" : "(H,S,L)");
+
         buttonToggleScheme.innerHTML = `${currentSchemeMode.toUpperCase().slice(0,4)}`;
-        // buttonToggleScheme.innerHTML = `${currentSchemeMode.toUpperCase()}`;
 
         setColors(color1, color2, color3, contrastColor);
 
@@ -199,6 +200,9 @@ function setColors(color1:string,color2:string,color3:string,contrastColor:strin
     copyButtons.forEach((button) => {
         button.style.color = contrastColor;
     });
+
+    // settingsSection.style.backgroundColor = settingsOpen ? "transparent" : color2;
+    // console.log(settingsSection.style.backgroundColor);
 
     preserveHoverState();
 }
@@ -277,7 +281,7 @@ function loadEventListeners() {
         currentSchemeIndex = (currentSchemeIndex + 1) % schemeModes.length;
         currentSchemeMode = schemeModes[currentSchemeIndex];
 
-        console.log(`Scheme mode switched to: ${currentSchemeMode}`);
+        // console.log(`Scheme mode switched to: ${currentSchemeMode}`);
         loadAPI(testColor);
     });
 
@@ -303,19 +307,24 @@ function loadEventListeners() {
 
      buttonSettings.addEventListener("click", () => {
         settingsOpen = !settingsOpen;
+
+        console.log(settingsSection.style.backgroundColor);
         
         if (settingsOpen) {
             settingsExpanded.classList.add("expanded");
             buttonContainerPalette.classList.add("shrunk");
+            // settingsSection.style.backgroundColor = currentColors[0];
 
             if (paletteOpen) {
                 paletteOpen = false;
                 paletteHistoryExpanded.classList.remove("expanded");
                 buttonContainerPalette.classList.add("shrunk");
+                // paletteSection.style.backgroundColor = "transparent";
             }
         } else {
             settingsExpanded.classList.remove("expanded");
             buttonContainerPalette.classList.remove("shrunk");
+            // settingsSection.style.backgroundColor = "transparent";
         }
         
         console.log(`Settings ${settingsOpen ? "open" : "closed"}`);
@@ -328,14 +337,18 @@ function loadEventListeners() {
             updateHistoryBar();
             paletteHistoryExpanded.classList.add("expanded");
             buttonContainerSettings.classList.add("shrunk")
+            // paletteSection.style.backgroundColor = currentColors[0];
+
             if (settingsOpen) {
                 settingsOpen = false;
                 settingsExpanded.classList.remove("expanded");
                 buttonContainerPalette.classList.remove("shrunk");
+                // settingsSection.style.backgroundColor = "transparent";
             }
         } else {
             paletteHistoryExpanded.classList.remove("expanded");
             buttonContainerSettings.classList.remove("shrunk")
+            // paletteSection.style.backgroundColor = "transparent";
         }
         
         console.log(`Palette ${paletteOpen ? "open" : "closed"}`, 'History length:', paletteHistory.length);

@@ -26,9 +26,23 @@
 }
 
 body {
-    background-color: var(--bg-primary);
     height: 100vh;
     transition: opacity 300ms ease;
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-image: var(--background-image);
+    filter: blur(150px);
+    z-index: -1;
+    transition: background-image 300ms ease, filter 300ms ease;
 }
 
 body.hidden {
@@ -48,6 +62,26 @@ h1 {
     padding-left: 1.5rem;
 }
 
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease;
+}
+
+#loading-screen.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
 .main-image {
     width: 100%;
     height: 100%;
@@ -55,7 +89,15 @@ h1 {
     justify-content: center;
     border-radius: 20px;
     object-fit: cover;
+    opacity: 0;
+    transition: opacity 500ms ease;
 }
+
+
+.main-image.loaded {
+    opacity: 1;
+}
+
 
 .unselectable {
     pointer-events: none;
@@ -142,7 +184,7 @@ h1 {
     background-color: var(--bg-button);
     backdrop-filter: var(--backdrop-blur);
     box-shadow: var(--shadow);
-    transition: box-shadow 250ms ease, transform 250ms ease;
+    transition: width 300ms ease, box-shadow 250ms ease, transform 250ms ease;
 }
 
 .cardHeader {
@@ -171,6 +213,7 @@ h1 {
 
 .cardFooter:hover .ingredient-measure {
     opacity: 1;
+    display:block;
     transition: opacity 300ms ease;
 }
 
@@ -232,6 +275,7 @@ h1 {
     box-shadow: none;
     overflow: hidden;
     background-color: transparent;
+    transition: background-color 300ms ease;
 }
 
 .buttonContainer1,
@@ -250,7 +294,9 @@ h1 {
 .buttonContainer2:hover,
 .buttonContainer3:hover,
 .buttonContainer4:hover {
-    background-color: var(--hover-color);
+    /* background-color: var(--hover-color); */
+    background-color: var(--bg-secondary-two);
+    transition: background-color 300ms ease;
 }
 
 .buttonContainer1:active,
@@ -277,7 +323,8 @@ h1 {
 }
 
 .ingredient-box {
-    height: 100%;
+    /* height: 100%; */
+    /* height:120px; */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -301,23 +348,25 @@ h1 {
 }
 
 .ingredient-name {
-    font-size: 10px;
+    font-size: 13px;
     font-weight: var(--weight-semibold);
     text-align: center;
     color: var(--card-text);
     line-height: 1.2;
     margin-bottom: 2px;
-    word-wrap: break-word;
+    /* word-wrap: break-word; */
+    word-wrap:normal;
     max-width: 100%;
 }
 
 .ingredient-measure {
-    font-size: 8px;
+    font-size: 12px;
     font-weight: var(--weight-small);
     color: var(--card-text);
     opacity: 0;
     text-align: center;
     line-height: 1.1;
     transition: opacity 300ms ease;
+    display:none;
 }
 
