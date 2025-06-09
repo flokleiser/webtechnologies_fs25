@@ -47,6 +47,7 @@ let color : string
 let testColor : string
 let titleColor : string
 let contrastColor : string;
+let transparentColor: string
 
 let copyColor1 : string;
 let copyColor2 : string;
@@ -98,6 +99,8 @@ async function loadAPI(testColor: string) {
         contrastColor = data.colors[1].contrast.value;
         // contrastColor = data.colors[0].hex.value;
 
+        transparentColor = data.colors[1].hex.value + "80";
+        console.log(transparentColor);
 
         titleColor = data.colors[1].name.value;
         console.log(data.colors[1].name.value)
@@ -153,7 +156,8 @@ function setColors(color1:string,color2:string,color3:string,contrastColor:strin
     copyColor3 = color3
 
     card.style.backgroundColor = color2;
-    button1.style.backgroundColor = color3;
+    // button1.style.backgroundColor = color3;
+    button1.style.backgroundColor = transparentColor;
 
     titleContainers[0].style.backgroundColor = color1;
     titleContainers[1].style.backgroundColor = color2;
@@ -437,11 +441,11 @@ function handleCardHover(e: MouseEvent) {
     const rotateX = (horizontal * threshold - threshold / 2).toFixed(2);
     const rotateY = (threshold / 2 - vertical * threshold).toFixed(2);
 
-    cardContainer.style.transform = `perspective(${clientWidth}px) rotateX(${rotateY}deg) rotateY(${rotateX}deg) scale3d(1.015, 1.015, 1.015)`;
+    cardContainer.style.transform = `translate(-50%, -50%) perspective(${clientWidth}px) rotateX(${rotateY}deg) rotateY(${rotateX}deg) scale3d(1.015, 1.015, 1.015)`;
 }
 
 function resetCardStyle() {
-    cardContainer.style.transform = `perspective(450px) rotateX(0deg) rotateY(0deg)`;
+    cardContainer.style.transform = `translate(-50%, -50%) perspective(450px) rotateX(0deg) rotateY(0deg)`;
 }
 
 document.addEventListener("DOMContentLoaded", async () => {

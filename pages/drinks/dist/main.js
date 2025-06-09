@@ -119,10 +119,10 @@ function handleCardHover(e) {
     const vertical = (clientY - offsetTop) / clientHeight;
     const rotateX = (horizontal * threshold - threshold / 2).toFixed(2);
     const rotateY = (threshold / 2 - vertical * threshold).toFixed(2);
-    cardContainer.style.transform = `perspective(${clientWidth}px) rotateX(${rotateY}deg) rotateY(${rotateX}deg) scale3d(1.015, 1.015, 1.015)`;
+    cardContainer.style.transform = `translate(-50%, -50%) perspective(${clientWidth}px) rotateX(${rotateY}deg) rotateY(${rotateX}deg) scale3d(1.015, 1.015, 1.015)`;
 }
 function resetCardStyle() {
-    cardContainer.style.transform = `perspective(450px) rotateX(0deg) rotateY(0deg)`;
+    cardContainer.style.transform = `translate(-50%, -50%) perspective(450px) rotateX(0deg) rotateY(0deg)`;
 }
 document.addEventListener("DOMContentLoaded", async () => {
     await loadAPI();

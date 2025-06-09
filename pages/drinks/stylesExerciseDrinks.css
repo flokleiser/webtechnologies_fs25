@@ -61,7 +61,17 @@ h1 {
     pointer-events: none;
 }
 
-.cardContainer,
+.cardContainer {
+    position: fixed; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    margin: 0 auto;
+    width: fit-content;
+    transform-style: preserve-3d;
+    transition: transform 300ms ease-out, box-shadow 300ms ease-out, scale 300ms ease-out;
+}
+
 .card {
     transition-duration: 300ms;
     transition-timing-function: ease-out;

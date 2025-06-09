@@ -39,6 +39,7 @@ let color;
 let testColor;
 let titleColor;
 let contrastColor;
+let transparentColor;
 let copyColor1;
 let copyColor2;
 let copyColor3;
@@ -71,6 +72,8 @@ async function loadAPI(testColor) {
         const [color1, color2, color3] = colors;
         contrastColor = data.colors[1].contrast.value;
         // contrastColor = data.colors[0].hex.value;
+        transparentColor = data.colors[1].hex.value + "80";
+        console.log(transparentColor);
         titleColor = data.colors[1].name.value;
         console.log(data.colors[1].name.value);
         if (titleColor.length > 13) {
@@ -110,7 +113,8 @@ function setColors(color1, color2, color3, contrastColor) {
     copyColor2 = color2;
     copyColor3 = color3;
     card.style.backgroundColor = color2;
-    button1.style.backgroundColor = color3;
+    // button1.style.backgroundColor = color3;
+    button1.style.backgroundColor = transparentColor;
     titleContainers[0].style.backgroundColor = color1;
     titleContainers[1].style.backgroundColor = color2;
     titleContainers[2].style.backgroundColor = color3;
@@ -337,10 +341,12 @@ function handleCardHover(e) {
     const vertical = (clientY - offsetTop) / clientHeight;
     const rotateX = (horizontal * threshold - threshold / 2).toFixed(2);
     const rotateY = (threshold / 2 - vertical * threshold).toFixed(2);
-    cardContainer.style.transform = `perspective(${clientWidth}px) rotateX(${rotateY}deg) rotateY(${rotateX}deg) scale3d(1.015, 1.015, 1.015)`;
+    cardContainer.style.transform = `translate(-50%, -50%) perspective(${clientWidth}px) rotateX(${rotateY}deg) rotateY(${rotateX}deg) scale3d(1.015, 1.015, 1.015)`;
+    // cardContainer.style.transform = `perspective(${clientWidth}px) rotateX(${rotateY}deg) rotateY(${rotateX}deg) scale3d(1.015, 1.015, 1.015)`;
 }
 function resetCardStyle() {
-    cardContainer.style.transform = `perspective(450px) rotateX(0deg) rotateY(0deg)`;
+    // cardContainer.style.transform = `perspective(450px) rotateX(0deg) rotateY(0deg)`;
+    cardContainer.style.transform = `translate(-50%, -50%) perspective(450px) rotateX(0deg) rotateY(0deg)`;
 }
 document.addEventListener("DOMContentLoaded", async () => {
     document.body.classList.add("hidden");
