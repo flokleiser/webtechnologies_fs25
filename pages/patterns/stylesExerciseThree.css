@@ -228,6 +228,7 @@ h1 {
 .buttonHilbert,
 .buttonTruchet,
 .buttonGrid,
+.buttonTest,
 .buttonReload {
     color: var(--card-text);
     border: none;
@@ -254,6 +255,7 @@ h1 {
 .buttonReload,
 .buttonHilbert,
 .buttonGrid,
+.buttonTest,
 .buttonTruchet {
     height: 100%;
     width: 100%;
@@ -265,6 +267,7 @@ h1 {
 .buttonHilbert,
 .buttonTruchet,
 .buttonGrid,
+.buttonTest,
 .buttonReload:hover {
     cursor: pointer;
 }

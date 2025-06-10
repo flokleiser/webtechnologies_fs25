@@ -1,9 +1,11 @@
 # ZHdK Interaction Design FS25
-___
+<!-- ___ -->
 
-## Module: Webtechnologies | Student: Florian Kleiser
+### Module: Webtechnologies | Student: Florian Kleiser
 
-___
+<!-- ___ -->
+
+### flokleiser.github.io/webtechnologies_fs25/
 
 - https://www.thecolorapi.com/docs
 - https://publicapi.dev/x-colors-api

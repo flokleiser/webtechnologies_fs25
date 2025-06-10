@@ -12,12 +12,15 @@ const button2 = document.querySelector(".button2");
 const buttonHilbert = document.querySelector(".buttonHilbert");
 const buttonTruchet = document.querySelector(".buttonTruchet");
 const buttonGrid = document.querySelector(".buttonGrid");
+const buttonTest = document.querySelector(".buttonTest");
 let cardBounds = card.getBoundingClientRect();
 let cardContainerBounds = cardContainer.getBoundingClientRect();
 const threshold = 3;
 let randomOrder;
 let previousRandomOrder;
-let activeMode = "Truchet";
+// const palette = ["#f8f9fa","#e9ecef","#dee2e6","#ced4da","#adb5bd","#6c757d","#495057","#343a40","#212529"]
+const palette = ["#999999", "#777777", "#555555", "#333333", "#111111"];
+let activeMode = "Pattern";
 let tiles = [];
 let rows = 10;
 let cols;
@@ -64,6 +67,9 @@ function drawOnCanvas(activeMode) {
     }
     else if (activeMode === "Grid") {
         drawGrid(canvasCard, ctxCard);
+    }
+    else if (activeMode === "Pattern") {
+        drawTestPattern(canvasCard, ctxCard);
     }
 }
 function drawHilbertCurve(order, canvas, ctx) {
@@ -124,9 +130,12 @@ function drawTruchetTiling(canvas, ctx) {
             const y = (canvas.height * j) / cols;
             ctx.lineWidth = 2;
             if (tiles[i][j]) {
+                //p5js equivalent, for future reference
+                //arc(x, y, s, s, 0, PI / 2);
                 ctx.beginPath();
                 ctx.arc(x, y, s / 2, 0, Math.PI / 2);
                 ctx.stroke();
+                //arc(x + s, y + s, s, s, PI, (3 * PI) / 2);                
                 ctx.beginPath();
                 ctx.arc(x + s, y + s, s / 2, Math.PI, (3 * Math.PI) / 2);
                 ctx.stroke();
@@ -241,6 +250,56 @@ function stopAnimation() {
         animationID = null;
     }
 }
+function drawTestPattern(canvas, ctx) {
+    let s = canvas.width / 5;
+    for (let x = 0; x < canvas.width; x += s) {
+        for (let y = 0; y < canvas.height; y += s) {
+            if (Math.random() < 1 / 2) {
+                makeTile(x, y, s / 2, canvas, ctx);
+                makeTile(x + s / 2, y, s / 2, canvas, ctx);
+                makeTile(x, y + s / 2, s / 2, canvas, ctx);
+                makeTile(x + s / 2, y + s / 2, s / 2, canvas, ctx);
+            }
+            else {
+                makeTile(x, y, s, canvas, ctx);
+            }
+        }
+    }
+}
+function makeTile(x, y, s, canvas, ctx) {
+    ctx.fillStyle = palette[Math.floor(Math.random() * 9) + 1];
+    ctx.fill();
+    ctx.rect(x, y, s, s);
+    ctx.save();
+    ctx.translate(x + s / 2, y + s / 2);
+    const angles = [0, Math.PI / 2, Math.PI, (3 * Math.PI) / 2];
+    ctx.rotate(angles[Math.floor(Math.random() * angles.length)]);
+    ctx.fillStyle = palette[Math.floor(Math.random() * 9) + 1];
+    let r = Math.floor(Math.random() * 3);
+    if (r == 0) {
+        // ctx.beginPath();
+        // ctx.arc(-s/2, 0, s/2, 0 , Math.PI);
+        // ctx.stroke()
+        ctx.beginPath();
+        ctx.moveTo(-s / 2, 0);
+        ctx.lineTo(0, -s / 2);
+        ctx.lineTo(s / 2, 0);
+        ctx.closePath();
+        ctx.fill();
+    }
+    else if (r == 1) {
+        ctx.rect(-s / 2, -s / 2, s / 2, s);
+    }
+    else if (r == 2) {
+        ctx.beginPath();
+        ctx.moveTo(-s / 2, -s / 2);
+        ctx.lineTo(s / 2, -s / 2);
+        ctx.lineTo(-s / 2, s / 2);
+        ctx.closePath();
+        ctx.fill();
+    }
+    ctx.restore();
+}
 function loadEventListeners() {
     cardContainer.addEventListener("mouseenter", () => {
         cardBounds = cardContainer.getBoundingClientRect();
@@ -259,6 +318,9 @@ function loadEventListeners() {
         }
         else if (activeMode === "Grid") {
             loadCard("Grid");
+        }
+        else if (activeMode === "Pattern") {
+            loadCard("Pattern");
         }
     });
     buttonHilbert.addEventListener("click", () => {
@@ -284,6 +346,11 @@ function loadEventListeners() {
             stopAnimation();
             // drawOnCanvas("Grid");
         }
+    });
+    buttonTest.addEventListener("click", () => {
+        activeMode = "Pattern";
+        loadCard("Pattern");
+        stopAnimation();
     });
 }
 function handleCardHover(e) {
