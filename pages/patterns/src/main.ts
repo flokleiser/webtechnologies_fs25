@@ -24,7 +24,7 @@ let previousRandomOrder: number;
 // const palette = ["#f8f9fa","#e9ecef","#dee2e6","#ced4da","#adb5bd","#6c757d","#495057","#343a40","#212529"]
 const palette = ["#999999","#777777","#555555","#333333","#111111"]
 
-let activeMode: "Hilbert" | "Truchet" | "Grid" | "Pattern" = "Pattern";
+let activeMode: "Hilbert" | "Truchet" | "Grid" | "Pattern" = "Truchet";
 
 let tiles: string[][] = [];
 let rows: number = 10;
