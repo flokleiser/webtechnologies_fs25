@@ -161,14 +161,6 @@ h1 {
     transition: transform 300ms ease;
 }
 
-.cardContainer:hover .content {
-    transform: translate(-50%, -30%) translateZ(12px);
-}
-
-.cardContainer:hover .contentBottom {
-    transform: translate(-50%, -60%) translateZ(12px);
-    transition: all 300ms ease;
-}
 
 .cardHeader,
 .cardFooter {
@@ -194,8 +186,17 @@ h1 {
 
 .cardFooter {
     justify-content: center;
-    transform: translate(-50%, -70%);
+    transform: translate(-50%, -80%);
     overflow: hidden;
+}
+
+.cardContainer:hover .content {
+    transform: translate(-50%, -30%) translateZ(12px);
+}
+
+.cardContainer:hover .contentBottom {
+    transform: translate(-50%, -70%) translateZ(12px);
+    transition: all 300ms ease;
 }
 
 .cardHeader:hover,

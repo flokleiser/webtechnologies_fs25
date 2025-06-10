@@ -148,14 +148,6 @@ h1 {
     transition: transform 300ms ease;
 }
 
-.cardContainer:hover .content {
-    transform: translate(-50%, -20%) translateZ(12px);
-}
-
-.cardContainer:hover .contentBottom {
-    transform: translate(-50%, -70%) translateZ(12px);
-}
-
 .card-front {
     width: 100%;
 }
@@ -163,7 +155,7 @@ h1 {
 .card {
     width: 450px;
     height: 700px;
-    padding-top: 3%;
+    /* padding-top: 3%; */
     scale: 1;
     background-color: var(--bg-secondary);
     color: var(--card-text);
@@ -205,7 +197,15 @@ h1 {
 .cardFooter {
     padding-left:10px;
     padding-right:10px;
-    transform: translate(-50%, -70%);
+    transform: translate(-50%, -80%);
+}
+
+.cardContainer:hover .content {
+    transform: translate(-50%, -30%) translateZ(12px);
+}
+
+.cardContainer:hover .contentBottom {
+    transform: translate(-50%, -70%) translateZ(12px);
 }
 
 .cardHeader:hover,
