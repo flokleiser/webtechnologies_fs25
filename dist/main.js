@@ -22,6 +22,7 @@ const paletteSwatches = [...document.querySelectorAll(".palette-swatch")];
 const buttonContainerPalette = document.querySelector(".buttonContainer-palette");
 const buttonContainerSettings = document.querySelector(".buttonContainer-settings");
 const button1 = document.querySelector(".button1");
+const button2 = document.querySelector(".button2");
 let settingsOpen = false;
 let paletteOpen = false;
 let cardBounds = card.getBoundingClientRect();
@@ -85,7 +86,6 @@ async function loadAPI(testColor) {
                 titleColor = titleColor.slice(0, 13);
             }
         }
-        // console.log(titleColor);
         bigTitleContainer.innerHTML = titleColor;
         document.body.classList.remove("hidden");
         // buttonToggleMode.innerHTML = `${currentMode.toUpperCase()}`;
@@ -116,6 +116,7 @@ function setColors(color1, color2, color3, contrastColor) {
     card.style.backgroundColor = color2;
     // button1.style.backgroundColor = color3;
     button1.style.backgroundColor = transparentColor;
+    button2.style.backgroundColor = transparentColor;
     titleContainers[0].style.backgroundColor = color1;
     titleContainers[1].style.backgroundColor = color2;
     titleContainers[2].style.backgroundColor = color3;
@@ -141,6 +142,7 @@ function setColors(color1, color2, color3, contrastColor) {
     buttonToggleScheme.style.color = contrastColor;
     buttonSettings.style.color = contrastColor;
     button1.style.color = contrastColor;
+    button2.style.color = contrastColor;
     titleContainers.forEach((container) => {
         container.style.color = contrastColor;
     });

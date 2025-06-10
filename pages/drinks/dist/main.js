@@ -7,6 +7,7 @@ const cardFooter = document.querySelector(".cardFooter");
 const buttonReload = document.querySelector(".buttonReload");
 const cardImage = document.querySelector(".main-image");
 const button1 = document.querySelector(".button1");
+const button2 = document.querySelector(".button2");
 const ingredientsSection = document.querySelector(".ingredients-section");
 let cardBounds = card.getBoundingClientRect();
 let cardContainerBounds = cardContainer.getBoundingClientRect();
@@ -47,8 +48,6 @@ async function loadAPI() {
         img.onload = () => {
             document.body.style.setProperty("--background-image", `url(${drink.strDrinkThumb})`);
         };
-        //for debugging so i know which drink it was
-        console.log(drink.idDrink);
         const ingredients = [];
         let i = 1;
         while (drink[`strIngredient${i}`] !== null &&
@@ -61,8 +60,12 @@ async function loadAPI() {
                     measure: measure ? measure.trim() : undefined,
                 };
                 ingredients.push(ingredient);
+                console.log(ingredient.measure);
             }
             i++;
+        }
+        if (ingredients.length > 7) {
+            window.location.reload();
         }
         document.body.classList.remove("hidden");
         await displayIngredients(ingredients);
@@ -71,11 +74,12 @@ async function loadAPI() {
         console.error("Error:", error);
     }
 }
+//this is still broken when there are more than 4 sections of the string
 function localizeIngredientMeasures(measure) {
     function parseFraction(fraction) {
         try {
             const parts = fraction.trim().split(" ");
-            if (parts.length === 2) {
+            if (parts.length > 1) {
                 const [wholeNumber, fractionNumber] = parts;
                 const [number, denominator] = fractionNumber
                     .split("/")
@@ -99,7 +103,6 @@ function localizeIngredientMeasures(measure) {
         cup: 240,
         cups: 240,
         gal: 3785.41,
-        //i hope mloz and mltsp are already ml, i have never heard of those
         mloz: 1,
         mltsp: 1,
         lb: 453.592,
@@ -130,7 +133,7 @@ function createIngredientBox(ingredient) {
     ingredientName.textContent = ingredient.name;
     const ingredientMeasure = document.createElement("div");
     ingredientMeasure.className = "ingredient-measure";
-    // ingredientMeasure.textContent = ingredient.measure || '';
+    // ingredientMeasure.textContent = ingredient.measure || "";
     ingredientMeasure.textContent = localizeIngredientMeasures(ingredient.measure || "");
     ingredientBox.appendChild(ingredientImage);
     ingredientBox.appendChild(ingredientName);

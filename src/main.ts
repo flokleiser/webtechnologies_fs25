@@ -26,6 +26,7 @@ const buttonContainerPalette = document.querySelector(".buttonContainer-palette"
 const buttonContainerSettings= document.querySelector(".buttonContainer-settings") as HTMLElement;
 
 const button1 = document.querySelector(".button1") as HTMLElement
+const button2 = document.querySelector(".button2") as HTMLElement;
 
 let settingsOpen = false;
 let paletteOpen = false;
@@ -159,6 +160,7 @@ function setColors(color1:string,color2:string,color3:string,contrastColor:strin
     card.style.backgroundColor = color2;
     // button1.style.backgroundColor = color3;
     button1.style.backgroundColor = transparentColor;
+    button2.style.backgroundColor = transparentColor;
 
     titleContainers[0].style.backgroundColor = color1;
     titleContainers[1].style.backgroundColor = color2;
@@ -192,6 +194,7 @@ function setColors(color1:string,color2:string,color3:string,contrastColor:strin
     buttonToggleScheme.style.color = contrastColor;
     buttonSettings.style.color = contrastColor;
     button1.style.color = contrastColor;
+    button2.style.color = contrastColor;
 
     titleContainers.forEach((container) => {
         container.style.color = contrastColor;
