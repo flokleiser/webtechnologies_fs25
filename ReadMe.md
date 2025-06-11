@@ -1,4 +1,4 @@
-# ZHdK Interaction Design FS25 | Webtechnologies | Florian Kleiser
+# ZHdK IAD FS25 | Florian Kleiser | Webtechnologies
 
 https://flokleiser.github.io/webtechnologies_fs25/
 
