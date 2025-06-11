@@ -5,7 +5,7 @@
 
 <!-- ___ -->
 
-### flokleiser.github.io/webtechnologies_fs25/
+### https://flokleiser.github.io/webtechnologies_fs25/
 
 - https://www.thecolorapi.com/docs
 - https://publicapi.dev/x-colors-api
