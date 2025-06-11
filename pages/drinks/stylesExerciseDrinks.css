@@ -60,6 +60,7 @@ a {
 
 h1 {
     padding-left: 1.5rem;
+    /* padding:1.5rem */
 }
 
 #loading-screen {
@@ -198,7 +199,7 @@ h1 {
     display: flex;
     border-radius: 20px;
     align-items: center;
-    background-color: var(--bg-button);
+    background-color: rgba(255, 255, 255, 0.2);
     backdrop-filter: var(--backdrop-blur);
     box-shadow: var(--shadow);
     transition: width 300ms ease, box-shadow 250ms ease, transform 250ms ease;
@@ -216,11 +217,11 @@ h1 {
 }
 
 .cardContainer:hover .content {
-    transform: translate(-50%, -30%) translateZ(12px);
+    transform: translate(-50%, -60%) translateZ(12px);
 }
 
 .cardContainer:hover .contentBottom {
-    transform: translate(-50%, -70%) translateZ(12px);
+    transform: translate(-50%, -40%) translateZ(12px);
     transition: all 300ms ease;
 }
 
@@ -229,18 +230,28 @@ h1 {
     box-shadow: var(--shadow-hover);
 }
 
+.cardFooter:hover {
+    width:500px
+}
+
 .cardFooter:hover .ingredient-box {
     width: calc(100% / 6);
     height: 100%;
+    min-width:60px;
     flex-grow: 1;
-    flex-basis: auto;
+    /* flex-basis: auto; */
+    flex-basis: 0;
     transition: width 300ms ease, height 300ms ease, background-color 300ms ease;
+
 }
 
 .cardFooter:hover .ingredient-measure {
     opacity: 1;
-    display:block;
-    transition: opacity 300ms ease;
+    scale: 1;
+    /* display:block; */
+    /* transition: display 300ms ease, opacity 300ms ease; */
+    transition: opacity 300ms ease, scale 300ms ease;
+    /* transition: display 300ms ease; */
 }
 
 .button1,
@@ -320,8 +331,8 @@ h1 {
 .buttonContainer2:hover,
 .buttonContainer3:hover,
 .buttonContainer4:hover {
-    /* background-color: var(--hover-color); */
-    background-color: var(--bg-secondary-two);
+    /* backdrop-filter: blur(40px); */
+    background-color: rgba(255, 255, 255, 0.2);
     transition: background-color 300ms ease;
 }
 
@@ -329,7 +340,8 @@ h1 {
 .buttonContainer2:active,
 .buttonContainer3:active,
 .buttonContainer4:active {
-    background-color: var(--hover-color);
+    /* background-color: var(--hover-color); */
+    backdrop-filter: blur(40px);
     scale: 1.05;
     transition: scale 100ms ease;
 }
@@ -341,28 +353,31 @@ h1 {
     flex-wrap: nowrap;
     gap: 6px;
     width: 100%;
-    height: 120px;
+    height: 140px;
     padding: 5px;
     overflow-x: hidden;
     overflow-y: hidden;
-    transition: width 300ms ease, background-color 300ms ease;
+    transition: background-color 300ms ease, width 300ms ease;
 }
 
 .ingredient-box {
-    /* height: 100%; */
-    /* height:120px; */
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 6px;
+    flex: 1 1 0;
     border-radius: 12px;
     cursor: pointer;
     transition: all 300ms ease;
+
 }
 
 .ingredient-box:hover {
-    background-color: var(--bg-secondary-two);
+    /* background-color: var(--bg-secondary-two); */
+    background-color: rgba(255, 255, 255, 0.2);
+    /* backdrop-filter: blur(40px); */
 }
 
 .ingredient-image {
@@ -392,7 +407,10 @@ h1 {
     opacity: 0;
     text-align: center;
     line-height: 1.1;
-    transition: opacity 300ms ease;
-    display:none;
+    scale:0;
+    transition: opacity 300ms ease, scale 300ms ease;
+    /* transition:display 300ms ease; */
+    /* transition: display 300ms ease, opacity 300ms ease; */
+    /* display:none; */
 }
 

@@ -55,26 +55,41 @@ async function displayIngredients(ingredients: Ingredient[]) {
 
 async function loadAPI() {
     try {
-        const response = await fetch(
-            "https://www.thecocktaildb.com/api/json/v1/1/random.php"
-            // "https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=11243"
-        );
-        const data = await response.json();
-        const drink = data.drinks[0];
+        let drink;
+        let attempts = 0;
+        const maxAttempts = 10;
+
+        do {
+            const response = await fetch(
+                "https://www.thecocktaildb.com/api/json/v1/1/random.php"
+                // "https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=11963"
+            );
+            const data = await response.json();
+            drink = data.drinks[0];
+            
+            const ingredientCount = countIngredients(drink);
+            
+            if (ingredientCount <= 6) {
+                break; 
+            }
+            
+            attempts++;
+            console.log(`Drink: ${drink.idDrink}, Ingredients: ${ingredientCount}`)
+            
+        } while (attempts < maxAttempts);
+
+        if (attempts >= maxAttempts) {
+            console.warn("too many ingredients still:", drink);
+        }
 
         bigTitleContainer.textContent = drink.strDrink;
-
-        console.log(drink.idDrink)
+        console.log(drink.idDrink);
 
         cardImage.classList.remove("loaded");
-        // cardImageSmall.classList.remove("loaded");
-
         cardImage.src = drink.strDrinkThumb;
-        // cardImageSmall.src = drink.strDrinkThumb;
 
         cardImage.onload = () => {
             cardImage.classList.add("loaded");
-            // cardImageSmall.classList.add("loaded");
         };
 
         const img = new Image();
@@ -83,41 +98,60 @@ async function loadAPI() {
             document.body.style.setProperty("--background-image", `url(${drink.strDrinkThumb})`);
         };
 
-        const ingredients: Ingredient[] = [];
-        let i = 1;
-
-        while (
-            drink[`strIngredient${i}`] !== null &&
-            drink[`strIngredient${i}`] !== undefined
-        ) {
-            const ingredientName = drink[`strIngredient${i}`];
-            const measure = drink[`strMeasure${i}`];
-
-            if (ingredientName && ingredientName.trim()) {
-                const ingredient: Ingredient = {
-                    name: ingredientName.trim(),
-                    measure: measure ? measure.trim() : undefined,
-                };
-
-                ingredients.push(ingredient);
-                // console.log(ingredient.measure)
-            }
-            i++;
-        }
-
-        if (ingredients.length > 7) {
-            window.location.reload();
-        }
-
+        const ingredients = extractIngredients(drink);
         document.body.classList.remove("hidden");
-
         await displayIngredients(ingredients);
+
     } catch (error) {
         console.error("Error:", error);
     }
 }
 
-//this is still broken when there are more than 4 sections of the string
+function countIngredients(drink: any): number {
+    let count = 0;
+    let i = 1;
+
+    while (
+        drink[`strIngredient${i}`] !== null &&
+        drink[`strIngredient${i}`] !== undefined
+    ) {
+        const ingredientName = drink[`strIngredient${i}`];
+        if (ingredientName && ingredientName.trim()) {
+            count++;
+        }
+        i++;
+    }
+
+    return count;
+}
+
+function extractIngredients(drink: any): Ingredient[] {
+    const ingredients: Ingredient[] = [];
+    let i = 1;
+
+    while (
+        drink[`strIngredient${i}`] !== null &&
+        drink[`strIngredient${i}`] !== undefined
+    ) {
+        const ingredientName = drink[`strIngredient${i}`];
+        const measure = drink[`strMeasure${i}`];
+
+        if (ingredientName && ingredientName.trim()) {
+            const ingredient: Ingredient = {
+                name: ingredientName.trim(),
+                measure: measure ? measure.trim() : undefined,
+            };
+
+            ingredients.push(ingredient);
+            // console.log(ingredient.name, ingredient.measure);
+        }
+        i++;
+    }
+
+    return ingredients;
+}
+
+
 function localizeIngredientMeasures(measure: string): string {
     function parseFraction(fraction: string): number {
         try {
@@ -151,7 +185,7 @@ function localizeIngredientMeasures(measure: string): string {
         lb: 453.592,
     };
 
-    const pattern = /^([\d\s\/.]+)\s*([a-zA-Z]+)$/;
+    const pattern = /^([\d\s\/.]+)\s*([a-zA-Z]+)/;
     const match = measure.trim().match(pattern);
     if (!match) return measure;
 
@@ -163,7 +197,11 @@ function localizeIngredientMeasures(measure: string): string {
 
     const convertedValue = Math.round(value * unitConversions[unit]);
     const newUnit = ["lb"].includes(unit) ? "g" : "ml";
-    return `${convertedValue} ${newUnit}`;
+
+    const restOfString = measure.substring(match[0].length).trim();
+    const convertedPart = `${convertedValue} ${newUnit}`;
+    
+    return restOfString ? `${convertedPart} ${restOfString}` : convertedPart;
 }
 
 function createIngredientBox(ingredient: Ingredient): HTMLElement {
@@ -205,35 +243,10 @@ function loadEventListeners() {
     cardContainer.addEventListener("mouseleave", () => {
         cardContainer.removeEventListener("mousemove", handleCardHover);
         resetCardStyle();
-        resetFooterState();
     });
-
-    cardFooter.addEventListener("mouseenter", () => {
-        expandFooter();
-    });
-
-    cardFooter.addEventListener("mouseleave", () => {
-        resetFooterState();
-    });
-
     buttonReload.addEventListener("click", () => {
         loadAPI();
     });
-}
-
-function expandFooter() {
-    cardFooter.style.width = "500px";
-    cardFooter.style.transition =
-        "width 250ms ease, box-shadow 250ms ease, transform 250ms ease";
-}
-
-function resetFooterState() {
-    cardFooter.style.width = "430px";
-    cardFooter.style.transition =
-        "width 250ms ease, box-shadow 250ms ease, transform 250ms ease";
-
-    ingredientsSection.style.width = "100%";
-    ingredientsSection.style.transition = "width 300ms ease";
 }
 
 function handleCardHover(e: MouseEvent) {
