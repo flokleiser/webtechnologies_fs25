@@ -13,6 +13,7 @@ const buttonHilbert = document.querySelector(".buttonHilbert");
 const buttonTruchet = document.querySelector(".buttonTruchet");
 const buttonGrid = document.querySelector(".buttonGrid");
 const buttonTest = document.querySelector(".buttonTest");
+const buttonTest2 = document.querySelector(".buttonTest2");
 let cardBounds = card.getBoundingClientRect();
 let cardContainerBounds = cardContainer.getBoundingClientRect();
 const threshold = 3;
@@ -20,12 +21,13 @@ let randomOrder;
 let previousRandomOrder;
 // const palette = ["#f8f9fa","#e9ecef","#dee2e6","#ced4da","#adb5bd","#6c757d","#495057","#343a40","#212529"]
 const palette = ["#999999", "#777777", "#555555", "#333333", "#111111"];
-let activeMode = "Truchet";
+// const palette = ["#4464a1", "#56a1c4", "#ee726b", "#ffc5c7", "#fef9c6", "#df5f50", "#5a3034", "#f5b800", "#ffcc4d", "#4b8a5f", "#e590b8"];
+let activeMode = "Truchet Tiles";
 let tiles = [];
 let rows = 10;
 let cols;
 let animationID = null;
-let animationIsActive = true;
+let animationIsActive = false;
 async function loadCard(activeMode) {
     initCanvas(activeMode);
     bigTitleContainer.textContent = activeMode;
@@ -35,7 +37,7 @@ function initCanvas(activeMode) {
         console.error("Canvas or context is not available.");
         return;
     }
-    buttonGrid.innerHTML = `Wavy </br> Grid </br> ${animationIsActive ? "Animated" : "Static"}`;
+    buttonGrid.innerHTML = `<span class="material-symbols-outlined" style="font-size:50px">grid_3x3</span> ${animationIsActive ? "<span class='material-icons'>pause</span>" : "<span class='material-icons'>play_arrow</span>"}`;
     canvasCard.width = cardContainerBounds.width;
     canvasCard.height = cardContainerBounds.height;
     ctxCard.clearRect(0, 0, canvasCard.width, canvasCard.height);
@@ -59,10 +61,10 @@ function drawOnCanvas(activeMode) {
     ctxCard.fillStyle = "rgb(31,31,31)";
     ctxCard.strokeStyle = "rgb(255, 255, 255)";
     ctxCard.fillRect(0, 0, canvasCard.width, canvasCard.height);
-    if (activeMode === "Hilbert") {
+    if (activeMode === "Hilbert Curve") {
         drawHilbertCurve(randomOrder, canvasCard, ctxCard);
     }
-    else if (activeMode === "Truchet") {
+    else if (activeMode === "Truchet Tiles") {
         drawTruchetTiling(canvasCard, ctxCard);
     }
     else if (activeMode === "Grid") {
@@ -70,6 +72,9 @@ function drawOnCanvas(activeMode) {
     }
     else if (activeMode === "Pattern") {
         drawTestPattern(canvasCard, ctxCard);
+    }
+    else if (activeMode === "Pattern2") {
+        drawTestPattern2(canvasCard, ctxCard);
     }
 }
 function drawHilbertCurve(order, canvas, ctx) {
@@ -251,6 +256,8 @@ function stopAnimation() {
     }
 }
 function drawTestPattern(canvas, ctx) {
+    ctx.fillStyle = "rgb(31, 31, 31)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     let s = canvas.width / 5;
     for (let x = 0; x < canvas.width; x += s) {
         for (let y = 0; y < canvas.height; y += s) {
@@ -267,24 +274,18 @@ function drawTestPattern(canvas, ctx) {
     }
 }
 function makeTile(x, y, s, canvas, ctx) {
-    ctx.fillStyle = palette[Math.floor(Math.random() * 9) + 1];
-    ctx.fill();
-    ctx.rect(x, y, s, s);
+    const shuffledPalette = [...palette].sort(() => Math.random() - 0.5);
+    ctx.fillStyle = shuffledPalette[0];
+    ctx.fillRect(x, y, s, s);
     ctx.save();
     ctx.translate(x + s / 2, y + s / 2);
     const angles = [0, Math.PI / 2, Math.PI, (3 * Math.PI) / 2];
     ctx.rotate(angles[Math.floor(Math.random() * angles.length)]);
-    ctx.fillStyle = palette[Math.floor(Math.random() * 9) + 1];
-    let r = Math.floor(Math.random() * 3);
+    ctx.fillStyle = shuffledPalette[1] || shuffledPalette[0];
+    let r = Math.floor(Math.random() * 4);
     if (r == 0) {
-        // ctx.beginPath();
-        // ctx.arc(-s/2, 0, s/2, 0 , Math.PI);
-        // ctx.stroke()
         ctx.beginPath();
-        ctx.moveTo(-s / 2, 0);
-        ctx.lineTo(0, -s / 2);
-        ctx.lineTo(s / 2, 0);
-        ctx.closePath();
+        ctx.arc(-s / 2, 0, s / 2, -Math.PI / 2, Math.PI / 2);
         ctx.fill();
     }
     else if (r == 1) {
@@ -300,6 +301,46 @@ function makeTile(x, y, s, canvas, ctx) {
     }
     ctx.restore();
 }
+function drawTestPattern2(canvas, ctx) {
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    const gridSize = 50;
+    for (let x = 0; x < canvas.width; x += gridSize) {
+        for (let y = 0; y < canvas.height; y += gridSize) {
+            const shuffledPalette = [...palette].sort(() => Math.random() - 0.5);
+            ctx.fillStyle = shuffledPalette[0];
+            const sides = Math.round(Math.random() * 3);
+            const pos1 = Math.round(Math.random() * gridSize);
+            const pos2 = Math.round(Math.random() * gridSize);
+            ctx.beginPath();
+            if (sides === 0) {
+                ctx.moveTo(x, y);
+                ctx.lineTo(x + gridSize, y);
+                ctx.lineTo(x + gridSize, y + gridSize - pos1);
+                ctx.lineTo(x, y + gridSize - pos2);
+            }
+            else if (sides === 1) {
+                ctx.moveTo(x + pos1, y);
+                ctx.lineTo(x + gridSize, y);
+                ctx.lineTo(x + gridSize, y + gridSize);
+                ctx.lineTo(x + pos2, y + gridSize);
+            }
+            else if (sides === 2) {
+                ctx.moveTo(x, y + pos1);
+                ctx.lineTo(x + gridSize, y + pos2);
+                ctx.lineTo(x + gridSize, y + gridSize);
+                ctx.lineTo(x, y + gridSize);
+            }
+            else if (sides === 3) {
+                ctx.moveTo(x, y);
+                ctx.lineTo(x + gridSize - pos1, y);
+                ctx.lineTo(x + gridSize - pos2, y + gridSize);
+                ctx.lineTo(x, y + gridSize);
+            }
+            ctx.closePath();
+            ctx.fill();
+        }
+    }
+}
 function loadEventListeners() {
     cardContainer.addEventListener("mouseenter", () => {
         cardBounds = cardContainer.getBoundingClientRect();
@@ -310,11 +351,11 @@ function loadEventListeners() {
         resetCardStyle();
     });
     buttonReload.addEventListener("click", () => {
-        if (activeMode === "Hilbert") {
-            loadCard("Hilbert");
+        if (activeMode === "Hilbert Curve") {
+            loadCard("Hilbert Curve");
         }
-        else if (activeMode === "Truchet") {
-            loadCard("Truchet");
+        else if (activeMode === "Truchet Tiles") {
+            loadCard("Truchet Tiles");
         }
         else if (activeMode === "Grid") {
             loadCard("Grid");
@@ -322,34 +363,39 @@ function loadEventListeners() {
         else if (activeMode === "Pattern") {
             loadCard("Pattern");
         }
+        else if (activeMode === "Pattern2") {
+            loadCard("Pattern2");
+        }
     });
     buttonHilbert.addEventListener("click", () => {
-        activeMode = "Hilbert";
-        loadCard("Hilbert");
+        activeMode = "Hilbert Curve";
+        loadCard("Hilbert Curve");
         stopAnimation();
     });
     buttonTruchet.addEventListener("click", () => {
-        activeMode = "Truchet";
-        loadCard("Truchet");
+        activeMode = "Truchet Tiles";
+        loadCard("Truchet Tiles");
         stopAnimation();
     });
     buttonGrid.addEventListener("click", () => {
         animationIsActive = !animationIsActive;
-        buttonGrid.innerHTML = `Wavy </br> Grid </br> ${animationIsActive ? "Animated" : "Static"}`;
+        buttonGrid.innerHTML = `<span class="material-symbols-outlined" style="font-size:50px">grid_3x3</span> ${animationIsActive ? "<span class='material-icons'>pause</span>" : "<span class='material-icons'>play_arrow</span>"}`;
         activeMode = "Grid";
-        // loadCard("Grid");
         if (animationIsActive) {
-            // drawOnCanvas("Grid");
             loadCard("Grid");
         }
         else {
             stopAnimation();
-            // drawOnCanvas("Grid");
         }
     });
     buttonTest.addEventListener("click", () => {
         activeMode = "Pattern";
         loadCard("Pattern");
+        stopAnimation();
+    });
+    buttonTest2.addEventListener("click", () => {
+        activeMode = "Pattern2";
+        loadCard("Pattern2");
         stopAnimation();
     });
 }

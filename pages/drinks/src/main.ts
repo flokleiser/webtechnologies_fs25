@@ -7,6 +7,7 @@ const cardHeader = document.querySelector(".cardHeader") as HTMLElement;
 const cardFooter = document.querySelector(".cardFooter") as HTMLElement;
 const buttonReload = document.querySelector(".buttonReload") as HTMLElement;
 const cardImage = document.querySelector(".main-image") as HTMLImageElement;
+// const cardImageSmall = document.querySelector(".main-imageSmall") as HTMLImageElement;
 
 const button1 = document.querySelector(".button1") as HTMLElement;
 const button2 = document.querySelector(".button2") as HTMLElement;
@@ -56,18 +57,24 @@ async function loadAPI() {
     try {
         const response = await fetch(
             "https://www.thecocktaildb.com/api/json/v1/1/random.php"
+            // "https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=11243"
         );
         const data = await response.json();
         const drink = data.drinks[0];
 
         bigTitleContainer.textContent = drink.strDrink;
 
+        console.log(drink.idDrink)
+
         cardImage.classList.remove("loaded");
+        // cardImageSmall.classList.remove("loaded");
 
         cardImage.src = drink.strDrinkThumb;
+        // cardImageSmall.src = drink.strDrinkThumb;
 
         cardImage.onload = () => {
             cardImage.classList.add("loaded");
+            // cardImageSmall.classList.add("loaded");
         };
 
         const img = new Image();
@@ -93,7 +100,7 @@ async function loadAPI() {
                 };
 
                 ingredients.push(ingredient);
-                console.log(ingredient.measure)
+                // console.log(ingredient.measure)
             }
             i++;
         }
