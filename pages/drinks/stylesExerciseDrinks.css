@@ -312,7 +312,7 @@ h1 {
     box-shadow: none;
     overflow: hidden;
     background-color: transparent;
-    transition: background-color 300ms ease;
+    transition: background-color 300ms ease, box-shadow 300ms ease;
 }
 
 .buttonContainer1,
@@ -332,8 +332,10 @@ h1 {
 .buttonContainer3:hover,
 .buttonContainer4:hover {
     /* backdrop-filter: blur(40px); */
+    /* box-shadow: var(--shadow);  */
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
     background-color: rgba(255, 255, 255, 0.2);
-    transition: background-color 300ms ease;
+    transition: background-color 300ms ease, box-shadow 300ms ease;
 }
 
 .buttonContainer1:active,
@@ -341,7 +343,7 @@ h1 {
 .buttonContainer3:active,
 .buttonContainer4:active {
     /* background-color: var(--hover-color); */
-    backdrop-filter: blur(40px);
+    /* backdrop-filter: blur(40px); */
     scale: 1.05;
     transition: scale 100ms ease;
 }
@@ -377,6 +379,7 @@ h1 {
 .ingredient-box:hover {
     /* background-color: var(--bg-secondary-two); */
     background-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
     /* backdrop-filter: blur(40px); */
 }
 

@@ -364,7 +364,6 @@ h1 {
     align-items: center;
     position: relative;
     z-index: 100;
-    /* padding: 10px 10px 10px 10px; */
 }
 
 .settings-section {
@@ -396,6 +395,7 @@ h1 {
 .palette-history-expanded.expanded {
     max-width: 200px;
     padding-left: 10px;
+    padding-right:15px;
 }
 
 .buttonContainer-palette,

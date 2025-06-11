@@ -73,7 +73,7 @@ interface ColorPalette {
 }
 
 let paletteHistory: ColorPalette[] = [];
-const maxHistorySize = 3;
+const maxHistorySize = 4;
 
 let historyScrollPosition = 0;
 

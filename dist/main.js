@@ -51,7 +51,7 @@ let otherHoverColor;
 let normalColor;
 let currentColors = [];
 let paletteHistory = [];
-const maxHistorySize = 3;
+const maxHistorySize = 4;
 let historyScrollPosition = 0;
 async function getRandomColor() {
     try {
