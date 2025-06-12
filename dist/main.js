@@ -66,18 +66,26 @@ async function getRandomColor() {
         console.error("Error: ", error);
     }
 }
+function reload() {
+    getRandomColor().then(() => {
+        loadAPI(testColor);
+    });
+}
 async function loadAPI(testColor) {
     try {
         const response = await fetch(`https://www.thecolorapi.com/scheme?&mode=${currentSchemeMode}&hex=${testColor}&count=3`);
         const data = await response.json();
         const colors = data.colors.map((color) => color[currentMode].value);
         const [color1, color2, color3] = colors;
+        //hacky way to ensure black is not in the color scheme
+        if (color1 === "#000000" || color1 === "rgb(0, 0, 0)" || color1 === "hsl(0, 0%, 0%)") {
+            console.log('black');
+            reload();
+        }
         contrastColor = data.colors[1].contrast.value;
-        // contrastColor = data.colors[0].hex.value;
         transparentColor = data.colors[1].hex.value + "80";
-        // console.log(transparentColor);
         titleColor = data.colors[1].name.value;
-        console.log(data.colors[1].name.value);
+        console.log(titleColor);
         if (titleColor.length > 13) {
             if (titleColor.includes(" ")) {
                 titleColor = titleColor.split(" ")[0];
@@ -88,7 +96,6 @@ async function loadAPI(testColor) {
         }
         bigTitleContainer.innerHTML = titleColor;
         document.body.classList.remove("hidden");
-        // buttonToggleMode.innerHTML = `${currentMode.toUpperCase()}`;
         buttonToggleMode.innerHTML = (currentMode === "hex" ? "#HEX" : currentMode === "rgb" ? "(R,G,B)" : "(H,S,L)");
         buttonToggleScheme.innerHTML = `${currentSchemeMode.toUpperCase().slice(0, 4)}`;
         setColors(color1, color2, color3, contrastColor);

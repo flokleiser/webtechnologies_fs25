@@ -91,6 +91,12 @@ async function getRandomColor() {
     }
 }
 
+function reload() {
+    getRandomColor().then(() => {
+        loadAPI(testColor)
+    });
+}
+
 async function loadAPI(testColor: string) {
     try {
 
@@ -100,14 +106,19 @@ async function loadAPI(testColor: string) {
         const colors = data.colors.map((color: { [x: string]: { value: any; }; }) => color[currentMode].value);
         const [color1, color2, color3] = colors;
 
+
+        //hacky way to ensure black is not in the color scheme
+        if (color1 === "#000000" || color1 === "rgb(0, 0, 0)" || color1 === "hsl(0, 0%, 0%)") {
+            console.log('black')
+            reload();
+        }
+
         contrastColor = data.colors[1].contrast.value;
-        // contrastColor = data.colors[0].hex.value;
 
         transparentColor = data.colors[1].hex.value + "80";
-        // console.log(transparentColor);
 
         titleColor = data.colors[1].name.value;
-        console.log(data.colors[1].name.value)
+        console.log(titleColor)
 
         if (titleColor.length > 13) {
             if (titleColor.includes(" ")) {
@@ -121,7 +132,6 @@ async function loadAPI(testColor: string) {
 
         document.body.classList.remove("hidden");
 
-        // buttonToggleMode.innerHTML = `${currentMode.toUpperCase()}`;
         buttonToggleMode.innerHTML = (currentMode === "hex" ? "#HEX" : currentMode === "rgb" ? "(R,G,B)" : "(H,S,L)");
 
         buttonToggleScheme.innerHTML = `${currentSchemeMode.toUpperCase().slice(0,4)}`;

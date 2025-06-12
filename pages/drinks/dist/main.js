@@ -40,7 +40,7 @@ async function loadAPI() {
         const maxAttempts = 10;
         do {
             const response = await fetch("https://www.thecocktaildb.com/api/json/v1/1/random.php"
-            // "https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=11963"
+            // "https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=13128"
             );
             const data = await response.json();
             drink = data.drinks[0];
@@ -65,6 +65,7 @@ async function loadAPI() {
         img.src = drink.strDrinkThumb;
         img.onload = () => {
             document.body.style.setProperty("--background-image", `url(${drink.strDrinkThumb})`);
+            // document.body
         };
         const ingredients = extractIngredients(drink);
         document.body.classList.remove("hidden");
