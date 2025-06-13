@@ -74,7 +74,6 @@ interface ColorPalette {
 
 let paletteHistory: ColorPalette[] = [];
 const maxHistorySize = 4;
-
 let historyScrollPosition = 0;
 
 async function getRandomColor() {
@@ -99,13 +98,11 @@ function reload() {
 
 async function loadAPI(testColor: string) {
     try {
-
         const response = await fetch(`https://www.thecolorapi.com/scheme?&mode=${currentSchemeMode}&hex=${testColor}&count=3`);
         const data = await response.json();
 
         const colors = data.colors.map((color: { [x: string]: { value: any; }; }) => color[currentMode].value);
         const [color1, color2, color3] = colors;
-
 
         //hacky way to ensure black is not in the color scheme
         if (color1 === "#000000" || color1 === "rgb(0, 0, 0)" || color1 === "hsl(0, 0%, 0%)") {
@@ -114,12 +111,10 @@ async function loadAPI(testColor: string) {
         }
 
         contrastColor = data.colors[1].contrast.value;
-
         transparentColor = data.colors[1].hex.value + "80";
-
         titleColor = data.colors[1].name.value;
-        console.log(titleColor)
 
+        //hacky way to make title not too long
         if (titleColor.length > 13) {
             if (titleColor.includes(" ")) {
                 titleColor = titleColor.split(" ")[0];
@@ -129,15 +124,11 @@ async function loadAPI(testColor: string) {
         }
 
         bigTitleContainer.innerHTML = titleColor;
-
         document.body.classList.remove("hidden");
 
         buttonToggleMode.innerHTML = (currentMode === "hex" ? "#HEX" : currentMode === "rgb" ? "(R,G,B)" : "(H,S,L)");
-
         buttonToggleScheme.innerHTML = `${currentSchemeMode.toUpperCase().slice(0,4)}`;
-
         setColors(color1, color2, color3, contrastColor);
-
 
         const newPalette: ColorPalette = {
             colors: [color1, color2, color3],
@@ -267,7 +258,7 @@ function loadEventListeners() {
         });
     });
 
-        cardContainer.addEventListener("mouseenter", () => {
+    cardContainer.addEventListener("mouseenter", () => {
         cardBounds = cardContainer.getBoundingClientRect();
         cardContainer.addEventListener("mousemove", handleCardHover);
     });
@@ -367,14 +358,12 @@ function loadEventListeners() {
         console.log(`Palette ${paletteOpen ? "open" : "closed"}`, 'History length:', paletteHistory.length);
     });
 
-
     copyButtons.forEach((btn, i) => {
         btn.addEventListener("click", () => {
             const colorToCopy = i === 0 ? copyColor1 : i === 1 ? copyColor2 : copyColor3;
             copyToClipboard(colorToCopy);
         });
     });
-
 }
 
 function copyToClipboard(color: string) {
@@ -417,6 +406,8 @@ function updateHistoryBar() {
 function addToHistory(palette: ColorPalette) {
     if (paletteHistory.length > 0) {
         const lastPalette = paletteHistory[paletteHistory.length - 1];
+
+        //this checks to not add duplicate palettes
         if (JSON.stringify(lastPalette.colors) === JSON.stringify(palette.colors)) {
             return;
         }

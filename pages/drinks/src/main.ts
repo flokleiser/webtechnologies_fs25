@@ -96,7 +96,6 @@ async function loadAPI() {
         img.src = drink.strDrinkThumb;
         img.onload = () => {
             document.body.style.setProperty("--background-image", `url(${drink.strDrinkThumb})`);
-            // document.body
         };
 
         const ingredients = extractIngredients(drink);
@@ -144,7 +143,6 @@ function extractIngredients(drink: any): Ingredient[] {
             };
 
             ingredients.push(ingredient);
-            // console.log(ingredient.name, ingredient.measure);
         }
         i++;
     }
@@ -190,7 +188,7 @@ function localizeIngredientMeasures(measure: string): string {
     const match = measure.trim().match(pattern);
     if (!match) return measure;
 
-    const [fullValueUnit, rawValue, unitRaw] = match;
+    const [, rawValue, unitRaw] = match;
     const value = parseFraction(rawValue);
     const unit = unitRaw.toLowerCase();
 
@@ -221,10 +219,10 @@ function createIngredientBox(ingredient: Ingredient): HTMLElement {
 
     const ingredientMeasure = document.createElement("div");
     ingredientMeasure.className = "ingredient-measure";
-    // ingredientMeasure.textContent = ingredient.measure || "";
-    ingredientMeasure.textContent = localizeIngredientMeasures(
-        ingredient.measure || ""
-    );
+    ingredientMeasure.textContent = ingredient.measure || "";
+    // ingredientMeasure.textContent = localizeIngredientMeasures(
+    //     ingredient.measure || ""
+    // );
 
     ingredientBox.appendChild(ingredientImage);
     ingredientBox.appendChild(ingredientName);
