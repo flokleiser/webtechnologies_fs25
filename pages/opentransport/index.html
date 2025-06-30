@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Webtechnologies Exercise</title>
+        <link rel="stylesheet" href="stylesExerciseTransport.css" />
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons"rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"rel="stylesheet">
+        <script src="dist/main.js" defer></script>
+    </head>
+
+    <body>
+        <div style="display:flex;flex-direction: row;">
+            <a href="../../index.html">
+                <button class="button1">
+                    <div style="display: flex; align-items: center; justify-content: space-evenly;">
+                    <span class="material-icons">palette</span>
+                    </div>
+                </button>
+            </a>
+
+            <a href="../drinks/index.html">
+                <button class="button2" style="right:0" >
+                    <div style="display: flex; align-items: center; justify-content: space-evenly;">
+                    <span class="material-symbols-outlined">local_bar</span>
+                    </div>
+                </button>
+            </a>
+
+            <a href="../patterns/">
+                <button class="button3" style="right:0" >
+                    <div style="display: flex; align-items: center; justify-content: space-evenly;">
+                    <span class="material-symbols-outlined">airwave</span>
+                    </div>
+                </button>
+            </a>
+        </div>
+
+        <div style="padding:3rem"></div>
+
+        <div class="cardContainer">
+            <div class="cardHeader content">
+                <h1 data-js="big-title"></h1>
+                <div class="buttonContainer3">
+                    <button class="buttonReload">
+                        <div style="display: flex; align-items: center; justify-content: space-evenly;">
+                            <span class="material-icons" style="font-size: 30px;">refresh</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-front">
+                    <div style="display:flex;flex-direction: column; align-items: center;">
+                        <div style="display:flex;flex-direction: column;width:80%">
+                            <h2 class="StationTitle" for="stationSelect">From</h2>
+                            <input class="inputField" id="stationSelect" value="Toni-Areal" type="text" placeholder="Enter station name..." autocomplete="off">
+
+                            <h2 class="StationTitle" for="destinationSelect">To</h2>
+                            <input class="inputField" id="destinationSelect" value="Rathaus" type="text" placeholder="Enter destination..." autocomplete="off">
+                        </div>
+                    </div>
+
+                    <!-- <div style="display:flex;flex-direction: column; align-items: center;">
+                        <button class="buttonSelect">Get Connections</button>
+                    </div> -->
+
+                    <!-- <div class="debugDiv">
+                        <p class="debugText" id="stationName"></p>
+                        <p class="debugText" id="destination"></p>
+                    </div> -->
+                </div>
+            </div>
+
+            <div class="cardFooter contentBottom">
+                <div style="display:flex; justify-content: space-between; width:100%; gap:10px;">
+                    <div class="buttonContainer3">
+                        <button class="departure1">
+                            <span style="font-size:30px">--:--</span>
+                        </button>
+                    </div>
+                    <div class="buttonContainer3">
+                        <button class="departure2">
+                            <span style="font-size:30px">--:--</span>
+                        </button>
+                    </div>
+                    <div class="buttonContainer3">
+                        <button class="departure3">
+                            <span style="font-size:30px">--:--</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

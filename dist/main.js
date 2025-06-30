@@ -23,6 +23,7 @@ const buttonContainerPalette = document.querySelector(".buttonContainer-palette"
 const buttonContainerSettings = document.querySelector(".buttonContainer-settings");
 const button1 = document.querySelector(".button1");
 const button2 = document.querySelector(".button2");
+const button3 = document.querySelector(".button3");
 let settingsOpen = false;
 let paletteOpen = false;
 let cardBounds = card.getBoundingClientRect();
@@ -85,7 +86,7 @@ async function loadAPI(testColor) {
         contrastColor = data.colors[1].contrast.value;
         transparentColor = data.colors[1].hex.value + "80";
         titleColor = data.colors[1].name.value;
-        console.log(titleColor);
+        //hacky way to make title not too long
         if (titleColor.length > 13) {
             if (titleColor.includes(" ")) {
                 titleColor = titleColor.split(" ")[0];
@@ -124,6 +125,7 @@ function setColors(color1, color2, color3, contrastColor) {
     // button1.style.backgroundColor = color3;
     button1.style.backgroundColor = transparentColor;
     button2.style.backgroundColor = transparentColor;
+    button3.style.backgroundColor = transparentColor;
     titleContainers[0].style.backgroundColor = color1;
     titleContainers[1].style.backgroundColor = color2;
     titleContainers[2].style.backgroundColor = color3;
@@ -150,6 +152,7 @@ function setColors(color1, color2, color3, contrastColor) {
     buttonSettings.style.color = contrastColor;
     button1.style.color = contrastColor;
     button2.style.color = contrastColor;
+    button3.style.color = contrastColor;
     titleContainers.forEach((container) => {
         container.style.color = contrastColor;
     });
@@ -321,6 +324,7 @@ function updateHistoryBar() {
 function addToHistory(palette) {
     if (paletteHistory.length > 0) {
         const lastPalette = paletteHistory[paletteHistory.length - 1];
+        //this checks to not add duplicate palettes
         if (JSON.stringify(lastPalette.colors) === JSON.stringify(palette.colors)) {
             return;
         }

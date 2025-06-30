@@ -415,6 +415,18 @@ function resetCardStyle() {
     cardContainer.style.transform = `translate(-50%, -50%) perspective(450px) rotateX(0deg) rotateY(0deg)`;
 }
 document.addEventListener("DOMContentLoaded", async () => {
+    // document.body.classList.add("hidden");
     loadCard(activeMode);
+    // const loadingScreen = document.getElementById("loading-screen");
+    //     if (loadingScreen) {
+    //         loadingScreen.classList.add("fade-out");
+    //         setTimeout(() => loadingScreen.remove(), 500);
+    // }
+    // setTimeout(() => {
+    //     document.body.classList.remove("hidden");
+    // }, 500);
+    setTimeout(() => {
+        document.body.style.opacity = "1";
+    }, 300);
     loadEventListeners();
 });

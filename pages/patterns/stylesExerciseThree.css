@@ -36,6 +36,7 @@
 }
 
 body {
+    opacity:0;
     height: 100vh;
     background-color: var(--bg-primary);
     transition: opacity 300ms ease;
@@ -225,6 +226,7 @@ h1 {
 
 .button1,
 .button2,
+.button3,
 .buttonHilbert,
 .buttonTruchet,
 .buttonGrid,
@@ -243,8 +245,9 @@ h1 {
 }
 
 .button1,
-.button2 {
-    position: absolute;
+.button2,
+.button3 {
+    /* position: absolute; */
     padding: 10px;
     border-radius: 5px;
     margin: 10px;
@@ -276,7 +279,8 @@ h1 {
 }
 
 .button1:hover,
-.button2:hover {
+.button2:hover,
+.button3:hover {
     box-shadow: var(--shadow);
     transition-duration: 150ms;
 }

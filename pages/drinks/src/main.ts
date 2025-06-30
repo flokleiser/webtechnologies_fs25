@@ -11,6 +11,7 @@ const cardImage = document.querySelector(".main-image") as HTMLImageElement;
 
 const button1 = document.querySelector(".button1") as HTMLElement;
 const button2 = document.querySelector(".button2") as HTMLElement;
+const button3 = document.querySelector(".button3") as HTMLElement;
 
 const ingredientsSection = document.querySelector(
     ".ingredients-section"

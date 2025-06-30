@@ -9,6 +9,7 @@ const cardImage = document.querySelector(".main-image");
 // const cardImageSmall = document.querySelector(".main-imageSmall") as HTMLImageElement;
 const button1 = document.querySelector(".button1");
 const button2 = document.querySelector(".button2");
+const button3 = document.querySelector(".button3");
 const ingredientsSection = document.querySelector(".ingredients-section");
 let cardBounds = card.getBoundingClientRect();
 let cardContainerBounds = cardContainer.getBoundingClientRect();
